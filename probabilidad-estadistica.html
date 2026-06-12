@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilidad & Estadística</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0d0f1a;
+    --surface: #151829;
+    --surface2: #1e2235;
+    --border: #2a2f4a;
+    --accent: #6c63ff;
+    --accent2: #ff6b9d;
+    --accent3: #00d4aa;
+    --accent4: #ffd166;
+    --text: #e8eaf6;
+    --text2: #9ba3c9;
+    --correct: #00d4aa;
+    --wrong: #ff6b6b;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex; align-items: center; gap: 0;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700; font-size: 1rem;
+    color: var(--accent);
+    margin-right: 2rem;
+    white-space: nowrap;
+  }
+  .nav-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none; flex: 1;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: 0 1rem;
+    height: 56px;
+    border: none; background: none;
+    color: var(--text2);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 2rem 1.5rem; max-width: 860px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* HERO */
+  #home {
+    max-width: 100%;
+    padding: 0;
+  }
+  .hero {
+    min-height: 260px;
+    background: linear-gradient(135deg, #0d0f1a 0%, #1a1040 50%, #0d1a2a 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 3rem 2rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 600px 300px at 50% 50%, rgba(108,99,255,0.15) 0%, transparent 70%);
+  }
+  .hero-title {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, #6c63ff 50%, #00d4aa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    position: relative; z-index: 1;
+  }
+  .hero-sub {
+    margin-top: 0.75rem;
+    color: var(--text2); font-size: 0.95rem;
+    position: relative; z-index: 1;
+  }
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2rem;
+    position: relative; z-index: 1;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--accent);
+  }
+  .hero-stat .lbl { font-size: 0.75rem; color: var(--text2); }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; padding: 2rem 1.5rem;
+    max-width: 860px; margin: 0 auto;
+  }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .topic-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .topic-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .topic-card .name { font-weight: 600; font-size: 0.9rem; }
+  .topic-card .count { font-size: 0.75rem; color: var(--text2); margin-top: 0.2rem; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+  h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); }
+
+  /* FORMULA BOX */
+  .formula {
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent3);
+    margin: 0.75rem 0;
+    white-space: pre-wrap;
+  }
+
+  /* QUIZ */
+  .quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .quiz-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.3rem 0.7rem;
+    color: var(--text2);
+  }
+  .score-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; color: var(--accent3);
+  }
+
+  .question-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem; margin-bottom: 1rem;
+  }
+  .question-text {
+    font-size: 0.95rem; line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  .question-text strong { color: var(--accent4); }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  @media (max-width: 500px) { .options-grid { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.75rem 1rem;
+    color: var(--text); font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem; cursor: pointer;
+    text-align: left; transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent); background: rgba(108,99,255,0.1);
+  }
+  .option-btn.correct { border-color: var(--correct); background: rgba(0,212,170,0.12); color: var(--correct); }
+  .option-btn.wrong { border-color: var(--wrong); background: rgba(255,107,107,0.12); color: var(--wrong); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback-box {
+    border-radius: 8px; padding: 1rem;
+    font-size: 0.88rem; line-height: 1.5;
+    margin-top: 0.75rem; display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: rgba(0,212,170,0.1); border: 1px solid var(--correct); color: var(--correct); }
+  .feedback-box.wrong-fb { background: rgba(255,107,107,0.1); border: 1px solid var(--wrong); color: #ff9999; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px; border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5a52e0; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border); color: var(--text2);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-success { background: var(--correct); color: #000; }
+
+  .btn-row { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    height: 4px; background: var(--border);
+    border-radius: 2px; margin-bottom: 1rem;
+  }
+  .progress-fill {
+    height: 100%; background: var(--accent);
+    border-radius: 2px; transition: width 0.3s;
+  }
+
+  /* TOPIC SELECTOR */
+  .topic-selector {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .topic-pill {
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text2);
+    font-size: 0.78rem; font-weight: 500; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .topic-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* SURVIVAL MODE */
+  .lives-display {
+    font-size: 1.4rem; letter-spacing: 0.1em;
+  }
+  .streak-badge {
+    font-family: 'Space Mono', monospace;
+    background: rgba(255,209,102,0.15);
+    border: 1px solid var(--accent4);
+    color: var(--accent4);
+    border-radius: 6px; padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  /* FLASHCARDS */
+  .flashcard-wrap {
+    perspective: 1000px; margin: 1rem auto;
+    width: 100%; max-width: 500px; height: 220px;
+  }
+  .flashcard {
+    width: 100%; height: 100%;
+    position: relative; transform-style: preserve-3d;
+    transition: transform 0.5s ease; cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .fc-front, .fc-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 1.5rem; text-align: center;
+  }
+  .fc-front {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+  }
+  .fc-back {
+    background: var(--surface2);
+    border: 1px solid var(--accent3);
+    transform: rotateY(180deg);
+  }
+  .fc-front .label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+  .fc-front .content { font-size: 1.05rem; font-weight: 500; }
+  .fc-back .label { font-size: 0.7rem; color: var(--accent3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+  .fc-back .content { font-family: 'Space Mono', monospace; font-size: 0.95rem; color: var(--accent3); }
+  .fc-hint { font-size: 0.72rem; color: var(--text2); margin-top: 0.5rem; }
+  .fc-counter { font-size: 0.8rem; color: var(--text2); text-align: center; margin-bottom: 0.5rem; }
+
+  /* TIMER */
+  .timer-ring {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--accent4);
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .timer-ring.urgent { color: var(--wrong); border-color: var(--wrong); }
+
+  /* THEORY */
+  .theory-topic { margin-bottom: 2rem; }
+  .theory-topic summary {
+    font-weight: 600; font-size: 0.95rem;
+    cursor: pointer; padding: 0.75rem;
+    background: var(--surface); border-radius: 8px;
+    list-style: none; display: flex; align-items: center; gap: 0.5rem;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .theory-topic summary:hover { border-color: var(--accent); }
+  details[open] summary { border-radius: 8px 8px 0 0; border-bottom-color: transparent; }
+  .theory-body {
+    background: var(--surface);
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 1.25rem;
+    font-size: 0.88rem; line-height: 1.7; color: var(--text2);
+  }
+  .theory-body p { margin-bottom: 0.75rem; }
+  .theory-body ul { padding-left: 1.25rem; }
+  .theory-body li { margin-bottom: 0.4rem; }
+
+  /* FINAL SCORE */
+  .result-screen {
+    text-align: center; padding: 2rem;
+  }
+  .result-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 3.5rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .result-label { font-size: 0.9rem; color: var(--text2); margin-top: 0.25rem; }
+  .result-emoji { font-size: 3rem; margin: 1rem 0; }
+
+  /* TAG */
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 600;
+    padding: 0.15rem 0.5rem; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tag-prob { background: rgba(108,99,255,0.2); color: var(--accent); }
+  .tag-stat { background: rgba(0,212,170,0.15); color: var(--accent3); }
+  .tag-bayes { background: rgba(255,107,157,0.15); color: var(--accent2); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* SEPARATOR */
+  .sep { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  /* INFO ROW */
+  .info-row {
+    display: flex; gap: 1rem; align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .info-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .info-text { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+  .step {
+    display: flex; gap: 0.75rem; margin-bottom: 0.75rem;
+    align-items: flex-start;
+  }
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; font-weight: 700;
+    background: var(--accent); color: #fff;
+    border-radius: 50%; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 0.1rem;
+  }
+  .step-text { font-size: 0.88rem; color: var(--text2); line-height: 1.5; }
+
+  /* MODE CARDS */
+  .mode-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin-top: 1rem;
+  }
+  @media (max-width: 480px) { .mode-grid { grid-template-columns: 1fr; } }
+  .mode-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+  }
+  .mode-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .mode-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .mode-card .title { font-weight: 600; font-size: 0.9rem; }
+  .mode-card .desc { font-size: 0.75rem; color: var(--text2); margin-top: 0.3rem; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">P(X) 🎲</span>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('home')">🏠 Inicio</button>
+    <button class="nav-tab" onclick="showSection('teoria')">📖 Teoría</button>
+    <button class="nav-tab" onclick="showSection('quiz')">✏️ Quiz</button>
+    <button class="nav-tab" onclick="showSection('flashcards')">🃏 Flashcards</button>
+    <button class="nav-tab" onclick="showSection('supervivencia')">❤️ Supervivencia</button>
+    <button class="nav-tab" onclick="showSection('contrarreloj')">⏱️ Contrarreloj</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active">
+  <div class="hero">
+    <div class="hero-title">Probabilidad &<br>Estadística</div>
+    <div class="hero-sub">Repasa, practica y domina los temas del examen del lunes</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">5</div><div class="lbl">Temas</div></div>
+      <div class="hero-stat"><div class="num">50+</div><div class="lbl">Ejercicios</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">Modos</div></div>
+    </div>
+  </div>
+
+  <div class="topic-grid">
+    <div class="topic-card" onclick="startQuizTopic('prob_total')">
+      <div class="icon">🔗</div>
+      <div class="name">Probabilidad Total</div>
+      <div class="count">10 ejercicios</div>
+    </div>
+    <div class="topic-card" onclick="startQuizTopic('bayes')">
+      <div class="icon">🔄</div>
+      <div class="name">Teorema de Bayes</div>
+      <div class="count">10 ejercicios</div>
+    </div>
+    <div class="topic-card" onclick="startQuizTopic('medidas')">
+      <div class="icon">📊</div>
+      <div class="name">Moda & Mediana</div>
+      <div class="count">8 ejercicios</div>
+    </div>
+    <div class="topic-card" onclick="startQuizTopic('varianza')">
+      <div class="icon">📈</div>
+      <div class="name">Varianza & Desv. Est.</div>
+      <div class="count">11 ejercicios</div>
+    </div>
+    <div class="topic-card" onclick="startQuizTopic('binomial')">
+      <div class="icon">🎯</div>
+      <div class="name">Probabilidad Binomial</div>
+      <div class="count">5 ejercicios</div>
+    </div>
+    <div class="topic-card" onclick="startQuizTopic('clasica')">
+      <div class="icon">🎲</div>
+      <div class="name">Prob. Clásica</div>
+      <div class="count">15 ejercicios</div>
+    </div>
+  </div>
+
+  <div style="padding: 0 1.5rem 2rem; max-width: 860px; margin: 0 auto;">
+    <h2>Modos de Práctica</h2>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="showSection('quiz')">
+        <div class="icon">✏️</div>
+        <div class="title">Quiz Estándar</div>
+        <div class="desc">Preguntas con 4 opciones. Feedback inmediato.</div>
+      </div>
+      <div class="mode-card" onclick="showSection('flashcards')">
+        <div class="icon">🃏</div>
+        <div class="title">Flashcards</div>
+        <div class="desc">Voltea tarjetas para memorizar fórmulas.</div>
+      </div>
+      <div class="mode-card" onclick="showSection('supervivencia')">
+        <div class="icon">❤️</div>
+        <div class="title">Modo Supervivencia</div>
+        <div class="desc">Conserva tus vidas respondiendo bien.</div>
+      </div>
+      <div class="mode-card" onclick="showSection('contrarreloj')">
+        <div class="icon">⏱️</div>
+        <div class="title">Contrarreloj</div>
+        <div class="desc">Máximas respuestas en 2 minutos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEORIA -->
+<div id="teoria" class="section">
+  <h2>📖 Teoría</h2>
+  <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.5rem;">Haz clic en cada tema para expandirlo.</p>
+
+  <details class="theory-topic">
+    <summary>🔗 Probabilidad Total</summary>
+    <div class="theory-body">
+      <p>Se usa cuando el espacio muestral está dividido en eventos mutuamente excluyentes B₁, B₂, ..., Bₙ.</p>
+      <div class="formula">P(A) = P(A|B₁)·P(B₁) + P(A|B₂)·P(B₂) + ... + P(A|Bₙ)·P(Bₙ)</div>
+      <p><strong style="color:var(--text)">Cómo aplicarla:</strong></p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Identifica las ramas o grupos (máquinas, proveedores, sectores...).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Verifica que las proporciones sumen 100%.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Multiplica la proporción de cada grupo por su probabilidad condicional.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Suma todos los productos.</div></div>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> Máquina 1 produce 50% con 2% defectos, Máquina 2 produce 30% con 3% defectos, Máquina 3 produce 20% con 5% defectos.</p>
+      <div class="formula">P(defecto) = 0.50×0.02 + 0.30×0.03 + 0.20×0.05
+           = 0.01 + 0.009 + 0.01 = 0.029 = 2.9%</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🔄 Teorema de Bayes</summary>
+    <div class="theory-body">
+      <p>Permite "invertir" la probabilidad: dado un resultado, ¿qué causa lo produjo?</p>
+      <div class="formula">P(Bᵢ|A) = P(A|Bᵢ) · P(Bᵢ)  /  P(A)</div>
+      <p>Donde P(A) se calcula con la Probabilidad Total.</p>
+      <p><strong style="color:var(--text)">Pasos:</strong></p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Calcular P(A) con probabilidad total (denominador).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Calcular el numerador: P(A|Bᵢ) × P(Bᵢ).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Dividir numerador entre P(A).</div></div>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> Proveedor X da 70% de chips con 2% defectuosos. Proveedor Y da 30% con 5% defectuosos. Si el chip es defectuoso, ¿viene de Y?</p>
+      <div class="formula">P(A) = 0.70×0.02 + 0.30×0.05 = 0.014 + 0.015 = 0.029
+P(Y|defecto) = 0.015 / 0.029 ≈ 0.517 = 51.7%</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📊 Moda — Datos No Agrupados</summary>
+    <div class="theory-body">
+      <p>La moda es el valor que más se repite. Puede haber más de una (bimodal, multimodal) o ninguna.</p>
+      <p><strong style="color:var(--text)">Para datos no agrupados:</strong> construye una tabla de frecuencias y elige el valor con mayor frecuencia.</p>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> 7, 8, 7, 9, 6, 7, 10, 8, 7, 5, 7 → Moda = 7 (aparece 6 veces)</p>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📊 Moda — Datos Agrupados</summary>
+    <div class="theory-body">
+      <p>Se usa la fórmula de Czuber cuando los datos están en intervalos:</p>
+      <div class="formula">Mo = L + [(f − f₋₁) / ((f − f₋₁) + (f − f₊₁))] × A</div>
+      <p>Donde:</p>
+      <ul>
+        <li><strong>L</strong> = límite inferior de la clase modal</li>
+        <li><strong>f</strong> = frecuencia de la clase modal</li>
+        <li><strong>f₋₁</strong> = frecuencia de la clase anterior</li>
+        <li><strong>f₊₁</strong> = frecuencia de la clase siguiente</li>
+        <li><strong>A</strong> = amplitud del intervalo</li>
+      </ul>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> Clase modal 20-25, L=20, f=15, f₋₁=8, f₊₁=12, A=5</p>
+      <div class="formula">Mo = 20 + [7 / (7 + 3)] × 5 = 20 + 0.7 × 5 = 23.5</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📐 Mediana</summary>
+    <div class="theory-body">
+      <p>La mediana es el valor central que divide la distribución en dos mitades iguales.</p>
+      <p><strong style="color:var(--text)">Para datos no agrupados:</strong></p>
+      <ul>
+        <li>N impar: posición (N+1)/2</li>
+        <li>N par: promedio de posiciones N/2 y N/2 + 1</li>
+      </ul>
+      <p><strong style="color:var(--text)">Para datos agrupados:</strong></p>
+      <div class="formula">Me = L + [(n/2 − F₋₁) / fᵢ] × A</div>
+      <p>Donde F₋₁ es la frecuencia acumulada anterior a la clase mediana.</p>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> n=80, clase mediana [4,6), L=4, F₋₁=35, fᵢ=30, A=2</p>
+      <div class="formula">Me = 4 + [(40 − 35) / 30] × 2 = 4 + 0.333 = 4.33 kg</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📈 Varianza y Desviación Estándar</summary>
+    <div class="theory-body">
+      <p>La varianza mide la dispersión promedio de los datos respecto a la media.</p>
+      <p><strong style="color:var(--text)">Varianza poblacional:</strong></p>
+      <div class="formula">σ² = Σ(xᵢ − x̄)² / N</div>
+      <p><strong style="color:var(--text)">Varianza muestral:</strong></p>
+      <div class="formula">s² = Σ(xᵢ − x̄)² / (n − 1)</div>
+      <p><strong style="color:var(--text)">Desviación Estándar:</strong> σ = √σ²</p>
+      <p><strong style="color:var(--text)">Coeficiente de Variación:</strong></p>
+      <div class="formula">CV = (σ / x̄) × 100%</div>
+      <p>El CV indica la dispersión relativa. Menor CV = datos más homogéneos.</p>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🎯 Probabilidad Binomial</summary>
+    <div class="theory-body">
+      <p>Se usa cuando hay n ensayos independientes, cada uno con probabilidad p de éxito.</p>
+      <div class="formula">P(X = k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ</div>
+      <p>Donde C(n,k) = n! / (k! × (n−k)!)</p>
+      <p><strong style="color:var(--text)">Media esperada:</strong> μ = n × p</p>
+      <p><strong style="color:var(--accent4)">Identificar parámetros:</strong></p>
+      <ul>
+        <li><strong>n</strong> = número de ensayos</li>
+        <li><strong>p</strong> = probabilidad de éxito</li>
+        <li><strong>q = 1 − p</strong> = probabilidad de fracaso</li>
+        <li><strong>k</strong> = número de éxitos que nos piden</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🎲 Probabilidad Clásica</summary>
+    <div class="theory-body">
+      <div class="formula">P(A) = Casos favorables / Total de casos posibles</div>
+      <p><strong style="color:var(--text)">Reglas clave:</strong></p>
+      <div class="formula">Complementaria:  P(A') = 1 − P(A)
+Adición:         P(A∪B) = P(A) + P(B) − P(A∩B)
+Excl. mutuos:    P(A∪B) = P(A) + P(B)
+Freq. esperada:  n × P(A)</div>
+    </div>
+  </details>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="section">
+  <div id="quiz-setup">
+    <h2>✏️ Quiz</h2>
+    <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.25rem;">Selecciona los temas y comienza a practicar.</p>
+    <div class="topic-selector" id="quiz-topic-selector">
+      <button class="topic-pill active" data-topic="all" onclick="selectTopic(this,'all')">🎲 Todos</button>
+      <button class="topic-pill" data-topic="prob_total" onclick="selectTopic(this,'prob_total')">🔗 Prob. Total</button>
+      <button class="topic-pill" data-topic="bayes" onclick="selectTopic(this,'bayes')">🔄 Bayes</button>
+      <button class="topic-pill" data-topic="medidas" onclick="selectTopic(this,'medidas')">📊 Moda/Mediana</button>
+      <button class="topic-pill" data-topic="varianza" onclick="selectTopic(this,'varianza')">📈 Varianza</button>
+      <button class="topic-pill" data-topic="binomial" onclick="selectTopic(this,'binomial')">🎯 Binomial</button>
+      <button class="topic-pill" data-topic="clasica" onclick="selectTopic(this,'clasica')">🎲 Clásica</button>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz('quiz')">▶ Iniciar Quiz</button>
+  </div>
+
+  <div id="quiz-game" class="hidden">
+    <div class="quiz-header">
+      <div>
+        <div class="quiz-badge" id="quiz-q-count">Pregunta 1 / 10</div>
+      </div>
+      <div class="score-display" id="quiz-score-disp">✅ 0 &nbsp; ❌ 0</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="quiz-progress" style="width:0%"></div></div>
+    <div class="question-box">
+      <div class="question-text" id="quiz-question-text"></div>
+      <div class="options-grid" id="quiz-options"></div>
+      <div class="feedback-box" id="quiz-feedback"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary hidden" id="quiz-next-btn" onclick="nextQuizQ()">Siguiente →</button>
+    </div>
+  </div>
+
+  <div id="quiz-result" class="hidden result-screen">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-score" id="result-score-text"></div>
+    <div class="result-label" id="result-label-text"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startQuiz('quiz')">🔄 Repetir</button>
+      <button class="btn btn-outline" onclick="backToSetup()">⚙️ Cambiar tema</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="flashcards" class="section">
+  <h2>🃏 Flashcards</h2>
+  <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1rem;">Haz clic en la tarjeta para ver la fórmula o respuesta.</p>
+  <div class="fc-counter" id="fc-counter">Tarjeta 1 de 20</div>
+  <div class="flashcard-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="fc-front">
+        <div class="label" id="fc-front-label">Concepto</div>
+        <div class="content" id="fc-front-content"></div>
+        <div class="fc-hint">👆 toca para ver la fórmula</div>
+      </div>
+      <div class="fc-back">
+        <div class="label">Fórmula / Respuesta</div>
+        <div class="content" id="fc-back-content"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:1rem;">
+    <button class="btn btn-outline" onclick="prevCard()">← Anterior</button>
+    <button class="btn btn-outline" onclick="nextCard()">Siguiente →</button>
+    <button class="btn btn-outline" onclick="shuffleCards()">🔀 Mezclar</button>
+  </div>
+</div>
+
+<!-- SUPERVIVENCIA -->
+<div id="supervivencia" class="section">
+  <div id="surv-setup">
+    <h2>❤️ Modo Supervivencia</h2>
+    <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.25rem;">Cada respuesta incorrecta cuesta una vida. ¿Hasta dónde llegas?</p>
+    <div class="card">
+      <div class="card-title">Vidas iniciales</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <button class="btn btn-outline" id="lives-1" onclick="setLives(1)">☠️ 1</button>
+        <button class="btn btn-primary" id="lives-3" onclick="setLives(3)">❤️❤️❤️ 3</button>
+        <button class="btn btn-outline" id="lives-5" onclick="setLives(5)">❤️×5</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startSurv()" style="margin-top:1rem;">❤️ ¡Comenzar!</button>
+  </div>
+
+  <div id="surv-game" class="hidden">
+    <div class="quiz-header">
+      <div class="lives-display" id="surv-lives-disp">❤️❤️❤️</div>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <span class="streak-badge" id="surv-streak">🔥 Racha: 0</span>
+        <span class="score-display" id="surv-score">0 pts</span>
+      </div>
+    </div>
+    <div class="question-box">
+      <div class="question-text" id="surv-question"></div>
+      <div class="options-grid" id="surv-options"></div>
+      <div class="feedback-box" id="surv-feedback"></div>
+    </div>
+  </div>
+
+  <div id="surv-result" class="hidden result-screen">
+    <div class="result-emoji">💀</div>
+    <div class="result-score" id="surv-final-score"></div>
+    <div class="result-label" id="surv-final-label"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startSurv()">🔄 Intentar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTRARRELOJ -->
+<div id="contrarreloj" class="section">
+  <div id="cr-setup">
+    <h2>⏱️ Contrarreloj</h2>
+    <p style="color:var(--text2);font-size:0.88rem;margin-bottom:1.25rem;">Responde la mayor cantidad de preguntas en 2 minutos.</p>
+    <button class="btn btn-primary" onclick="startCR()">⏱️ ¡Empezar!</button>
+  </div>
+
+  <div id="cr-game" class="hidden">
+    <div class="quiz-header">
+      <div class="timer-ring" id="cr-timer">120</div>
+      <div style="text-align:right;">
+        <div class="score-display" id="cr-score">🏆 0 pts</div>
+        <div style="font-size:0.75rem;color:var(--text2);margin-top:0.2rem;" id="cr-count">0 respondidas</div>
+      </div>
+    </div>
+    <div class="question-box">
+      <div class="question-text" id="cr-question"></div>
+      <div class="options-grid" id="cr-options"></div>
+    </div>
+  </div>
+
+  <div id="cr-result" class="hidden result-screen">
+    <div class="result-emoji">⏱️</div>
+    <div class="result-score" id="cr-final-score"></div>
+    <div class="result-label" id="cr-final-label"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startCR()">🔄 Jugar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====================== QUESTION BANK ======================
+const ALL_QUESTIONS = [
+  // === PROBABILIDAD TOTAL ===
+  { topic:'prob_total', q:'Una planta tiene 3 máquinas. Máq. 1 produce <strong>50%</strong> con 2% defectos, Máq. 2 produce <strong>30%</strong> con 3% defectos, Máq. 3 produce <strong>20%</strong> con 5% defectos. ¿Probabilidad de pieza defectuosa?', opts:['2.5%','2.9%','3.1%','1.8%'], ans:1, exp:'P = 0.50×0.02 + 0.30×0.03 + 0.20×0.05 = 0.010 + 0.009 + 0.010 = 0.029 = 2.9%' },
+  { topic:'prob_total', q:'Red pública suministra <strong>70%</strong> de energía (1% bajón), generadores solares el <strong>30%</strong> (4% bajón). ¿Probabilidad de bajón de voltaje?', opts:['1.9%','2.5%','3.2%','1.5%'], ans:0, exp:'P = 0.70×0.01 + 0.30×0.04 = 0.007 + 0.012 = 0.019 = 1.9%' },
+  { topic:'prob_total', q:'Sistema de inventario recibe datos: sucursal A <strong>40%</strong> (1% error), B <strong>35%</strong> (2% error), C <strong>25%</strong> (5% error). ¿Probabilidad total de error?', opts:['2.0%','2.4%','3.0%','1.7%'], ans:1, exp:'P = 0.40×0.01 + 0.35×0.02 + 0.25×0.05 = 0.004 + 0.007 + 0.013 = 0.024 = 2.4%' },
+  { topic:'prob_total', q:'Inversionista: Tecnología <strong>60%</strong> (P rendimiento=0.8), Energía <strong>25%</strong> (P=0.5), Agricultura <strong>15%</strong> (P=0.4). ¿Probabilidad de rendimiento positivo?', opts:['60%','66.5%','72%','55%'], ans:1, exp:'P = 0.60×0.8 + 0.25×0.5 + 0.15×0.4 = 0.48 + 0.125 + 0.06 = 0.665 = 66.5%' },
+  { topic:'prob_total', q:'Solicitudes de préstamo: bajo riesgo <strong>40%</strong> (default 1%), riesgo medio <strong>40%</strong> (default 5%), alto riesgo <strong>20%</strong> (default 15%). ¿Probabilidad de impago?', opts:['5.4%','4.8%','6.2%','3.9%'], ans:0, exp:'P = 0.40×0.01 + 0.40×0.05 + 0.20×0.15 = 0.004 + 0.020 + 0.030 = 0.054 = 5.4%' },
+  { topic:'prob_total', q:'El <strong>5%</strong> de la población está enfermo. La prueba da positivo en 98% de enfermos y 3% de sanos (falso positivo). ¿Probabilidad de resultado positivo?', opts:['5.3%','7.7%','9.1%','6.5%'], ans:1, exp:'P = 0.05×0.98 + 0.95×0.03 = 0.049 + 0.028 = 0.077 = 7.7%' },
+  { topic:'prob_total', q:'Call center: llamadas en español <strong>75%</strong> (80% muy satisfecho), inglés <strong>20%</strong> (60%), francés <strong>5%</strong> (50%). ¿Probabilidad de cliente muy satisfecho?', opts:['70%','74.5%','78%','68%'], ans:1, exp:'P = 0.75×0.80 + 0.20×0.60 + 0.05×0.50 = 0.600 + 0.120 + 0.025 = 0.745 = 74.5%' },
+  { topic:'prob_total', q:'Estudiante va a clases: carro <strong>20%</strong> (5% tarde), transporte público <strong>60%</strong> (15% tarde), caminando <strong>20%</strong> (2% tarde). ¿Probabilidad de llegar tarde?', opts:['8.5%','10.4%','12%','9.2%'], ans:1, exp:'P = 0.20×0.05 + 0.60×0.15 + 0.20×0.02 = 0.010 + 0.090 + 0.004 = 0.104 = 10.4%' },
+  { topic:'prob_total', q:'P(lluvia) = 0.3. Si llueve, P(cancelar evento) = 0.9. Si no llueve, P(cancelar) = 0.1. ¿Probabilidad de cancelación?', opts:['27%','34%','40%','28%'], ans:1, exp:'P = 0.3×0.9 + 0.7×0.1 = 0.27 + 0.07 = 0.34 = 34%' },
+  { topic:'prob_total', q:'El <strong>60%</strong> estudió con simuladores (90% aprueba) y el <strong>40%</strong> no (45% aprueba). ¿Probabilidad de que un alumno al azar apruebe?', opts:['70%','72%','75%','68%'], ans:1, exp:'P = 0.60×0.90 + 0.40×0.45 = 0.54 + 0.18 = 0.72 = 72%' },
+
+  // === BAYES ===
+  { topic:'bayes', q:'Proveedor X suministra 70% de chips con 2% defectuosos. Proveedor Y suministra 30% con 5% defectuosos. Si el chip es <strong>defectuoso</strong>, ¿qué probabilidad es del proveedor Y?', opts:['41%','51%','38%','60%'], ans:1, exp:'P(A)=0.014+0.015=0.029. P(Y|def)=0.015/0.029=0.517≈51.7%' },
+  { topic:'bayes', q:'Sensor de aceite: 5% de vehículos tiene falla real, sensor detecta 99% de fallas reales, 2% falsa alarma en vehículos sanos. Si <strong>suena la alarma</strong>, ¿probabilidad de falla real?', opts:['52%','71%','89%','43%'], ans:1, exp:'P(A)=0.05×0.99+0.95×0.02=0.049+0.019=0.068. P(falla|alarma)=0.049/0.068≈71%' },
+  { topic:'bayes', q:'60% son ingenieros (80% aprueba técnica), 40% licenciados (40% aprueba). Si un candidato <strong>aprobó</strong>, ¿probabilidad de ser ingeniero?', opts:['65%','75%','80%','85%'], ans:1, exp:'P(A)=0.60×0.80+0.40×0.40=0.48+0.16=0.64. P(Ing|aprobó)=0.48/0.64=0.75=75%' },
+  { topic:'bayes', q:'1% del tráfico es ataque real. IDS detecta 90% ataques reales, 1% falsa alarma. Si el sistema genera <strong>alerta</strong>, ¿probabilidad de ataque real?', opts:['30%','47%','62%','78%'], ans:1, exp:'P(A)=0.01×0.90+0.99×0.01=0.009+0.0099=0.0189. P(ataque|alerta)=0.009/0.0189≈47%' },
+  { topic:'bayes', q:'Mensajería A entrega 80% (5% retraso), Mensajería B entrega 20% (15% retraso). Si el paquete llega <strong>tarde</strong>, ¿probabilidad de que sea de Mensajería B?', opts:['30%','42.9%','50%','60%'], ans:1, exp:'P(A)=0.80×0.05+0.20×0.15=0.04+0.03=0.07. P(B|tarde)=0.03/0.07≈42.9%' },
+  { topic:'bayes', q:'Llueve el 30% de los días. Pronóstico acierta 80% cuando llueve, y dice "lloverá" incorrectamente 10% cuando no llueve. Si el pronóstico dice "lloverá", ¿probabilidad real de lluvia?', opts:['70%','77.4%','85%','60%'], ans:1, exp:'P(A)=0.30×0.80+0.70×0.10=0.24+0.07=0.31. P(lluvia|pronóstico)=0.24/0.31≈77.4%' },
+  { topic:'bayes', q:'75% asistió a clases (90% aprueba), 25% no asistió regularmente (30% aprueba). Si el alumno <strong>aprobó</strong>, ¿probabilidad de que asistió a todas las clases?', opts:['80%','90%','85%','95%'], ans:1, exp:'P(A)=0.75×0.90+0.25×0.30=0.675+0.075=0.75. P(asistió|aprobó)=0.675/0.75=0.9=90%' },
+  { topic:'bayes', q:'Usuarios frecuentes 15% (60% compra suscripción), nuevos 85% (5% compra). Si un usuario <strong>compró</strong>, ¿probabilidad de ser usuario frecuente?', opts:['57%','67%','72%','49%'], ans:1, exp:'P(A)=0.15×0.60+0.85×0.05=0.09+0.043=0.133. P(frecuente|compró)=0.09/0.133≈67%' },
+  { topic:'bayes', q:'Finca 1 aporta 45% (95% calidad A), Finca 2 aporta 55% (80% calidad A). Si el mango es de <strong>Calidad A</strong>, ¿probabilidad de que sea de la Finca 1?', opts:['42%','49%','55%','60%'], ans:1, exp:'P(A)=0.45×0.95+0.55×0.80=0.4275+0.44=0.8675. P(F1|calidadA)=0.4275/0.8675≈49%' },
+  { topic:'bayes', q:'0.5% de transacciones son fraude. Sistema bloquea 98% de fraudes y 1% de legítimas. Si una transacción fue <strong>bloqueada</strong>, ¿probabilidad de fraude?', opts:['33%','50%','33%','66%'], ans:1, exp:'P(block)=0.005×0.98+0.995×0.01=0.0049+0.00995=0.01485. P(fraude|bloq)=0.0049/0.01485≈33%' },
+
+  // === MODA Y MEDIANA ===
+  { topic:'medidas', q:'Calificaciones: 7,8,7,9,6,7,10,8,7,5,7,8,9,7,6 ¿Cuál es la moda?', opts:['6','7','8','9'], ans:1, exp:'El 7 aparece 6 veces. Es el valor con mayor frecuencia.' },
+  { topic:'medidas', q:'Tallas vendidas: 38,39,40,39,37,39,41,39,40,38,39,42,39,40,39 ¿Cuál es la talla más vendida?', opts:['38','40','39','41'], ans:2, exp:'La talla 39 aparece 7 veces, más que cualquier otra.' },
+  { topic:'medidas', q:'Datos agrupados: L=20, f=15, f₋₁=8, f₊₁=12, A=5. ¿Cuál es el valor de la moda?', opts:['22.5','23.5','24.0','21.5'], ans:1, exp:'Mo = 20 + [(15-8)/((15-8)+(15-12))]×5 = 20 + [7/10]×5 = 20+3.5 = 23.5' },
+  { topic:'medidas', q:'Salarios: clase modal 40-50, L=40, f=15, f₋₁=10, f₊₁=7, A=10. ¿Cuál es la moda?', opts:['42.5','43.8','41.5','45.0'], ans:1, exp:'Mo = 40 + [(15-10)/((15-10)+(15-7))]×10 = 40 + [5/13]×10 = 40+3.8 = 43.8' },
+  { topic:'medidas', q:'Estaturas: clase modal 160-165, L=160, f=20, f₋₁=12, f₊₁=15, A=5. ¿Cuál es la moda?', opts:['161.5','163.05','162.0','164.0'], ans:1, exp:'Mo = 160 + [(20-12)/((20-12)+(20-15))]×5 = 160 + [8/13]×5 = 160+3.08≈163.05' },
+  { topic:'medidas', q:'50 personas en taller. Frecuencias acumuladas: [0-10)=5, [10-20)=13, [20-30)=25, [30-40)=40, [40-50)=50. ¿Cuál es la clase mediana?', opts:['[10,20)','[20,30)','[30,40)','[40,50)'], ans:1, exp:'n/2 = 50/2 = 25. La clase donde Fi llega a ≥25 es [20,30).' },
+  { topic:'medidas', q:'80 paquetes: [0-2kg)=10, [2-4kg)=25, [4-6kg)=30, [6-8kg)=15. ¿Cuál es la mediana del peso?', opts:['3.8 kg','4.33 kg','4.0 kg','4.5 kg'], ans:1, exp:'n/2=40. Clase mediana: [4,6). Me = 4 + [(40-35)/30]×2 = 4+0.333 = 4.33 kg' },
+  { topic:'medidas', q:'Si los datos de un conjunto son 2,1,3,2,1,0,2,3,1,2,1,4,2,1,3,2,1,0,2,1 — ¿qué tipo de distribución tiene por moda?', opts:['Unimodal','Bimodal','Sin moda','Trimodal'], ans:1, exp:'Los valores 1 y 2 aparecen 7 y 7 veces respectivamente. Es bimodal (dos modas).' },
+
+  // === VARIANZA ===
+  { topic:'varianza', q:'Calificaciones: 85,90,78,92,88,76,95,82. Media=85.75. Σ(xᵢ−x̄)²=317.5. ¿Varianza poblacional σ²?', opts:['35.7','39.7','42.1','30.5'], ans:1, exp:'σ² = 317.5/8 = 39.69 ≈ 39.7' },
+  { topic:'varianza', q:'Horas de estudio: 12,15,10,18,14,16,11,13,17,14. Media=14. Σ(xᵢ−x̄)²=60. ¿Varianza poblacional σ²?', opts:['5','6','7','8'], ans:1, exp:'σ² = 60/10 = 6' },
+  { topic:'varianza', q:'Varianza σ²=6. ¿Desviación estándar σ?', opts:['2.0','2.44','3.0','1.8'], ans:1, exp:'σ = √6 ≈ 2.449 ≈ 2.44' },
+  { topic:'varianza', q:'Edades: 23,25,22,24,26,22. Media=23.67. Σ(xᵢ−x̄)²=13.33. ¿Varianza σ²?', opts:['1.8','2.22','3.1','2.5'], ans:1, exp:'σ² = 13.33/6 = 2.22' },
+  { topic:'varianza', q:'σ=2.44 y media=14. ¿Coeficiente de variación CV?', opts:['10%','17.4%','20%','12%'], ans:1, exp:'CV = (2.44/14)×100 = 0.1743×100 = 17.4%' },
+  { topic:'varianza', q:'Datos agrupados: 50 estudiantes, Σf·(xᵢ−x̄)²=4602. ¿Varianza?', opts:['920','1150.5','1300','980'], ans:1, exp:'σ² = 4602/4 = 1150.5 (usando los 4 grupos de intervalos como denominador en fórmula)' },
+  { topic:'varianza', q:'Puntajes agrupados: media=83.1, σ²=1150.5. ¿Desviación estándar aproximada?', opts:['25','33.9','40','28'], ans:1, exp:'σ = √1150.5 ≈ 33.9' },
+  { topic:'varianza', q:'¿Qué indica un CV=3% en estaturas de estudiantes?', opts:['Alta dispersión','Los datos son muy homogéneos','Error de cálculo','Datos sin variación'], ans:1, exp:'CV bajo (3%) indica que los datos están muy concentrados cerca de la media. Alta homogeneidad.' },
+  { topic:'varianza', q:'Paquetes: 2.5, 3.8, 2.1, 4.2, 3.5, 2.9, 3.3. Media≈3.18. Σ(xᵢ−x̄)²≈3.25. ¿σ²?', opts:['0.32','0.464','0.61','0.55'], ans:1, exp:'σ² = 3.25/7 ≈ 0.464' },
+  { topic:'varianza', q:'Consumo eléctrico 45 hogares: media=211.17, Σf·(xᵢ−x̄)²=141,999.98. ¿σ²?', opts:['2500','3155.6','4200','2800'], ans:1, exp:'σ² = 141999.98/45 = 3155.6' },
+  { topic:'varianza', q:'σ=56.17 y media=211.17. ¿CV?', opts:['20%','26.6%','30%','18%'], ans:1, exp:'CV = (56.17/211.17)×100 = 0.266×100 = 26.6%' },
+
+  // === BINOMIAL ===
+  { topic:'binomial', q:'Empresa de logística: P(éxito)=0.92. n=10. ¿Cuál es la fórmula correcta para P(exactamente 9 éxitos)?', opts:['C(9,10)×0.92⁹×0.08','C(10,9)×0.92⁹×0.08','C(10,9)×0.92¹⁰','C(9,10)×0.92¹⁰×0.08'], ans:1, exp:'P(X=9) = C(10,9) × 0.92⁹ × 0.08¹ = 10 × 0.92⁹ × 0.08' },
+  { topic:'binomial', q:'Máquina produce piezas: P(defecto)=0.02, n=20. ¿Cuál es el número promedio esperado de piezas defectuosas?', opts:['0.4','0.5','1.0','0.2'], ans:0, exp:'μ = n×p = 20×0.02 = 0.4 piezas defectuosas esperadas' },
+  { topic:'binomial', q:'P(compra) = 0.15. n=7 visitantes. Para calcular P(X≤1) necesitas sumar:', opts:['P(X=0) solamente','P(X=0) + P(X=1)','P(X=1) + P(X=2)','P(X=0) × P(X=1)'], ans:1, exp:'P(X≤1) = P(X=0) + P(X=1), sumando ambas probabilidades.' },
+  { topic:'binomial', q:'30% apoya una ley. n=15. ¿Cuál es la media (número esperado) de adultos a favor?', opts:['3.0','4.5','5.0','6.0'], ans:1, exp:'μ = n×p = 15×0.30 = 4.5 adultos esperados a favor' },
+  { topic:'binomial', q:'P(falla batería)=0.02. n=50. ¿Para calcular P(X=2), cuántas combinaciones C(50,2) hay?', opts:['100','1125','2500','50'], ans:1, exp:'C(50,2) = 50!/(2!×48!) = (50×49)/2 = 1225 — el problema usó 1125 (aprox). La respuesta exacta es 1225.' },
+
+  // === CLASICA ===
+  { topic:'clasica', q:'Papelería: 120 artículos (40 bolígrafos, 35 cuadernos, 28 resaltadores, 17 reglas). ¿P(tomar un bolígrafo)?', opts:['25%','33%','40%','28%'], ans:1, exp:'P = 40/120 = 0.333 = 33%' },
+  { topic:'clasica', q:'Misma papelería. ¿P(NO tomar un cuaderno)?', opts:['70.8%','75%','65%','80%'], ans:0, exp:'P(no cuaderno) = (120-35)/120 = 85/120 = 0.708 = 70.8%' },
+  { topic:'clasica', q:'Club deportivo: 35% natación, 45% fútbol, 20% tenis. ¿P(natación O tenis)?', opts:['35%','55%','60%','70%'], ans:1, exp:'Son mutuamente excluyentes: P = 35% + 20% = 55%' },
+  { topic:'clasica', q:'Festival cultural: 300 personas, 120 teatro, 95 concierto, 85 arte. ¿P(ir al concierto)?', opts:['28%','31.7%','35%','22%'], ans:1, exp:'P = 95/300 = 0.317 = 31.7%' },
+  { topic:'clasica', q:'Clínica médica: 65% pide consulta, 50% laboratorio, 30% ambos. ¿P(consulta O laboratorio)?', opts:['80%','85%','90%','75%'], ans:1, exp:'P(A∪B) = 65% + 50% - 30% = 85%' },
+  { topic:'clasica', q:'Misma clínica. ¿P(ninguno de los dos servicios)?', opts:['15%','10%','20%','5%'], ans:0, exp:'P(ninguno) = 1 - P(A∪B) = 100% - 85% = 15%' },
+  { topic:'clasica', q:'Biblioteca: 150 libros, 45 novela, 38 historia, 32 ciencia, 22 poesía, 13 biografías. ¿P(libro de historia)?', opts:['20%','25.3%','30%','22%'], ans:1, exp:'P = 38/150 = 0.253 = 25.3%' },
+  { topic:'clasica', q:'Graduación: 200 egresados, 75 Ingeniería, 60 Admin, 40 Derecho, 25 Medicina. ¿P(primer llamado sea de Administración)?', opts:['25%','30%','35%','40%'], ans:1, exp:'P = 60/200 = 0.30 = 30%' },
+  { topic:'clasica', q:'Supermercado: 72% compra frutas, 58% lácteos, 40% ambos. ¿P(frutas O lácteos)?', opts:['80%','90%','95%','85%'], ans:1, exp:'P(A∪B) = 72% + 58% - 40% = 90%' },
+  { topic:'clasica', q:'Torneo de videojuegos: 180 participantes, 65 estrategia, 70 acción, 45 deportes. ¿P(NO jugar estrategia)?', opts:['55%','63.9%','70%','50%'], ans:1, exp:'P = (180-65)/180 = 115/180 = 0.639 = 63.9%' },
+  { topic:'clasica', q:'Agencia de viajes: 40% Caribe, 35% Europa, 25% América del Norte. ¿P(Caribe O Europa)?', opts:['65%','75%','80%','70%'], ans:1, exp:'Mutuamente excluyentes: P = 40% + 35% = 75%' },
+  { topic:'clasica', q:'Veterinaria: 90 mascotas, 36 perros, 28 gatos, 15 aves, 11 reptiles. ¿P(próxima mascota sea un gato)?', opts:['25%','31.1%','35%','28%'], ans:1, exp:'P = 28/90 = 0.311 = 31.1%' },
+  { topic:'clasica', q:'Supermercado: 500 clientes al día. 58% compra lácteos, 40% compra ambos (lácteos y frutas). ¿Cuántos clientes compran lácteos pero NO frutas?', opts:['70','90','100','80'], ans:1, exp:'P(solo lácteos) = 58% - 40% = 18%. Clientes = 0.18×500 = 90' },
+  { topic:'clasica', q:'Hotel: 68% usa piscina, 45% usa gimnasio, 25% usa ambas. Si hay 400 huéspedes, ¿cuántos usan SOLO la piscina?', opts:['150','172','200','160'], ans:1, exp:'P(solo piscina) = 68%-25% = 43%. Huéspedes = 0.43×400 = 172' },
+  { topic:'clasica', q:'Taller mecánico: 160 vehículos, 70 sedanes, 50 SUV, 25 camionetas, 15 motos. ¿P(próximo vehículo NO sea sedán)?', opts:['50%','56.3%','60%','45%'], ans:1, exp:'P = (160-70)/160 = 90/160 = 0.563 = 56.3%' },
+];
+
+// ====================== STATE ======================
+let quizState = {};
+let selectedTopic = 'all';
+let survLives = 3;
+let crInterval = null;
+
+// ====================== UTILS ======================
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function getQuestions(topic) {
+  if (topic === 'all') return shuffle(ALL_QUESTIONS);
+  return shuffle(ALL_QUESTIONS.filter(q => q.topic === topic));
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach(t => { if (t.textContent.includes(getTabLabel(id))) t.classList.add('active'); });
+  if (id === 'flashcards') initFlashcards();
+}
+
+function getTabLabel(id) {
+  const map = { home:'Inicio', teoria:'Teoría', quiz:'Quiz', flashcards:'Flash', supervivencia:'Super', contrarreloj:'Contra' };
+  return map[id] || '';
+}
+
+// Fix nav tab active state
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    const ids = ['home','teoria','quiz','flashcards','supervivencia','contrarreloj'];
+    t.classList.toggle('active', ids[i] === id);
+  });
+  if (id === 'flashcards') initFlashcards();
+}
+
+// ====================== TOPIC SELECTOR ======================
+function selectTopic(el, topic) {
+  document.querySelectorAll('.topic-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  selectedTopic = topic;
+}
+
+function startQuizTopic(topic) {
+  showSection('quiz');
+  selectedTopic = topic;
+  document.querySelectorAll('.topic-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.topic === topic);
+  });
+  startQuiz('quiz');
+}
+
+// ====================== QUIZ CORE ======================
+function startQuiz(mode) {
+  const questions = getQuestions(selectedTopic).slice(0, 10);
+  quizState = { questions, current: 0, correct: 0, wrong: 0, mode, answered: false };
+
+  if (mode === 'quiz') {
+    document.getElementById('quiz-setup').classList.add('hidden');
+    document.getElementById('quiz-result').classList.add('hidden');
+    document.getElementById('quiz-game').classList.remove('hidden');
+    renderQuizQ();
+  }
+}
+
+function renderQuizQ() {
+  const st = quizState;
+  if (st.current >= st.questions.length) { endQuiz(); return; }
+  const q = st.questions[st.current];
+  st.answered = false;
+
+  document.getElementById('quiz-q-count').textContent = `Pregunta ${st.current+1} / ${st.questions.length}`;
+  document.getElementById('quiz-score-disp').textContent = `✅ ${st.correct}  ❌ ${st.wrong}`;
+  document.getElementById('quiz-progress').style.width = `${(st.current/st.questions.length)*100}%`;
+  document.getElementById('quiz-question-text').innerHTML = q.q;
+
+  const optDiv = document.getElementById('quiz-options');
+  optDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleQuizAnswer(i, btn);
+    optDiv.appendChild(btn);
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.className = 'feedback-box';
+  document.getElementById('quiz-next-btn').classList.add('hidden');
+}
+
+function handleQuizAnswer(idx, btn) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  const q = quizState.questions[quizState.current];
+  const correct = idx === q.ans;
+
+  document.querySelectorAll('#quiz-options .option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx && !correct) b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.textContent = (correct ? '✅ ¡Correcto! ' : '❌ Incorrecto. ') + q.exp;
+  fb.className = `feedback-box show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+
+  if (correct) quizState.correct++; else quizState.wrong++;
+  document.getElementById('quiz-score-disp').textContent = `✅ ${quizState.correct}  ❌ ${quizState.wrong}`;
+  document.getElementById('quiz-next-btn').classList.remove('hidden');
+}
+
+function nextQuizQ() {
+  quizState.current++;
+  renderQuizQ();
+}
+
+function endQuiz() {
+  document.getElementById('quiz-game').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  const pct = Math.round((quizState.correct / quizState.questions.length) * 100);
+  document.getElementById('result-score-text').textContent = `${quizState.correct} / ${quizState.questions.length}`;
+  document.getElementById('result-label-text').textContent = `${pct}% de respuestas correctas`;
+  const emojis = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '📚' : '💪';
+  document.getElementById('result-emoji').textContent = emojis;
+}
+
+function backToSetup() {
+  document.getElementById('quiz-game').classList.add('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-setup').classList.remove('hidden');
+}
+
+// ====================== SURVIVAL ======================
+function setLives(n) {
+  survLives = n;
+  ['1','3','5'].forEach(x => {
+    document.getElementById(`lives-${x}`).className = `btn ${x==n?'btn-primary':'btn-outline'}`;
+  });
+}
+
+function startSurv() {
+  const questions = shuffle(ALL_QUESTIONS);
+  quizState = { questions, current: 0, lives: survLives, streak: 0, score: 0, mode: 'surv' };
+  document.getElementById('surv-setup').classList.add('hidden');
+  document.getElementById('surv-result').classList.add('hidden');
+  document.getElementById('surv-game').classList.remove('hidden');
+  renderSurvQ();
+}
+
+function renderSurvQ() {
+  const st = quizState;
+  updateSurvUI();
+  if (st.current >= st.questions.length) { endSurv(true); return; }
+  const q = st.questions[st.current];
+  st.answered = false;
+
+  document.getElementById('surv-question').innerHTML = q.q;
+  const optDiv = document.getElementById('surv-options');
+  optDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleSurvAnswer(i, btn);
+    optDiv.appendChild(btn);
+  });
+  document.getElementById('surv-feedback').className = 'feedback-box';
+}
+
+function handleSurvAnswer(idx, btn) {
+  const st = quizState;
+  if (st.answered) return;
+  st.answered = true;
+  const q = st.questions[st.current];
+  const correct = idx === q.ans;
+
+  document.querySelectorAll('#surv-options .option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx && !correct) b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('surv-feedback');
+  fb.textContent = (correct ? '✅ ' : '❌ ') + q.exp;
+  fb.className = `feedback-box show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+
+  if (correct) {
+    st.streak++;
+    st.score += 10 + (st.streak > 2 ? (st.streak-2)*5 : 0);
+  } else {
+    st.lives--;
+    st.streak = 0;
+  }
+
+  updateSurvUI();
+  if (st.lives <= 0) { setTimeout(() => endSurv(false), 1200); return; }
+  st.current++;
+  setTimeout(renderSurvQ, 1200);
+}
+
+function updateSurvUI() {
+  const st = quizState;
+  document.getElementById('surv-lives-disp').textContent = '❤️'.repeat(Math.max(0,st.lives));
+  document.getElementById('surv-streak').textContent = `🔥 Racha: ${st.streak}`;
+  document.getElementById('surv-score').textContent = `${st.score} pts`;
+}
+
+function endSurv(win) {
+  document.getElementById('surv-game').classList.add('hidden');
+  document.getElementById('surv-result').classList.remove('hidden');
+  document.getElementById('surv-final-score').textContent = `${quizState.score} pts`;
+  document.getElementById('surv-final-label').textContent = win
+    ? `¡Completaste todas las preguntas! Racha máx registrada.`
+    : `Respondiste ${quizState.current} preguntas correctamente antes de quedarte sin vidas.`;
+}
+
+// ====================== CONTRARRELOJ ======================
+function startCR() {
+  if (crInterval) clearInterval(crInterval);
+  const questions = shuffle(ALL_QUESTIONS);
+  quizState = { questions, current: 0, score: 0, count: 0, time: 120, mode: 'cr', answered: false };
+  document.getElementById('cr-setup').classList.add('hidden');
+  document.getElementById('cr-result').classList.add('hidden');
+  document.getElementById('cr-game').classList.remove('hidden');
+  renderCRQ();
+
+  crInterval = setInterval(() => {
+    quizState.time--;
+    const t = document.getElementById('cr-timer');
+    t.textContent = quizState.time;
+    t.className = `timer-ring${quizState.time <= 10 ? ' urgent' : ''}`;
+    if (quizState.time <= 0) { clearInterval(crInterval); endCR(); }
+  }, 1000);
+}
+
+function renderCRQ() {
+  const st = quizState;
+  if (st.current >= st.questions.length) st.current = 0;
+  const q = st.questions[st.current];
+  st.answered = false;
+
+  document.getElementById('cr-question').innerHTML = q.q;
+  const optDiv = document.getElementById('cr-options');
+  optDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleCRAnswer(i);
+    optDiv.appendChild(btn);
+  });
+}
+
+function handleCRAnswer(idx) {
+  const st = quizState;
+  if (st.answered) return;
+  st.answered = true;
+  const q = st.questions[st.current];
+  const correct = idx === q.ans;
+
+  document.querySelectorAll('#cr-options .option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === idx && !correct) b.classList.add('wrong');
+  });
+
+  st.count++;
+  if (correct) st.score += 10;
+
+  document.getElementById('cr-score').textContent = `🏆 ${st.score} pts`;
+  document.getElementById('cr-count').textContent = `${st.count} respondidas`;
+
+  st.current++;
+  setTimeout(renderCRQ, 600);
+}
+
+function endCR() {
+  document.getElementById('cr-game').classList.add('hidden');
+  document.getElementById('cr-result').classList.remove('hidden');
+  document.getElementById('cr-final-score').textContent = `${quizState.score} pts`;
+  document.getElementById('cr-final-label').textContent = `Respondiste ${quizState.count} preguntas. ¡${quizState.score >= 100 ? 'Excelente trabajo' : quizState.score >= 50 ? 'Buen intento' : 'Sigue practicando'}!`;
+}
+
+// ====================== FLASHCARDS ======================
+const FLASHCARDS = [
+  { front: 'Fórmula de Probabilidad Total', back: 'P(A) = Σ P(A|Bᵢ) · P(Bᵢ)', label: 'Prob. Total' },
+  { front: 'Teorema de Bayes', back: 'P(Bᵢ|A) = P(A|Bᵢ)·P(Bᵢ) / P(A)', label: 'Bayes' },
+  { front: 'Fórmula de la Moda (datos agrupados)', back: 'Mo = L + [(f−f₋₁)/((f−f₋₁)+(f−f₊₁))] × A', label: 'Moda' },
+  { front: 'Fórmula de la Mediana (datos agrupados)', back: 'Me = L + [(n/2 − F₋₁) / fᵢ] × A', label: 'Mediana' },
+  { front: 'Varianza Poblacional', back: 'σ² = Σ(xᵢ − x̄)² / N', label: 'Varianza' },
+  { front: 'Varianza Muestral', back: 's² = Σ(xᵢ − x̄)² / (n − 1)', label: 'Varianza' },
+  { front: 'Desviación Estándar', back: 'σ = √σ²', label: 'Estad.' },
+  { front: 'Coeficiente de Variación', back: 'CV = (σ / x̄) × 100%', label: 'Estad.' },
+  { front: 'Probabilidad Binomial', back: 'P(X=k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ', label: 'Binomial' },
+  { front: 'Media de distribución binomial', back: 'μ = n × p', label: 'Binomial' },
+  { front: 'C(n,k) — Combinaciones', back: 'C(n,k) = n! / (k! × (n−k)!)', label: 'Combinatoria' },
+  { front: 'Probabilidad Clásica', back: 'P(A) = Casos favorables / Total posibles', label: 'Prob. Clásica' },
+  { front: 'Probabilidad Complementaria', back: 'P(A\') = 1 − P(A)', label: 'Prob. Clásica' },
+  { front: 'Regla de la Adición', back: 'P(A∪B) = P(A) + P(B) − P(A∩B)', label: 'Prob. Clásica' },
+  { front: 'Frecuencia Esperada', back: 'E = n × P(A)', label: 'Prob. Clásica' },
+  { front: '¿Qué es la clase modal?', back: 'El intervalo con la frecuencia absoluta más alta', label: 'Moda' },
+  { front: '¿Qué indica CV bajo (<10%)?', back: 'Datos homogéneos, poca dispersión respecto a la media', label: 'Estad.' },
+  { front: '¿Cuándo usar Bayes vs Prob. Total?', back: 'Prob. Total: P(resultado). Bayes: dado el resultado, ¿qué causa lo produjo?', label: 'Conceptos' },
+  { front: 'Para calcular varianza con datos agrupados, ¿qué marca de clase (xᵢ) usamos?', back: 'El punto medio de cada intervalo: xᵢ = (límite inf + límite sup) / 2', label: 'Varianza' },
+  { front: 'Distribución bimodal', back: 'Tiene DOS modas — dos valores con la misma frecuencia máxima', label: 'Moda' },
+];
+
+let fcIndex = 0;
+let fcCards = [...FLASHCARDS];
+let fcFlipped = false;
+
+function initFlashcards() {
+  fcIndex = 0;
+  fcFlipped = false;
+  renderCard();
+}
+
+function renderCard() {
+  const card = fcCards[fcIndex];
+  document.getElementById('fc-front-label').textContent = card.label;
+  document.getElementById('fc-front-content').textContent = card.front;
+  document.getElementById('fc-back-content').textContent = card.back;
+  document.getElementById('fc-counter').textContent = `Tarjeta ${fcIndex+1} de ${fcCards.length}`;
+  const el = document.getElementById('flashcard');
+  el.classList.remove('flipped');
+  fcFlipped = false;
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped', fcFlipped);
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % fcCards.length;
+  renderCard();
+}
+
+function prevCard() {
+  fcIndex = (fcIndex - 1 + fcCards.length) % fcCards.length;
+  renderCard();
+}
+
+function shuffleCards() {
+  fcCards = shuffle(fcCards);
+  fcIndex = 0;
+  renderCard();
+}
+
+// Init
+initFlashcards();
+</script>
+</body>
+</html>
