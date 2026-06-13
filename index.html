@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilidad & Estadística</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  :root {
+    --bg:#0d0f1a; --surface:#151829; --surface2:#1e2235; --border:#2a2f4a;
+    --accent:#6c63ff; --accent2:#ff6b9d; --accent3:#00d4aa; --accent4:#ffd166;
+    --text:#e8eaf6; --text2:#9ba3c9; --correct:#00d4aa; --wrong:#ff6b6b; --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+  nav{position:sticky;top:0;z-index:100;background:rgba(13,15,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 1.2rem;display:flex;align-items:center;height:56px;}
+  .nav-logo{font-family:'Space Mono',monospace;font-weight:700;font-size:.95rem;color:var(--accent);margin-right:1.5rem;white-space:nowrap;}
+  .nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;flex:1;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{padding:0 .85rem;height:56px;border:none;background:none;color:var(--text2);font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;display:flex;align-items:center;gap:.35rem;}
+  .nav-tab:hover{color:var(--text);}
+  .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+  .section{display:none;padding:1.5rem;max-width:880px;margin:0 auto;}
+  .section.active{display:block;}
+
+  /* HERO */
+  #home{max-width:100%;padding:0;}
+  .hero{min-height:240px;background:linear-gradient(135deg,#0d0f1a 0%,#1a1040 50%,#0d1a2a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 300px at 50% 50%,rgba(108,99,255,.15) 0%,transparent 70%);}
+  .hero-title{font-family:'Space Mono',monospace;font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;background:linear-gradient(135deg,#fff 0%,#6c63ff 50%,#00d4aa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;position:relative;z-index:1;}
+  .hero-sub{margin-top:.6rem;color:var(--text2);font-size:.9rem;position:relative;z-index:1;}
+  .hero-stats{display:flex;gap:2rem;margin-top:1.5rem;position:relative;z-index:1;flex-wrap:wrap;justify-content:center;}
+  .hero-stat .num{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--accent);}
+  .hero-stat .lbl{font-size:.72rem;color:var(--text2);}
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.85rem;padding:1.5rem;}
+  .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;cursor:pointer;transition:all .2s;text-align:center;}
+  .topic-card:hover{border-color:var(--accent);background:var(--surface2);transform:translateY(-2px);}
+  .topic-card .icon{font-size:1.8rem;margin-bottom:.4rem;}
+  .topic-card .name{font-weight:600;font-size:.85rem;}
+  .topic-card .count{font-size:.72rem;color:var(--text2);margin-top:.15rem;}
+  .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:.85rem;}
+  @media(max-width:480px){.mode-grid{grid-template-columns:1fr;}}
+  .mode-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;cursor:pointer;transition:all .2s;text-align:center;}
+  .mode-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .mode-card .icon{font-size:1.8rem;margin-bottom:.4rem;}
+  .mode-card .title{font-weight:600;font-size:.85rem;}
+  .mode-card .desc{font-size:.72rem;color:var(--text2);margin-top:.25rem;}
+
+  /* CARDS */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:.85rem;}
+  .card-title{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.6rem;}
+  h2{font-size:1.2rem;margin-bottom:.85rem;}
+  h3{font-size:.95rem;margin-bottom:.4rem;}
+
+  /* FORMULA */
+  .formula{background:var(--bg);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.65rem .9rem;font-family:'Space Mono',monospace;font-size:.82rem;color:var(--accent3);margin:.65rem 0;white-space:pre-wrap;}
+
+  /* QUIZ */
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;flex-wrap:wrap;gap:.5rem;}
+  .quiz-badge{font-family:'Space Mono',monospace;font-size:.72rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:.25rem .6rem;color:var(--text2);}
+  .score-display{font-family:'Space Mono',monospace;font-size:.82rem;color:var(--accent3);}
+  .question-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:.85rem;}
+  .question-text{font-size:.92rem;line-height:1.65;margin-bottom:1.1rem;}
+  .question-text strong{color:var(--accent4);}
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+  @media(max-width:500px){.options-grid{grid-template-columns:1fr;}}
+  .option-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.83rem;cursor:pointer;text-align:left;transition:all .15s;line-height:1.4;}
+  .option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,.1);}
+  .option-btn.correct{border-color:var(--correct);background:rgba(0,212,170,.12);color:var(--correct);}
+  .option-btn.wrong{border-color:var(--wrong);background:rgba(255,107,107,.12);color:var(--wrong);}
+  .option-btn:disabled{cursor:default;}
+
+  /* HINT BUTTON */
+  .hint-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.4rem .85rem;border-radius:8px;border:1px solid var(--accent4);background:rgba(255,209,102,.06);color:var(--accent4);font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:.75rem;}
+  .hint-btn:hover{background:rgba(255,209,102,.14);}
+  .hint-box{background:rgba(255,209,102,.06);border:1px solid rgba(255,209,102,.3);border-radius:8px;padding:1rem;margin-bottom:.75rem;display:none;font-size:.83rem;line-height:1.65;}
+  .hint-box.show{display:block;}
+  .hint-box .hint-title{font-weight:700;color:var(--accent4);margin-bottom:.5rem;font-size:.8rem;}
+  .hint-step{display:flex;gap:.6rem;margin-bottom:.4rem;align-items:flex-start;}
+  .hint-num{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;background:var(--accent4);color:#000;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .hint-text{color:var(--text);font-size:.82rem;line-height:1.5;}
+  .hint-calc{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--accent3);background:var(--bg);padding:.3rem .6rem;border-radius:4px;margin-top:.25rem;display:block;}
+
+  /* TABLE in hints/questions */
+  .mini-table{width:100%;border-collapse:collapse;margin:.5rem 0;font-size:.78rem;}
+  .mini-table th{background:rgba(108,99,255,.2);color:var(--accent);padding:.35rem .6rem;text-align:left;border:1px solid var(--border);}
+  .mini-table td{padding:.3rem .6rem;border:1px solid var(--border);color:var(--text2);}
+  .mini-table tr.highlight td{background:rgba(255,209,102,.08);color:var(--accent4);font-weight:600;}
+
+  .feedback-box{border-radius:8px;padding:.9rem;font-size:.85rem;line-height:1.5;margin-top:.6rem;display:none;}
+  .feedback-box.show{display:block;}
+  .feedback-box.correct-fb{background:rgba(0,212,170,.1);border:1px solid var(--correct);color:var(--correct);}
+  .feedback-box.wrong-fb{background:rgba(255,107,107,.1);border:1px solid var(--wrong);color:#ff9999;}
+
+  /* BUTTONS */
+  .btn{display:inline-flex;align-items:center;gap:.35rem;padding:.55rem 1.1rem;border-radius:8px;border:none;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:#5a52e0;}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2);}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-row{display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;}
+
+  .progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:.85rem;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+
+  .topic-selector{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+  .topic-pill{padding:.3rem .8rem;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:.75rem;font-weight:500;cursor:pointer;transition:all .15s;}
+  .topic-pill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+  /* SURVIVAL */
+  .lives-display{font-size:1.3rem;letter-spacing:.1em;}
+  .streak-badge{font-family:'Space Mono',monospace;background:rgba(255,209,102,.15);border:1px solid var(--accent4);color:var(--accent4);border-radius:6px;padding:.2rem .55rem;font-size:.72rem;}
+
+  /* FLASHCARDS */
+  .flashcard-wrap{perspective:1000px;margin:.85rem auto;width:100%;max-width:540px;height:280px;}
+  .flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s ease;cursor:pointer;}
+  .flashcard.flipped{transform:rotateY(180deg);}
+  .fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.25rem;text-align:center;overflow:hidden;}
+  .fc-front{background:var(--surface);border:1px solid var(--accent);}
+  .fc-back{background:var(--surface2);border:1px solid var(--accent3);transform:rotateY(180deg);overflow-y:auto;justify-content:flex-start;padding-top:1rem;}
+  .fc-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;}
+  .fc-front .fc-label{color:var(--accent);}
+  .fc-back .fc-label{color:var(--accent3);}
+  .fc-front .fc-content{font-size:1rem;font-weight:600;line-height:1.4;}
+  .fc-back .fc-formula{font-family:'Space Mono',monospace;font-size:.88rem;color:var(--accent3);background:var(--bg);border-radius:6px;padding:.5rem .75rem;margin:.4rem 0;width:100%;}
+  .fc-back .fc-vars{width:100%;margin-top:.4rem;}
+  .fc-var-row{display:flex;gap:.5rem;align-items:flex-start;margin-bottom:.35rem;text-align:left;}
+  .fc-var-name{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;color:var(--accent4);min-width:38px;flex-shrink:0;margin-top:1px;}
+  .fc-var-desc{font-size:.75rem;color:var(--text2);line-height:1.4;}
+  .fc-hint{font-size:.68rem;color:var(--text2);margin-top:.5rem;}
+  .fc-counter{font-size:.78rem;color:var(--text2);text-align:center;margin-bottom:.4rem;}
+
+  /* TIMER */
+  .timer-ring{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--accent4);background:var(--surface2);border:2px solid var(--border);border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;}
+  .timer-ring.urgent{color:var(--wrong);border-color:var(--wrong);}
+
+  /* THEORY */
+  .theory-topic{margin-bottom:.75rem;}
+  .theory-topic summary{font-weight:600;font-size:.9rem;cursor:pointer;padding:.7rem .9rem;background:var(--surface);border-radius:8px;list-style:none;display:flex;align-items:center;gap:.45rem;border:1px solid var(--border);transition:border-color .2s;}
+  .theory-topic summary:hover{border-color:var(--accent);}
+  details[open] summary{border-radius:8px 8px 0 0;border-bottom-color:transparent;}
+  .theory-body{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;padding:1.1rem;font-size:.85rem;line-height:1.7;color:var(--text2);}
+  .theory-body p{margin-bottom:.65rem;}
+  .theory-body ul{padding-left:1.1rem;}
+  .theory-body li{margin-bottom:.35rem;}
+  .step{display:flex;gap:.65rem;margin-bottom:.6rem;align-items:flex-start;}
+  .step-num{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+  .step-text{font-size:.85rem;color:var(--text2);line-height:1.5;}
+
+  /* RESULT */
+  .result-screen{text-align:center;padding:2rem 1rem;}
+  .result-score{font-family:'Space Mono',monospace;font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .result-label{font-size:.88rem;color:var(--text2);margin-top:.25rem;}
+  .result-emoji{font-size:2.8rem;margin:1rem 0;}
+
+  .hidden{display:none!important;}
+  ::-webkit-scrollbar{width:5px;height:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">P(X) 🎲</span>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('home')">🏠 Inicio</button>
+    <button class="nav-tab" onclick="showSection('teoria')">📖 Teoría</button>
+    <button class="nav-tab" onclick="showSection('quiz')">✏️ Quiz</button>
+    <button class="nav-tab" onclick="showSection('flashcards')">🃏 Flashcards</button>
+    <button class="nav-tab" onclick="showSection('supervivencia')">❤️ Supervivencia</button>
+    <button class="nav-tab" onclick="showSection('contrarreloj')">⏱️ Contrarreloj</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active">
+  <div class="hero">
+    <div class="hero-title">Probabilidad &<br>Estadística</div>
+    <div class="hero-sub">Repasa, practica y domina los temas del examen</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">6</div><div class="lbl">Temas</div></div>
+      <div class="hero-stat"><div class="num">50+</div><div class="lbl">Preguntas</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">Modos</div></div>
+    </div>
+  </div>
+  <div class="topic-grid">
+    <div class="topic-card" onclick="startQuizTopic('prob_total')"><div class="icon">🔗</div><div class="name">Probabilidad Total</div><div class="count">10 ejercicios</div></div>
+    <div class="topic-card" onclick="startQuizTopic('bayes')"><div class="icon">🔄</div><div class="name">Teorema de Bayes</div><div class="count">10 ejercicios</div></div>
+    <div class="topic-card" onclick="startQuizTopic('medidas')"><div class="icon">📊</div><div class="name">Moda & Mediana</div><div class="count">8 ejercicios</div></div>
+    <div class="topic-card" onclick="startQuizTopic('varianza')"><div class="icon">📈</div><div class="name">Varianza & Desv. Est.</div><div class="count">11 ejercicios</div></div>
+    <div class="topic-card" onclick="startQuizTopic('binomial')"><div class="icon">🎯</div><div class="name">Prob. Binomial</div><div class="count">5 ejercicios</div></div>
+    <div class="topic-card" onclick="startQuizTopic('clasica')"><div class="icon">🎲</div><div class="name">Prob. Clásica</div><div class="count">15 ejercicios</div></div>
+  </div>
+  <div style="padding:0 1.5rem 2rem;max-width:880px;margin:0 auto;">
+    <h2>Modos de Práctica</h2>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="showSection('quiz')"><div class="icon">✏️</div><div class="title">Quiz con Pistas</div><div class="desc">Preguntas con botón de pista y feedback.</div></div>
+      <div class="mode-card" onclick="showSection('flashcards')"><div class="icon">🃏</div><div class="title">Flashcards</div><div class="desc">Fórmulas explicadas variable por variable.</div></div>
+      <div class="mode-card" onclick="showSection('supervivencia')"><div class="icon">❤️</div><div class="title">Supervivencia</div><div class="desc">Conserva tus vidas respondiendo bien.</div></div>
+      <div class="mode-card" onclick="showSection('contrarreloj')"><div class="icon">⏱️</div><div class="title">Contrarreloj</div><div class="desc">Máximas respuestas en 2 minutos.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TEORIA -->
+<div id="teoria" class="section">
+  <h2>📖 Teoría</h2>
+  <p style="color:var(--text2);font-size:.85rem;margin-bottom:1.2rem;">Haz clic en cada tema para expandirlo.</p>
+
+  <details class="theory-topic">
+    <summary>🔗 Probabilidad Total — ¿cuál es la probabilidad de que algo pase?</summary>
+    <div class="theory-body">
+      <p>Imagina que tienes varias fuentes posibles (máquinas, proveedores, medios de transporte...) y quieres saber la probabilidad de que algo ocurra en total, sin importar de qué fuente venga.</p>
+      <div class="formula">P(A) = P(A|B₁)·P(B₁) + P(A|B₂)·P(B₂) + ... + P(A|Bₙ)·P(Bₙ)</div>
+      <p><strong style="color:var(--text)">Cómo aplicarla:</strong></p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Identifica los grupos o "ramas" (máquinas, proveedores, medios de transporte...).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Verifica que sus proporciones sumen 100% (0.50 + 0.30 + 0.20 = 1.00).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Multiplica la proporción de cada grupo por su probabilidad interna.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Suma todos los productos = probabilidad total.</div></div>
+      <p><strong style="color:var(--accent4)">Ejemplo resuelto:</strong></p>
+      <p>Red pública suministra el 70% de energía (1% de bajones), generadores solares el 30% (4% de bajones). ¿Probabilidad de bajón?</p>
+      <div class="formula">Paso 1 — Red pública:    0.70 × 0.01 = 0.007
+Paso 2 — Solares:        0.30 × 0.04 = 0.012
+Paso 3 — Sumar todo:     0.007 + 0.012 = 0.019 = 1.9%</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🔄 Teorema de Bayes — dada la consecuencia, ¿quién fue el responsable?</summary>
+    <div class="theory-body">
+      <p>Bayes responde la pregunta <em>al revés</em>: si ya sé que pasó algo (el chip es defectuoso, el paquete llegó tarde), ¿cuál es la causa más probable?</p>
+      <div class="formula">P(causa | resultado) = P(resultado | causa) × P(causa)
+                              ─────────────────────────────────
+                                         P(resultado total)</div>
+      <p>El denominador (P resultado total) se calcula con Probabilidad Total.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Calcula P(total) multiplicando y sumando todas las ramas.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Del numerador toma solo la rama de la causa que te preguntan.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Divide numerador / total.</div></div>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> Proveedor X da 70% chips con 2% defectos. Proveedor Y da 30% con 5% defectos. Si el chip es defectuoso ¿viene de Y?</p>
+      <div class="formula">P(total defectos) = 0.70×0.02 + 0.30×0.05 = 0.014 + 0.015 = 0.029
+P(Y | defecto)    = 0.015 / 0.029 ≈ 0.517 = 51.7%</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📊 Moda en datos no agrupados — el valor que más se repite</summary>
+    <div class="theory-body">
+      <p>Contar cuántas veces aparece cada valor. El que más veces aparece es la moda. Puede haber <strong style="color:var(--text)">más de una moda</strong> (bimodal) o ninguna.</p>
+      <p><strong style="color:var(--accent4)">Ejemplo:</strong> Calificaciones: 7, 8, 7, 9, 6, 7, 10, 8, 7, 5, 7, 8, 9, 7, 6</p>
+      <table class="mini-table">
+        <tr><th>Valor</th><th>Frecuencia (veces que aparece)</th></tr>
+        <tr><td>5</td><td>1</td></tr>
+        <tr><td>6</td><td>2</td></tr>
+        <tr class="highlight"><td>7</td><td>6 ← más alto = MODA</td></tr>
+        <tr><td>8</td><td>3</td></tr>
+        <tr><td>9</td><td>2</td></tr>
+        <tr><td>10</td><td>1</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📊 Moda en datos agrupados — cuando los datos están en rangos</summary>
+    <div class="theory-body">
+      <p>Cuando los datos vienen en intervalos (ej. edades 20-25), usamos la fórmula de Czuber. Primero identificamos la <strong style="color:var(--text)">clase modal</strong> (el intervalo con más frecuencia), luego aplicamos:</p>
+      <div class="formula">Mo = L + [(f − f₋₁) / ((f − f₋₁) + (f − f₊₁))] × A</div>
+      <p><strong style="color:var(--accent4)">¿Qué es cada cosa? (con ejemplo de edades en concierto)</strong></p>
+      <table class="mini-table">
+        <tr><th>Variable</th><th>Nombre completo</th><th>Cómo identificarla</th><th>Valor del ejemplo</th></tr>
+        <tr><td>L</td><td>Límite inferior de la clase modal</td><td>El número de la izquierda del intervalo con más frecuencia</td><td>20</td></tr>
+        <tr><td>f</td><td>Frecuencia de la clase modal</td><td>El número más alto de la columna frecuencia</td><td>15</td></tr>
+        <tr><td>f₋₁</td><td>Frecuencia ANTERIOR a la clase modal</td><td>La frecuencia del intervalo que está justo arriba</td><td>8</td></tr>
+        <tr><td>f₊₁</td><td>Frecuencia SIGUIENTE a la clase modal</td><td>La frecuencia del intervalo que está justo abajo</td><td>12</td></tr>
+        <tr><td>A</td><td>Amplitud del intervalo</td><td>Límite superior − límite inferior (25 − 20 = 5)</td><td>5</td></tr>
+      </table>
+      <table class="mini-table" style="margin-top:.75rem;">
+        <tr><th>Intervalo de edad</th><th>Frecuencia (f)</th><th>Nota</th></tr>
+        <tr><td>15 – 20</td><td>8</td><td>← esta es f₋₁</td></tr>
+        <tr class="highlight"><td>20 – 25</td><td>15</td><td>← CLASE MODAL (f más alta)</td></tr>
+        <tr><td>25 – 30</td><td>12</td><td>← esta es f₊₁</td></tr>
+        <tr><td>30 – 35</td><td>10</td><td></td></tr>
+        <tr><td>35 – 40</td><td>5</td><td></td></tr>
+      </table>
+      <div class="formula">Mo = 20 + [(15−8) / ((15−8)+(15−12))] × 5
+   = 20 + [7 / (7+3)] × 5
+   = 20 + 0.7 × 5 = 20 + 3.5 = 23.5</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📐 Mediana — el valor del centro</summary>
+    <div class="theory-body">
+      <p>La mediana divide los datos en dos mitades iguales: 50% de los datos están por debajo y 50% por encima.</p>
+      <p><strong style="color:var(--text)">Datos no agrupados:</strong> ordena los datos y busca el del medio.</p>
+      <ul><li>N impar → posición (N+1)/2</li><li>N par → promedio de posiciones N/2 y N/2+1</li></ul>
+      <p style="margin-top:.5rem;"><strong style="color:var(--text)">Datos agrupados (fórmula):</strong></p>
+      <div class="formula">Me = L + [(n/2 − F₋₁) / fᵢ] × A</div>
+      <table class="mini-table">
+        <tr><th>Variable</th><th>Nombre completo</th><th>Cómo identificarla</th></tr>
+        <tr><td>L</td><td>Límite inferior de la clase mediana</td><td>El número izquierdo del intervalo donde cae n/2</td></tr>
+        <tr><td>n/2</td><td>La mitad del total de datos</td><td>Total de datos ÷ 2</td></tr>
+        <tr><td>F₋₁</td><td>Frecuencia acumulada ANTERIOR</td><td>Suma de frecuencias de todos los intervalos anteriores</td></tr>
+        <tr><td>fᵢ</td><td>Frecuencia del intervalo mediana</td><td>La frecuencia propia de ese intervalo</td></tr>
+        <tr><td>A</td><td>Amplitud</td><td>Límite superior − límite inferior</td></tr>
+      </table>
+      <p style="margin-top:.65rem;"><strong style="color:var(--accent4)">¿Cómo encuentro la clase mediana?</strong> Calcula n/2, luego mira la columna de frecuencias acumuladas (Fi) y busca el primer intervalo donde Fi ≥ n/2.</p>
+      <p><strong style="color:var(--accent4)">Ejemplo resuelto:</strong> 80 paquetes pesados.</p>
+      <table class="mini-table">
+        <tr><th>Intervalo (kg)</th><th>Frecuencia (fi)</th><th>Frecuencia acumulada (Fi)</th></tr>
+        <tr><td>[0, 2)</td><td>10</td><td>10</td></tr>
+        <tr><td>[2, 4)</td><td>25</td><td>35</td></tr>
+        <tr class="highlight"><td>[4, 6)</td><td>30</td><td>65 ← aquí Fi supera 40</td></tr>
+        <tr><td>[6, 8)</td><td>15</td><td>80</td></tr>
+      </table>
+      <div class="formula">n/2 = 80/2 = 40 → clase mediana: [4, 6)
+L=4,  F₋₁=35 (acumulada antes del intervalo),  fᵢ=30,  A=2
+Me = 4 + [(40−35)/30] × 2 = 4 + 0.333 = 4.33 kg</div>
+      <p>Esto significa que el 50% de los paquetes pesa menos de 4.33 kg.</p>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>📈 Varianza y Desviación Estándar — ¿qué tan dispersos están los datos?</summary>
+    <div class="theory-body">
+      <p>La varianza mide qué tanto se alejan los datos de su promedio. Si los datos están muy juntos → varianza pequeña. Si están muy separados → varianza grande.</p>
+      <p><strong style="color:var(--text)">Paso a paso para datos no agrupados:</strong></p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Calcula la media: x̄ = (suma de todos los valores) ÷ n</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Para cada valor calcula (xᵢ − x̄)² — réstale la media y eleva al cuadrado</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Suma todos esos cuadrados: Σ(xᵢ − x̄)²</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Divide entre N (poblacional) o n−1 (muestral)</div></div>
+      <div class="formula">σ²  = Σ(xᵢ − x̄)² / N        ← varianza poblacional
+s²  = Σ(xᵢ − x̄)² / (n−1)   ← varianza muestral
+σ   = √σ²                    ← desviación estándar
+CV  = (σ / x̄) × 100%        ← coeficiente de variación</div>
+      <p><strong style="color:var(--accent4)">Ejemplo: horas de estudio 12, 15, 10, 18, 14</strong></p>
+      <table class="mini-table">
+        <tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr>
+        <tr><td>12</td><td>12−14 = −2</td><td>4</td></tr>
+        <tr><td>15</td><td>15−14 = 1</td><td>1</td></tr>
+        <tr><td>10</td><td>10−14 = −4</td><td>16</td></tr>
+        <tr><td>18</td><td>18−14 = 4</td><td>16</td></tr>
+        <tr><td>14</td><td>14−14 = 0</td><td>0</td></tr>
+        <tr class="highlight"><td>Σ = 69 → media 14</td><td>—</td><td>Σ = 37</td></tr>
+      </table>
+      <div class="formula">σ² = 37/5 = 7.4     σ = √7.4 ≈ 2.72     CV = (2.72/14)×100 = 19.4%</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🎯 Probabilidad Binomial — n intentos, ¿cuántos éxitos?</summary>
+    <div class="theory-body">
+      <p>Usa esta distribución cuando: tienes n intentos, cada intento tiene solo dos resultados posibles (éxito / fracaso), y la probabilidad p es la misma cada vez.</p>
+      <div class="formula">P(X = k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ</div>
+      <table class="mini-table">
+        <tr><th>Símbolo</th><th>Nombre</th><th>Cómo identificarlo en el problema</th></tr>
+        <tr><td>n</td><td>Número de intentos</td><td>"Se hacen 10 envíos", "produce 20 piezas"</td></tr>
+        <tr><td>k</td><td>Éxitos que nos piden</td><td>"exactamente 9", "al menos 2"</td></tr>
+        <tr><td>p</td><td>Probabilidad de éxito</td><td>"probabilidad de entrega exitosa = 0.92"</td></tr>
+        <tr><td>1−p</td><td>Probabilidad de fracaso (q)</td><td>1 − p = 1 − 0.92 = 0.08</td></tr>
+        <tr><td>C(n,k)</td><td>Combinaciones</td><td>n! / (k! × (n−k)!)</td></tr>
+      </table>
+      <p style="margin-top:.6rem;"><strong style="color:var(--text)">Media esperada (cuántos éxitos esperar en promedio):</strong></p>
+      <div class="formula">μ = n × p</div>
+    </div>
+  </details>
+
+  <details class="theory-topic">
+    <summary>🎲 Probabilidad Clásica — contar casos favorables</summary>
+    <div class="theory-body">
+      <div class="formula">P(A) = Casos favorables / Total de casos posibles</div>
+      <table class="mini-table">
+        <tr><th>Fórmula</th><th>Cuándo usarla</th><th>Ejemplo</th></tr>
+        <tr><td>P(A') = 1 − P(A)</td><td>Probabilidad de que NO ocurra A</td><td>P(no cuaderno) = 1 − 35/120</td></tr>
+        <tr><td>P(A∪B) = P(A)+P(B)−P(A∩B)</td><td>A o B (con overlap posible)</td><td>Piscina O gimnasio, donde algunos usan ambas</td></tr>
+        <tr><td>P(A∪B) = P(A)+P(B)</td><td>A o B (mutuamente excluyentes, no se pueden dar juntos)</td><td>Natación O tenis (nadie hace ambas a la vez)</td></tr>
+        <tr><td>E = n × P(A)</td><td>¿Cuántos se esperan en n intentos?</td><td>240 estudiantes × P(resaltador)</td></tr>
+      </table>
+    </div>
+  </details>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="section">
+  <div id="quiz-setup">
+    <h2>✏️ Quiz</h2>
+    <p style="color:var(--text2);font-size:.85rem;margin-bottom:1.1rem;">Selecciona el tema y empieza. Cada pregunta tiene un botón 💡 Pista si te atascas.</p>
+    <div class="topic-selector" id="quiz-topic-selector">
+      <button class="topic-pill active" data-topic="all" onclick="selectTopic(this,'all')">🎲 Todos</button>
+      <button class="topic-pill" data-topic="prob_total" onclick="selectTopic(this,'prob_total')">🔗 Prob. Total</button>
+      <button class="topic-pill" data-topic="bayes" onclick="selectTopic(this,'bayes')">🔄 Bayes</button>
+      <button class="topic-pill" data-topic="medidas" onclick="selectTopic(this,'medidas')">📊 Moda/Mediana</button>
+      <button class="topic-pill" data-topic="varianza" onclick="selectTopic(this,'varianza')">📈 Varianza</button>
+      <button class="topic-pill" data-topic="binomial" onclick="selectTopic(this,'binomial')">🎯 Binomial</button>
+      <button class="topic-pill" data-topic="clasica" onclick="selectTopic(this,'clasica')">🎲 Clásica</button>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz('quiz')">▶ Iniciar Quiz</button>
+  </div>
+
+  <div id="quiz-game" class="hidden">
+    <div class="quiz-header">
+      <div class="quiz-badge" id="quiz-q-count">Pregunta 1 / 10</div>
+      <div class="score-display" id="quiz-score-disp">✅ 0 &nbsp;❌ 0</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="quiz-progress" style="width:0%"></div></div>
+    <div class="question-box">
+      <div class="question-text" id="quiz-question-text"></div>
+      <div id="quiz-table-area"></div>
+      <button class="hint-btn" id="quiz-hint-btn" onclick="toggleHint('quiz')">💡 Mostrar pista</button>
+      <div class="hint-box" id="quiz-hint-box"></div>
+      <div class="options-grid" id="quiz-options"></div>
+      <div class="feedback-box" id="quiz-feedback"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary hidden" id="quiz-next-btn" onclick="nextQuizQ()">Siguiente →</button>
+    </div>
+  </div>
+
+  <div id="quiz-result" class="hidden result-screen">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-score" id="result-score-text"></div>
+    <div class="result-label" id="result-label-text"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startQuiz('quiz')">🔄 Repetir</button>
+      <button class="btn btn-outline" onclick="backToSetup()">⚙️ Cambiar tema</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="flashcards" class="section">
+  <h2>🃏 Flashcards</h2>
+  <p style="color:var(--text2);font-size:.85rem;margin-bottom:.85rem;">Toca la tarjeta para ver la fórmula con cada variable explicada.</p>
+  <div class="fc-counter" id="fc-counter">Tarjeta 1 de 22</div>
+  <div class="flashcard-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="fc-front">
+        <div class="fc-label" id="fc-front-label">Tema</div>
+        <div class="fc-content" id="fc-front-content"></div>
+        <div class="fc-hint">👆 toca para ver la explicación</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-label">Fórmula & Variables</div>
+        <div class="fc-formula" id="fc-formula"></div>
+        <div class="fc-vars" id="fc-vars"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:.85rem;">
+    <button class="btn btn-outline" onclick="prevCard()">← Anterior</button>
+    <button class="btn btn-outline" onclick="nextCard()">Siguiente →</button>
+    <button class="btn btn-outline" onclick="shuffleCards()">🔀 Mezclar</button>
+  </div>
+</div>
+
+<!-- SUPERVIVENCIA -->
+<div id="supervivencia" class="section">
+  <div id="surv-setup">
+    <h2>❤️ Modo Supervivencia</h2>
+    <p style="color:var(--text2);font-size:.85rem;margin-bottom:1.1rem;">Cada respuesta incorrecta cuesta una vida. ¿Hasta dónde llegas?</p>
+    <div class="card">
+      <div class="card-title">Vidas iniciales</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button class="btn btn-outline" id="lives-1" onclick="setLives(1)">☠️ 1 vida</button>
+        <button class="btn btn-primary" id="lives-3" onclick="setLives(3)">❤️❤️❤️ 3 vidas</button>
+        <button class="btn btn-outline" id="lives-5" onclick="setLives(5)">❤️×5 fácil</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startSurv()" style="margin-top:.85rem;">❤️ ¡Comenzar!</button>
+  </div>
+  <div id="surv-game" class="hidden">
+    <div class="quiz-header">
+      <div class="lives-display" id="surv-lives-disp">❤️❤️❤️</div>
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <span class="streak-badge" id="surv-streak">🔥 0</span>
+        <span class="score-display" id="surv-score">0 pts</span>
+      </div>
+    </div>
+    <div class="question-box">
+      <div class="question-text" id="surv-question"></div>
+      <div id="surv-table-area"></div>
+      <button class="hint-btn" id="surv-hint-btn" onclick="toggleHint('surv')">💡 Mostrar pista</button>
+      <div class="hint-box" id="surv-hint-box"></div>
+      <div class="options-grid" id="surv-options"></div>
+      <div class="feedback-box" id="surv-feedback"></div>
+    </div>
+  </div>
+  <div id="surv-result" class="hidden result-screen">
+    <div class="result-emoji">💀</div>
+    <div class="result-score" id="surv-final-score"></div>
+    <div class="result-label" id="surv-final-label"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startSurv()">🔄 Intentar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTRARRELOJ -->
+<div id="contrarreloj" class="section">
+  <div id="cr-setup">
+    <h2>⏱️ Contrarreloj</h2>
+    <p style="color:var(--text2);font-size:.85rem;margin-bottom:1.1rem;">Responde la mayor cantidad de preguntas en 2 minutos. Sin pistas aquí — ¡velocidad!</p>
+    <button class="btn btn-primary" onclick="startCR()">⏱️ ¡Empezar!</button>
+  </div>
+  <div id="cr-game" class="hidden">
+    <div class="quiz-header">
+      <div class="timer-ring" id="cr-timer">120</div>
+      <div style="text-align:right;">
+        <div class="score-display" id="cr-score">🏆 0 pts</div>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:.2rem;" id="cr-count">0 respondidas</div>
+      </div>
+    </div>
+    <div class="question-box">
+      <div class="question-text" id="cr-question"></div>
+      <div class="options-grid" id="cr-options"></div>
+    </div>
+  </div>
+  <div id="cr-result" class="hidden result-screen">
+    <div class="result-emoji">⏱️</div>
+    <div class="result-score" id="cr-final-score"></div>
+    <div class="result-label" id="cr-final-label"></div>
+    <div class="btn-row" style="justify-content:center;margin-top:1.5rem;">
+      <button class="btn btn-primary" onclick="startCR()">🔄 Jugar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────── QUESTION BANK ───────────────────
+// Each question may have: hint (HTML steps), table (HTML string shown above hint btn)
+const ALL_QUESTIONS = [
+
+// ── PROBABILIDAD TOTAL ──
+{topic:'prob_total',
+ q:'Una planta tiene 3 máquinas. Máq.1 produce <strong>50%</strong> con 2% defectos, Máq.2 produce <strong>30%</strong> con 3% defectos, Máq.3 produce <strong>20%</strong> con 5% defectos. ¿Probabilidad de pieza defectuosa?',
+ table:`<table class="mini-table"><tr><th>Máquina</th><th>Proporción</th><th>% Defectos</th></tr><tr><td>Máquina 1</td><td>0.50</td><td>0.02</td></tr><tr><td>Máquina 2</td><td>0.30</td><td>0.03</td></tr><tr><td>Máquina 3</td><td>0.20</td><td>0.05</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver — Probabilidad Total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Multiplica cada proporción por su % de defectos:<span class="hint-calc">Máq.1: 0.50 × 0.02 = 0.010</span><span class="hint-calc">Máq.2: 0.30 × 0.03 = 0.009</span><span class="hint-calc">Máq.3: 0.20 × 0.05 = 0.010</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Suma los tres resultados:<span class="hint-calc">0.010 + 0.009 + 0.010 = 0.029</span></div></div>
+<div class="hint-step"><div class="hint-num">3</div><div class="hint-text">Convierte a porcentaje:<span class="hint-calc">0.029 × 100 = 2.9%</span></div></div>`,
+ opts:['2.5%','2.9%','3.1%','1.8%'],ans:1,exp:'P = 0.50×0.02 + 0.30×0.03 + 0.20×0.05 = 0.010+0.009+0.010 = 0.029 = 2.9%'},
+
+{topic:'prob_total',
+ q:'Red pública suministra <strong>70%</strong> de energía (1% de bajones), generadores solares el <strong>30%</strong> (4% de bajones). ¿Probabilidad de que ocurra un bajón?',
+ table:`<table class="mini-table"><tr><th>Fuente</th><th>Proporción</th><th>P(bajón)</th></tr><tr><td>Red pública</td><td>0.70</td><td>0.01</td></tr><tr><td>Solares</td><td>0.30</td><td>0.04</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver — Probabilidad Total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Multiplica cada fuente por su probabilidad de bajón:<span class="hint-calc">Red pública: 0.70 × 0.01 = 0.007</span><span class="hint-calc">Solares: 0.30 × 0.04 = 0.012</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Suma ambos resultados:<span class="hint-calc">0.007 + 0.012 = 0.019</span></div></div>
+<div class="hint-step"><div class="hint-num">3</div><div class="hint-text">Convierte a porcentaje:<span class="hint-calc">0.019 × 100 = 1.9%</span></div></div>`,
+ opts:['1.9%','2.5%','3.2%','1.5%'],ans:0,exp:'P = 0.70×0.01 + 0.30×0.04 = 0.007 + 0.012 = 0.019 = 1.9%'},
+
+{topic:'prob_total',
+ q:'Sistema de inventario: sucursal A <strong>40%</strong> (1% error), B <strong>35%</strong> (2% error), C <strong>25%</strong> (5% error). ¿Probabilidad total de error?',
+ table:`<table class="mini-table"><tr><th>Sucursal</th><th>Proporción</th><th>P(error)</th></tr><tr><td>A</td><td>0.40</td><td>0.01</td></tr><tr><td>B</td><td>0.35</td><td>0.02</td></tr><tr><td>C</td><td>0.25</td><td>0.05</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Multiplica cada sucursal por su probabilidad de error:<span class="hint-calc">A: 0.40 × 0.01 = 0.004</span><span class="hint-calc">B: 0.35 × 0.02 = 0.007</span><span class="hint-calc">C: 0.25 × 0.05 = 0.013</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Suma: 0.004 + 0.007 + 0.013 = <strong>0.024 = 2.4%</strong></div></div>`,
+ opts:['2.0%','2.4%','3.0%','1.7%'],ans:1,exp:'P = 0.40×0.01 + 0.35×0.02 + 0.25×0.05 = 0.024 = 2.4%'},
+
+{topic:'prob_total',
+ q:'Inversionista: Tecnología <strong>60%</strong> (P rendimiento positivo=0.80), Energía <strong>25%</strong> (P=0.50), Agricultura <strong>15%</strong> (P=0.40). ¿Probabilidad de rendimiento positivo?',
+ table:`<table class="mini-table"><tr><th>Sector</th><th>Proporción</th><th>P(rendimiento +)</th></tr><tr><td>Tecnología</td><td>0.60</td><td>0.80</td></tr><tr><td>Energía</td><td>0.25</td><td>0.50</td></tr><tr><td>Agricultura</td><td>0.15</td><td>0.40</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Tecnología: 0.60 × 0.80 = 0.480</span><span class="hint-calc">Energía: 0.25 × 0.50 = 0.125</span><span class="hint-calc">Agricultura: 0.15 × 0.40 = 0.060</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.480 + 0.125 + 0.060 = <strong>0.665 = 66.5%</strong></div></div>`,
+ opts:['60%','66.5%','72%','55%'],ans:1,exp:'P = 0.60×0.80 + 0.25×0.50 + 0.15×0.40 = 0.665 = 66.5%'},
+
+{topic:'prob_total',
+ q:'Préstamos: bajo riesgo <strong>40%</strong> (impago 1%), riesgo medio <strong>40%</strong> (impago 5%), alto riesgo <strong>20%</strong> (impago 15%). ¿Probabilidad de impago?',
+ table:`<table class="mini-table"><tr><th>Riesgo</th><th>Proporción</th><th>P(impago)</th></tr><tr><td>Bajo</td><td>0.40</td><td>0.01</td></tr><tr><td>Medio</td><td>0.40</td><td>0.05</td></tr><tr><td>Alto</td><td>0.20</td><td>0.15</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Bajo: 0.40 × 0.01 = 0.004</span><span class="hint-calc">Medio: 0.40 × 0.05 = 0.020</span><span class="hint-calc">Alto: 0.20 × 0.15 = 0.030</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.004 + 0.020 + 0.030 = <strong>0.054 = 5.4%</strong></div></div>`,
+ opts:['5.4%','4.8%','6.2%','3.9%'],ans:0,exp:'P = 0.40×0.01 + 0.40×0.05 + 0.20×0.15 = 0.054 = 5.4%'},
+
+{topic:'prob_total',
+ q:'El <strong>5%</strong> de la población está enfermo. La prueba da positivo en el 98% de los enfermos, y falso positivo en el 3% de los sanos. ¿Probabilidad de resultado positivo?',
+ table:`<table class="mini-table"><tr><th>Grupo</th><th>Proporción</th><th>P(positivo)</th></tr><tr><td>Enfermos</td><td>0.05</td><td>0.98</td></tr><tr><td>Sanos</td><td>0.95 (= 1−0.05)</td><td>0.03 (falso positivo)</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Los sanos son el complemento: 1 − 0.05 = 0.95<span class="hint-calc">Enfermos: 0.05 × 0.98 = 0.049</span><span class="hint-calc">Sanos (falso positivo): 0.95 × 0.03 = 0.0285</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.049 + 0.0285 = <strong>0.077 = 7.7%</strong></div></div>`,
+ opts:['5.3%','7.7%','9.1%','6.5%'],ans:1,exp:'P = 0.05×0.98 + 0.95×0.03 = 0.049+0.028 = 0.077 = 7.7%'},
+
+{topic:'prob_total',
+ q:'Call center: llamadas en español <strong>75%</strong> (80% muy satisfecho), inglés <strong>20%</strong> (60%), francés <strong>5%</strong> (50%). ¿Probabilidad de cliente muy satisfecho?',
+ table:`<table class="mini-table"><tr><th>Idioma</th><th>Proporción</th><th>P(satisfecho)</th></tr><tr><td>Español</td><td>0.75</td><td>0.80</td></tr><tr><td>Inglés</td><td>0.20</td><td>0.60</td></tr><tr><td>Francés</td><td>0.05</td><td>0.50</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Español: 0.75 × 0.80 = 0.600</span><span class="hint-calc">Inglés: 0.20 × 0.60 = 0.120</span><span class="hint-calc">Francés: 0.05 × 0.50 = 0.025</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.600 + 0.120 + 0.025 = <strong>0.745 = 74.5%</strong></div></div>`,
+ opts:['70%','74.5%','78%','68%'],ans:1,exp:'P = 0.75×0.80 + 0.20×0.60 + 0.05×0.50 = 0.745 = 74.5%'},
+
+{topic:'prob_total',
+ q:'Estudiante: carro <strong>20%</strong> (5% llega tarde), transporte público <strong>60%</strong> (15% tarde), caminando <strong>20%</strong> (2% tarde). ¿Probabilidad de llegar tarde?',
+ table:`<table class="mini-table"><tr><th>Medio</th><th>Proporción</th><th>P(tarde)</th></tr><tr><td>Carro</td><td>0.20</td><td>0.05</td></tr><tr><td>Transporte público</td><td>0.60</td><td>0.15</td></tr><tr><td>Caminando</td><td>0.20</td><td>0.02</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Carro: 0.20 × 0.05 = 0.010</span><span class="hint-calc">Público: 0.60 × 0.15 = 0.090</span><span class="hint-calc">Caminando: 0.20 × 0.02 = 0.004</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.010 + 0.090 + 0.004 = <strong>0.104 = 10.4%</strong></div></div>`,
+ opts:['8.5%','10.4%','12%','9.2%'],ans:1,exp:'P = 0.20×0.05 + 0.60×0.15 + 0.20×0.02 = 0.104 = 10.4%'},
+
+{topic:'prob_total',
+ q:'P(lluvia) = 0.30. Si llueve → P(cancelar evento) = 0.90. Si no llueve → P(cancelar) = 0.10. ¿Probabilidad de cancelación?',
+ table:`<table class="mini-table"><tr><th>Situación</th><th>Probabilidad</th><th>P(cancelar)</th></tr><tr><td>Llueve</td><td>0.30</td><td>0.90</td></tr><tr><td>No llueve</td><td>0.70 (= 1−0.30)</td><td>0.10</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">P(no llueve) = 1 − 0.30 = 0.70<span class="hint-calc">Con lluvia: 0.30 × 0.90 = 0.270</span><span class="hint-calc">Sin lluvia: 0.70 × 0.10 = 0.070</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.270 + 0.070 = <strong>0.340 = 34%</strong></div></div>`,
+ opts:['27%','34%','40%','28%'],ans:1,exp:'P = 0.30×0.90 + 0.70×0.10 = 0.270+0.070 = 0.340 = 34%'},
+
+{topic:'prob_total',
+ q:'El <strong>60%</strong> estudió con simuladores (90% aprueba) y el <strong>40%</strong> no (45% aprueba). ¿Probabilidad de que un alumno al azar apruebe?',
+ table:`<table class="mini-table"><tr><th>Grupo</th><th>Proporción</th><th>P(aprobar)</th></tr><tr><td>Con simuladores</td><td>0.60</td><td>0.90</td></tr><tr><td>Sin simuladores</td><td>0.40</td><td>0.45</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Con simuladores: 0.60 × 0.90 = 0.540</span><span class="hint-calc">Sin simuladores: 0.40 × 0.45 = 0.180</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">0.540 + 0.180 = <strong>0.720 = 72%</strong></div></div>`,
+ opts:['70%','72%','75%','68%'],ans:1,exp:'P = 0.60×0.90 + 0.40×0.45 = 0.54+0.18 = 0.72 = 72%'},
+
+// ── BAYES ──
+{topic:'bayes',
+ q:'Proveedor X suministra 70% chips (2% defectuosos). Proveedor Y suministra 30% (5% defectuosos). Si el chip es <strong>defectuoso</strong>, ¿de qué proveedor viene?',
+ table:`<table class="mini-table"><tr><th>Proveedor</th><th>Proporción</th><th>P(defecto)</th><th>Producto</th></tr><tr><td>X</td><td>0.70</td><td>0.02</td><td>0.014</td></tr><tr class="highlight"><td>Y</td><td>0.30</td><td>0.05</td><td>0.015 ← numerador</td></tr><tr><td colspan="3"><strong>Total P(defecto)</strong></td><td><strong>0.029</strong></td></tr></table>`,
+ hint:`<div class="hint-title">💡 Bayes: dado el resultado, ¿quién fue?</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Calcula P(total defectos) con Probabilidad Total:<span class="hint-calc">X: 0.70 × 0.02 = 0.014</span><span class="hint-calc">Y: 0.30 × 0.05 = 0.015</span><span class="hint-calc">Total = 0.014 + 0.015 = 0.029</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Aplica Bayes — numerador es solo la parte de Y:<span class="hint-calc">P(Y|defecto) = 0.015 / 0.029 ≈ 0.517 = 51.7%</span></div></div>`,
+ opts:['41%','51%','38%','60%'],ans:1,exp:'P(Y|def) = 0.015/0.029 ≈ 51.7%'},
+
+{topic:'bayes',
+ q:'El 5% de vehículos tiene falla de presión. Sensor detecta falla el 99% de veces (correcto), y alarma en sano el 2% (falsa alarma). Si <strong>suena la alarma</strong>, ¿probabilidad de falla real?',
+ table:`<table class="mini-table"><tr><th>Situación</th><th>Proporción</th><th>P(alarma)</th><th>Producto</th></tr><tr class="highlight"><td>Falla real</td><td>0.05</td><td>0.99</td><td>0.0495 ← numerador</td></tr><tr><td>Sin falla</td><td>0.95</td><td>0.02</td><td>0.0190</td></tr><tr><td colspan="3"><strong>Total P(alarma)</strong></td><td><strong>0.0685</strong></td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver con Bayes</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">P(total alarma):<span class="hint-calc">0.05×0.99 = 0.0495</span><span class="hint-calc">0.95×0.02 = 0.0190</span><span class="hint-calc">Total = 0.0685</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">P(falla real | alarma) = 0.0495 / 0.0685 ≈ <strong>72%</strong></div></div>`,
+ opts:['52%','72%','89%','43%'],ans:1,exp:'P(falla|alarma) = 0.0495/0.0685 ≈ 72%'},
+
+{topic:'bayes',
+ q:'60% son ingenieros (80% supera técnica), 40% licenciados (40% supera). Si un candidato <strong>superó la prueba técnica</strong>, ¿probabilidad de ser ingeniero?',
+ table:`<table class="mini-table"><tr><th>Perfil</th><th>Proporción</th><th>P(aprueba)</th><th>Producto</th></tr><tr class="highlight"><td>Ingeniero</td><td>0.60</td><td>0.80</td><td>0.48 ← numerador</td></tr><tr><td>Licenciado</td><td>0.40</td><td>0.40</td><td>0.16</td></tr><tr><td colspan="3"><strong>Total P(aprueba)</strong></td><td><strong>0.64</strong></td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">P(total aprueba):<span class="hint-calc">0.60×0.80 = 0.48</span><span class="hint-calc">0.40×0.40 = 0.16</span><span class="hint-calc">Total = 0.64</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">P(ingeniero | aprueba) = 0.48 / 0.64 = <strong>0.75 = 75%</strong></div></div>`,
+ opts:['65%','75%','80%','85%'],ans:1,exp:'P(Ing|aprueba) = 0.48/0.64 = 75%'},
+
+{topic:'bayes',
+ q:'Mensajería A entrega 80% pedidos (5% retraso), Mensajería B entrega 20% (15% retraso). Si el paquete llega <strong>tarde</strong>, ¿probabilidad de que sea de la Mensajería B?',
+ table:`<table class="mini-table"><tr><th>Mensajería</th><th>Proporción</th><th>P(tarde)</th><th>Producto</th></tr><tr><td>A</td><td>0.80</td><td>0.05</td><td>0.040</td></tr><tr class="highlight"><td>B</td><td>0.20</td><td>0.15</td><td>0.030 ← numerador</td></tr><tr><td colspan="3"><strong>Total P(tarde)</strong></td><td><strong>0.070</strong></td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">A: 0.80×0.05 = 0.040</span><span class="hint-calc">B: 0.20×0.15 = 0.030</span><span class="hint-calc">Total = 0.070</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">P(B | tarde) = 0.030 / 0.070 = <strong>0.429 = 42.9%</strong></div></div>`,
+ opts:['30%','42.9%','50%','60%'],ans:1,exp:'P(B|tarde) = 0.030/0.070 = 42.9%'},
+
+{topic:'bayes',
+ q:'Llueve 30% de los días. Pronóstico acierta 80% cuando llueve, dice "lloverá" incorrectamente 10% cuando no llueve. Si el pronóstico dice "lloverá", ¿probabilidad real de lluvia?',
+ table:`<table class="mini-table"><tr><th>Situación</th><th>Proporción</th><th>P(pronostica lluvia)</th><th>Producto</th></tr><tr class="highlight"><td>Sí llueve</td><td>0.30</td><td>0.80</td><td>0.240 ← numerador</td></tr><tr><td>No llueve</td><td>0.70</td><td>0.10</td><td>0.070</td></tr><tr><td colspan="3"><strong>Total</strong></td><td><strong>0.310</strong></td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo resolver</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Llueve: 0.30×0.80 = 0.240</span><span class="hint-calc">No llueve: 0.70×0.10 = 0.070</span><span class="hint-calc">Total = 0.310</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">P(lluvia | pronóstico) = 0.240 / 0.310 ≈ <strong>77.4%</strong></div></div>`,
+ opts:['70%','77.4%','85%','60%'],ans:1,exp:'P(lluvia|pronostica) = 0.24/0.31 ≈ 77.4%'},
+
+// ── MODA Y MEDIANA ──
+{topic:'medidas',
+ q:'Calificaciones de 15 estudiantes: 7,8,7,9,6,7,10,8,7,5,7,8,9,7,6. ¿Cuál es la moda?',
+ table:`<table class="mini-table"><tr><th>Calificación</th><th>Frecuencia (veces que aparece)</th></tr><tr><td>5</td><td>1</td></tr><tr><td>6</td><td>2</td></tr><tr class="highlight"><td>7</td><td>6 ← valor más frecuente</td></tr><tr><td>8</td><td>3</td></tr><tr><td>9</td><td>2</td></tr><tr><td>10</td><td>1</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo encontrar la moda</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Cuenta cuántas veces aparece cada valor en la lista.</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">El valor con mayor frecuencia es la moda. El 7 aparece <strong>6 veces</strong> — más que cualquier otro.</div></div>`,
+ opts:['6','7','8','9'],ans:1,exp:'El 7 aparece 6 veces, es el valor más frecuente → Moda = 7'},
+
+{topic:'medidas',
+ q:'Intervalos de edad en un concierto. La clase modal es 20-25 (f=15). L=20, f₋₁=8, f₊₁=12, A=5. ¿Cuál es el valor de la moda?',
+ table:`<table class="mini-table"><tr><th>Intervalo</th><th>Frecuencia (f)</th><th>Rol en la fórmula</th></tr><tr><td>15 – 20</td><td>8</td><td>f₋₁ (clase ANTERIOR)</td></tr><tr class="highlight"><td>20 – 25</td><td>15</td><td>Clase modal (f más alta) → L = 20</td></tr><tr><td>25 – 30</td><td>12</td><td>f₊₁ (clase SIGUIENTE)</td></tr><tr><td>30 – 35</td><td>10</td><td>—</td></tr><tr><td>35 – 40</td><td>5</td><td>—</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Fórmula: Mo = L + [(f−f₋₁) / ((f−f₋₁)+(f−f₊₁))] × A</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Calcula los numeradores y denominadores:<span class="hint-calc">f − f₋₁ = 15 − 8 = 7</span><span class="hint-calc">f − f₊₁ = 15 − 12 = 3</span><span class="hint-calc">Denominador = 7 + 3 = 10</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Aplica la fórmula:<span class="hint-calc">Mo = 20 + (7/10) × 5 = 20 + 3.5 = 23.5</span></div></div>`,
+ opts:['22.5','23.5','24.0','21.5'],ans:1,exp:'Mo = 20 + [7/(7+3)] × 5 = 20 + 3.5 = 23.5'},
+
+{topic:'medidas',
+ q:'Salarios (miles): clase modal 40-50, L=40, f=15, f₋₁=10, f₊₁=7, A=10. ¿Cuál es la moda?',
+ table:`<table class="mini-table"><tr><th>Intervalo</th><th>Frecuencia</th><th>Rol</th></tr><tr><td>30 – 40</td><td>10</td><td>f₋₁ (anterior)</td></tr><tr class="highlight"><td>40 – 50</td><td>15</td><td>Clase modal → L = 40, A = 10</td></tr><tr><td>50 – 60</td><td>7</td><td>f₊₁ (siguiente)</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Mo = L + [(f−f₋₁)/((f−f₋₁)+(f−f₊₁))] × A</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">f − f₋₁ = 15 − 10 = 5</span><span class="hint-calc">f − f₊₁ = 15 − 7 = 8</span><span class="hint-calc">Denominador = 5 + 8 = 13</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text"><span class="hint-calc">Mo = 40 + (5/13) × 10 = 40 + 3.8 = 43.8</span></div></div>`,
+ opts:['42.5','43.8','41.5','45.0'],ans:1,exp:'Mo = 40 + [5/13] × 10 = 40 + 3.8 = 43.8'},
+
+{topic:'medidas',
+ q:'50 personas en taller. Acumuladas: [0-10)=5, [10-20)=13, [20-30)=25, [30-40)=40. ¿Cuál es la clase mediana?',
+ table:`<table class="mini-table"><tr><th>Intervalo</th><th>Frecuencia (fi)</th><th>Frec. acumulada (Fi)</th></tr><tr><td>[0, 10)</td><td>5</td><td>5</td></tr><tr><td>[10, 20)</td><td>8</td><td>13</td></tr><tr class="highlight"><td>[20, 30)</td><td>12</td><td>25 ← aquí Fi llega a 25</td></tr><tr><td>[30, 40)</td><td>15</td><td>40</td></tr><tr><td>[40, 50)</td><td>10</td><td>50</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo encontrar la clase mediana</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Calcula n/2:<span class="hint-calc">n/2 = 50/2 = 25</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Busca el primer intervalo donde la frecuencia acumulada (Fi) llegue a ≥ 25. Ese es [20,30) con Fi=25.</div></div>`,
+ opts:['[10,20)','[20,30)','[30,40)','[40,50)'],ans:1,exp:'n/2=25. El primer intervalo donde Fi≥25 es [20,30).'},
+
+{topic:'medidas',
+ q:'80 paquetes. Clase mediana [4,6): L=4, F₋₁=35, fᵢ=30, A=2. ¿Cuál es la mediana del peso?',
+ table:`<table class="mini-table"><tr><th>Intervalo (kg)</th><th>fi</th><th>Fi (acumulada)</th><th>Rol</th></tr><tr><td>[0, 2)</td><td>10</td><td>10</td><td>—</td></tr><tr><td>[2, 4)</td><td>25</td><td>35</td><td>F₋₁ = 35 (acumulada ANTES)</td></tr><tr class="highlight"><td>[4, 6)</td><td>30</td><td>65</td><td>Clase mediana → L=4, fᵢ=30, A=2</td></tr><tr><td>[6, 8)</td><td>15</td><td>80</td><td>—</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Me = L + [(n/2 − F₋₁) / fᵢ] × A</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">n/2 = 80/2 = 40. Clase mediana: [4,6) porque Fi llega a 65 ≥ 40.</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text"><span class="hint-calc">Me = 4 + [(40 − 35) / 30] × 2</span><span class="hint-calc">   = 4 + [5/30] × 2</span><span class="hint-calc">   = 4 + 0.333 = 4.33 kg</span></div></div>`,
+ opts:['3.8 kg','4.33 kg','4.0 kg','4.5 kg'],ans:1,exp:'Me = 4 + [(40-35)/30]×2 = 4+0.333 = 4.33 kg'},
+
+// ── VARIANZA ──
+{topic:'varianza',
+ q:'Horas de estudio: 12,15,10,18,14,16,11,13,17,14. Media=14. Σ(xᵢ−x̄)²=60. ¿Cuál es la varianza poblacional σ²?',
+ table:`<table class="mini-table"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr><tr><td>12</td><td>−2</td><td>4</td></tr><tr><td>15</td><td>1</td><td>1</td></tr><tr><td>10</td><td>−4</td><td>16</td></tr><tr><td>18</td><td>4</td><td>16</td></tr><tr><td>14</td><td>0</td><td>0</td></tr><tr><td>16</td><td>2</td><td>4</td></tr><tr><td>11</td><td>−3</td><td>9</td></tr><tr><td>13</td><td>−1</td><td>1</td></tr><tr><td>17</td><td>3</td><td>9</td></tr><tr><td>14</td><td>0</td><td>0</td></tr><tr class="highlight"><td>Σ=140 → Media=14</td><td>—</td><td>Σ=60</td></tr></table>`,
+ hint:`<div class="hint-title">💡 σ² = Σ(xᵢ − x̄)² / N</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">La media ya está dada: x̄ = 140/10 = 14</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Divide la suma de cuadrados entre N (total de datos):<span class="hint-calc">σ² = 60 / 10 = 6</span></div></div>`,
+ opts:['5','6','7','8'],ans:1,exp:'σ² = 60/10 = 6'},
+
+{topic:'varianza',
+ q:'σ² = 6. ¿Cuál es la desviación estándar σ?',
+ hint:`<div class="hint-title">💡 σ = √(varianza)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">La desviación estándar es simplemente la raíz cuadrada de la varianza:<span class="hint-calc">σ = √6 ≈ 2.449</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Redondeado: <strong>σ ≈ 2.44</strong></div></div>`,
+ opts:['2.0','2.44','3.0','1.8'],ans:1,exp:'σ = √6 ≈ 2.44'},
+
+{topic:'varianza',
+ q:'σ=2.44 y media=14. ¿Cuál es el Coeficiente de Variación (CV)?',
+ hint:`<div class="hint-title">💡 CV = (σ / x̄) × 100%</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Divide σ entre la media:<span class="hint-calc">2.44 / 14 = 0.1743</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Multiplica por 100 para convertir a porcentaje:<span class="hint-calc">0.1743 × 100 = 17.43% ≈ 17.4%</span></div></div>`,
+ opts:['10%','17.4%','20%','12%'],ans:1,exp:'CV = (2.44/14)×100 = 17.4%'},
+
+{topic:'varianza',
+ q:'Edades: 23,25,22,24,26,22. Media=23.67. Σ(xᵢ−x̄)²≈13.33. ¿Cuál es la varianza σ²?',
+ table:`<table class="mini-table"><tr><th>xᵢ</th><th>xᵢ − x̄</th><th>(xᵢ − x̄)²</th></tr><tr><td>23</td><td>−0.67</td><td>0.45</td></tr><tr><td>25</td><td>1.33</td><td>1.77</td></tr><tr><td>22</td><td>−1.67</td><td>2.79</td></tr><tr><td>24</td><td>0.33</td><td>0.11</td></tr><tr><td>26</td><td>2.33</td><td>5.43</td></tr><tr><td>22</td><td>−1.67</td><td>2.79</td></tr><tr class="highlight"><td>Σ=142 → Media≈23.67</td><td>—</td><td>Σ≈13.33</td></tr></table>`,
+ hint:`<div class="hint-title">💡 Cómo calcular σ²</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Media = 142/6 = 23.67</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text"><span class="hint-calc">σ² = 13.33 / 6 = 2.22</span></div></div>`,
+ opts:['1.8','2.22','3.1','2.5'],ans:1,exp:'σ² = 13.33/6 = 2.22'},
+
+{topic:'varianza',
+ q:'¿Qué indica un CV = 3% en estaturas de estudiantes?',
+ hint:`<div class="hint-title">💡 Interpretación del CV</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">El CV mide qué tan grande es la desviación estándar relativa a la media.</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">CV pequeño (menos de 10%) → los datos están muy juntos cerca de la media. CV grande (más de 30%) → mucha dispersión.</div></div>`,
+ opts:['Alta dispersión','Datos muy homogéneos','Error de cálculo','Datos sin media'],ans:1,exp:'CV=3% es muy bajo → los datos están muy concentrados alrededor de la media (alta homogeneidad).'},
+
+// ── BINOMIAL ──
+{topic:'binomial',
+ q:'Logística: P(éxito)=0.92, n=10 envíos. ¿Cuál es la fórmula correcta para calcular P(exactamente 9 éxitos)?',
+ hint:`<div class="hint-title">💡 P(X=k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Identifica los parámetros: n=10, k=9, p=0.92, q=1−0.92=0.08</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">C(10,9) = 10 (hay 10 maneras de elegir 9 de 10)<span class="hint-calc">P(X=9) = C(10,9) × 0.92⁹ × 0.08¹</span><span class="hint-calc">       = 10 × 0.4722 × 0.08 ≈ 0.378 = 37.8%</span></div></div>`,
+ opts:['C(9,10)×0.92⁹×0.08','C(10,9)×0.92⁹×0.08','C(10,9)×0.92¹⁰','C(9,10)×0.08⁹'],ans:1,exp:'P(X=9) = C(10,9) × 0.92⁹ × 0.08¹'},
+
+{topic:'binomial',
+ q:'Máquina: P(defecto)=0.02, produce n=20 piezas. ¿Cuántas piezas defectuosas se esperan EN PROMEDIO?',
+ hint:`<div class="hint-title">💡 Media binomial = n × p</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">La media (valor esperado) de una distribución binomial es simplemente n multiplicado por p.</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text"><span class="hint-calc">μ = 20 × 0.02 = 0.4 piezas defectuosas</span></div></div>`,
+ opts:['0.4','0.5','1.0','0.2'],ans:0,exp:'μ = n×p = 20×0.02 = 0.4'},
+
+{topic:'binomial',
+ q:'P(compra)=0.15, n=7 visitantes. Para calcular P(a lo sumo 1 compra), necesitas sumar:',
+ hint:`<div class="hint-title">💡 "A lo sumo 1" significa 0 O 1</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">"A lo sumo 1" significa que X puede ser 0 o 1, pero no más.</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Por eso debes calcular P(X=0) + P(X=1) y sumarlos.<span class="hint-calc">P(X=0) = C(7,0)×0.15⁰×0.85⁷ ≈ 0.321</span><span class="hint-calc">P(X=1) = C(7,1)×0.15¹×0.85⁶ ≈ 0.396</span><span class="hint-calc">Total ≈ 0.717 = 71.7%</span></div></div>`,
+ opts:['Solo P(X=0)','P(X=0) + P(X=1)','P(X=1) + P(X=2)','P(X=0) × P(X=1)'],ans:1,exp:'P(X≤1) = P(X=0) + P(X=1)'},
+
+{topic:'binomial',
+ q:'30% de adultos apoya una ley. Se seleccionan n=15 adultos. ¿Cuántos se espera que estén a favor (media)?',
+ hint:`<div class="hint-title">💡 μ = n × p</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">n=15 adultos, p=0.30 (proporción a favor).<span class="hint-calc">μ = 15 × 0.30 = 4.5 adultos</span></div></div>`,
+ opts:['3.0','4.5','5.0','6.0'],ans:1,exp:'μ = 15×0.30 = 4.5'},
+
+{topic:'binomial',
+ q:'P(falla batería)=0.02, n=50 dispositivos. Para P(X=2) necesitas C(50,2). ¿Cuánto es C(50,2)?',
+ hint:`<div class="hint-title">💡 C(n,k) = n! / (k! × (n−k)!)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">C(50,2) = 50! / (2! × 48!) que simplificado es:<span class="hint-calc">C(50,2) = (50 × 49) / (2 × 1) = 2450 / 2 = 1225</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Nota: el problema original usó 1125, pero el valor exacto es 1225.</div></div>`,
+ opts:['100','1225','2500','50'],ans:1,exp:'C(50,2) = (50×49)/2 = 1225'},
+
+// ── CLASICA ──
+{topic:'clasica',
+ q:'Papelería: 120 artículos (40 bolígrafos, 35 cuadernos, 28 resaltadores, 17 reglas). ¿P(tomar un bolígrafo)?',
+ hint:`<div class="hint-title">💡 P(A) = casos favorables / total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Casos favorables = 40 bolígrafos. Total = 120 artículos.<span class="hint-calc">P = 40/120 = 0.333 = 33%</span></div></div>`,
+ opts:['25%','33%','40%','28%'],ans:1,exp:'P = 40/120 = 0.333 = 33%'},
+
+{topic:'clasica',
+ q:'Misma papelería de 120 artículos (35 cuadernos). ¿P(NO tomar un cuaderno)?',
+ hint:`<div class="hint-title">💡 P(no A) = 1 − P(A) o (total − favorables) / total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Artículos que NO son cuadernos = 120 − 35 = 85<span class="hint-calc">P = 85/120 = 0.708 = 70.8%</span></div></div>`,
+ opts:['70.8%','75%','65%','80%'],ans:0,exp:'P = (120-35)/120 = 85/120 = 70.8%'},
+
+{topic:'clasica',
+ q:'Club deportivo: 35% natación, 45% fútbol, 20% tenis. ¿P(natación O tenis)?',
+ hint:`<div class="hint-title">💡 Eventos mutuamente excluyentes: P(A∪B) = P(A)+P(B)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Natación y tenis son actividades separadas (nadie puede hacer ambas simultáneamente).</div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text"><span class="hint-calc">P = 35% + 20% = 55%</span></div></div>`,
+ opts:['35%','55%','60%','70%'],ans:1,exp:'P(natación∪tenis) = 35% + 20% = 55%'},
+
+{topic:'clasica',
+ q:'Clínica: 65% pide consulta, 50% laboratorio, 30% pide ambos. ¿P(consulta O laboratorio)?',
+ hint:`<div class="hint-title">💡 P(A∪B) = P(A) + P(B) − P(A∩B)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Hay personas que piden ambos (overlap), así que debemos restar para no contarlos dos veces.<span class="hint-calc">P = 65% + 50% − 30% = 85%</span></div></div>`,
+ opts:['80%','85%','90%','75%'],ans:1,exp:'P = 65%+50%−30% = 85%'},
+
+{topic:'clasica',
+ q:'Misma clínica (P consulta o laboratorio = 85%). ¿P(que un paciente NO pida ninguno de los dos)?',
+ hint:`<div class="hint-title">💡 P(ninguno) = 1 − P(alguno)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Si la probabilidad de pedir al menos uno es 85%, entonces:<span class="hint-calc">P(ninguno) = 100% − 85% = 15%</span></div></div>`,
+ opts:['15%','10%','20%','5%'],ans:0,exp:'P(ninguno) = 100% − 85% = 15%'},
+
+{topic:'clasica',
+ q:'Supermercado: 72% compra frutas, 58% lácteos, 40% compra ambos. ¿P(frutas O lácteos)?',
+ hint:`<div class="hint-title">💡 P(A∪B) = P(A) + P(B) − P(A∩B)</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">Hay clientes que compran ambas cosas, así que restamos el overlap:<span class="hint-calc">P = 72% + 58% − 40% = 90%</span></div></div>`,
+ opts:['80%','90%','95%','85%'],ans:1,exp:'P = 72%+58%−40% = 90%'},
+
+{topic:'clasica',
+ q:'Graduación: 200 egresados, 75 Ingeniería, 60 Admin, 40 Derecho, 25 Medicina. ¿P(primer llamado sea de Administración)?',
+ hint:`<div class="hint-title">💡 P = casos favorables / total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">P = 60 / 200 = 0.30 = 30%</span></div></div>`,
+ opts:['25%','30%','35%','40%'],ans:1,exp:'P = 60/200 = 30%'},
+
+{topic:'clasica',
+ q:'Hotel: 68% usa piscina, 45% usa gimnasio, 25% usa ambas instalaciones. Si hay 400 huéspedes, ¿cuántos usan SOLO la piscina (sin gimnasio)?',
+ hint:`<div class="hint-title">💡 "Solo piscina" = piscina − ambas</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text">P(solo piscina) = P(piscina) − P(ambas)<span class="hint-calc">68% − 25% = 43%</span></div></div>
+<div class="hint-step"><div class="hint-num">2</div><div class="hint-text">Frecuencia esperada = n × P<span class="hint-calc">400 × 0.43 = 172 huéspedes</span></div></div>`,
+ opts:['150','172','200','160'],ans:1,exp:'P(solo piscina)=68%-25%=43%. 400×0.43=172'},
+
+{topic:'clasica',
+ q:'Veterinaria: 90 mascotas (36 perros, 28 gatos, 15 aves, 11 reptiles). ¿P(próxima mascota sea un gato)?',
+ hint:`<div class="hint-title">💡 P = casos favorables / total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">P = 28 / 90 = 0.311 = 31.1%</span></div></div>`,
+ opts:['25%','31.1%','35%','28%'],ans:1,exp:'P = 28/90 = 31.1%'},
+
+{topic:'clasica',
+ q:'Taller: 160 vehículos (70 sedanes, 50 SUV, 25 camionetas, 15 motos). ¿P(próximo vehículo NO sea sedán)?',
+ hint:`<div class="hint-title">💡 P(no sedán) = (total − sedanes) / total</div>
+<div class="hint-step"><div class="hint-num">1</div><div class="hint-text"><span class="hint-calc">Vehículos que no son sedán = 160 − 70 = 90</span><span class="hint-calc">P = 90/160 = 0.5625 = 56.3%</span></div></div>`,
+ opts:['50%','56.3%','60%','45%'],ans:1,exp:'P = (160-70)/160 = 90/160 = 56.3%'},
+];
+
+// ─────────────────── FLASHCARDS ───────────────────
+const FLASHCARDS = [
+  {label:'Prob. Total', front:'¿Qué es la Probabilidad Total y cuándo usarla?',
+   formula:'P(A) = Σ P(A|Bᵢ) · P(Bᵢ)',
+   vars:[
+     {n:'P(A)',d:'La probabilidad que queremos encontrar (ej: P(pieza defectuosa))'},
+     {n:'P(Bᵢ)',d:'La proporción de cada grupo (ej: Máquina 1 produce 50% → 0.50)'},
+     {n:'P(A|Bᵢ)',d:'La probabilidad dentro de ese grupo (ej: 2% defectos → 0.02)'},
+     {n:'Σ',d:'Suma todos los grupos. Multiplicar cada proporción por su probabilidad interna, luego sumar todo.'},
+   ]},
+  {label:'Bayes', front:'Teorema de Bayes — dado el resultado, ¿cuál fue la causa?',
+   formula:'P(causa|resultado) = [P(resultado|causa) × P(causa)] / P(resultado total)',
+   vars:[
+     {n:'Numerador',d:'Solo el producto de la causa que te preguntan (ej: rama del proveedor Y)'},
+     {n:'Denominador',d:'P(total) calculado con Probabilidad Total — suma de todas las ramas'},
+     {n:'Truco',d:'El denominador siempre es el mismo. El numerador cambia según qué causa te pregunten.'},
+   ]},
+  {label:'Moda (no agrupados)', front:'Moda en datos no agrupados — el valor que más se repite',
+   formula:'Moda = valor con mayor frecuencia absoluta',
+   vars:[
+     {n:'Paso 1',d:'Cuenta cuántas veces aparece cada valor (haz una tabla de frecuencias)'},
+     {n:'Paso 2',d:'El valor con el número más alto en la columna de frecuencia es la moda'},
+     {n:'Bimodal',d:'Si dos valores tienen la misma frecuencia máxima, hay DOS modas'},
+   ]},
+  {label:'Moda (agrupados)', front:'Moda en datos agrupados — fórmula de Czuber',
+   formula:'Mo = L + [(f − f₋₁) / ((f−f₋₁) + (f−f₊₁))] × A',
+   vars:[
+     {n:'L',d:'Límite inferior de la clase modal → el número de la IZQUIERDA del intervalo con más frecuencia. Ej: en [20-25] → L = 20'},
+     {n:'f',d:'Frecuencia de la clase modal → el número MÁS ALTO en la columna de frecuencias. Ese es tu intervalo principal.'},
+     {n:'f₋₁',d:'Frecuencia ANTERIOR → la frecuencia del intervalo que está ARRIBA de la clase modal en la tabla'},
+     {n:'f₊₁',d:'Frecuencia SIGUIENTE → la frecuencia del intervalo que está ABAJO de la clase modal en la tabla'},
+     {n:'A',d:'Amplitud → límite superior MENOS límite inferior. Ej: [20-25] → A = 25 − 20 = 5'},
+   ]},
+  {label:'Mediana', front:'Mediana en datos agrupados — el valor del centro',
+   formula:'Me = L + [(n/2 − F₋₁) / fᵢ] × A',
+   vars:[
+     {n:'n/2',d:'La mitad del total de datos. Con 80 datos → n/2 = 40. Esto te dice en qué "posición" está la mediana.'},
+     {n:'L',d:'Límite inferior de la clase mediana → el número izquierdo del intervalo donde cae n/2'},
+     {n:'F₋₁',d:'Frecuencia acumulada ANTERIOR → suma de frecuencias de TODOS los intervalos antes de la clase mediana'},
+     {n:'fᵢ',d:'Frecuencia del intervalo mediana → solo la frecuencia propia de ese intervalo (no acumulada)'},
+     {n:'A',d:'Amplitud del intervalo → límite superior − límite inferior'},
+     {n:'¿Cómo hallar la clase mediana?',d:'Calcula n/2, busca en la columna Fi (acumulada) el primer intervalo donde Fi ≥ n/2'},
+   ]},
+  {label:'Varianza', front:'Varianza — qué tan dispersos están los datos',
+   formula:'σ² = Σ(xᵢ − x̄)² / N   (poblacional)\ns² = Σ(xᵢ − x̄)² / (n−1) (muestral)',
+   vars:[
+     {n:'x̄',d:'La media (promedio) — suma todos los datos y divide entre cuántos hay'},
+     {n:'xᵢ − x̄',d:'Diferencia de cada dato con la media — puede ser positiva o negativa'},
+     {n:'(xᵢ−x̄)²',d:'Esa diferencia elevada al cuadrado — siempre positiva, elimina negativos'},
+     {n:'Σ',d:'Suma de todos los cuadrados de las diferencias'},
+     {n:'N o n−1',d:'N = total de datos (poblacional). n−1 = total menos 1 (muestral, cuando los datos son una muestra)'},
+   ]},
+  {label:'Desv. Estándar', front:'Desviación Estándar y Coeficiente de Variación',
+   formula:'σ = √σ²\nCV = (σ / x̄) × 100%',
+   vars:[
+     {n:'σ',d:'Desviación estándar — raíz cuadrada de la varianza. Está en las mismas unidades que los datos originales.'},
+     {n:'CV',d:'Coeficiente de variación — indica qué tan dispersos están los datos en relación a la media. Útil para comparar grupos con distintas unidades.'},
+     {n:'Interpretación',d:'CV < 10% → datos muy homogéneos. CV 10-30% → dispersión moderada. CV > 30% → alta dispersión.'},
+   ]},
+  {label:'Binomial', front:'Distribución Binomial — n intentos, ¿exactamente k éxitos?',
+   formula:'P(X=k) = C(n,k) × pᵏ × (1−p)ⁿ⁻ᵏ',
+   vars:[
+     {n:'n',d:'Número total de intentos o ensayos. "Se hacen 10 envíos" → n = 10'},
+     {n:'k',d:'Número de éxitos que te preguntan. "Exactamente 9 exitosos" → k = 9'},
+     {n:'p',d:'Probabilidad de éxito en cada intento. "92% son exitosos" → p = 0.92'},
+     {n:'1−p',d:'Probabilidad de fracaso (también llamada q). q = 1 − 0.92 = 0.08'},
+     {n:'C(n,k)',d:'Combinaciones: cuántas maneras hay de elegir k de n. C(n,k) = n! / (k! × (n−k)!)'},
+     {n:'Media μ',d:'Número esperado de éxitos = n × p. "¿Cuántos esperamos en promedio?"'},
+   ]},
+  {label:'Prob. Clásica', front:'Probabilidad Clásica y Regla de Adición',
+   formula:'P(A) = favorables / total\nP(A∪B) = P(A)+P(B)−P(A∩B)',
+   vars:[
+     {n:'P(A)',d:'Probabilidad básica: divide los casos que te interesan entre todos los posibles'},
+     {n:"P(A')",d:'Complementario: P(NO A) = 1 − P(A). "¿Que NO pase A?"'},
+     {n:'P(A∪B)',d:'"A O B" — incluye ambos. Si hay overlap (personas que tienen ambos), réstalo una vez.'},
+     {n:'P(A∩B)',d:'"A Y B" — personas/casos que tienen AMBAS características a la vez'},
+     {n:'Excl. mutuos',d:'Si A y B no pueden pasar juntos (ej: natación vs tenis), usa solo P(A)+P(B) sin restar.'},
+     {n:'n×P(A)',d:'Frecuencia esperada: cuántos casos esperas en n intentos'},
+   ]},
+];
+
+// ─────────────────── STATE ───────────────────
+let qState = {};
+let selectedTopic = 'all';
+let survLives = 3;
+let crInterval = null;
+
+// ─────────────────── UTILS ───────────────────
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getQs(topic){return topic==='all'?shuffle(ALL_QUESTIONS):shuffle(ALL_QUESTIONS.filter(q=>q.topic===topic));}
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const ids=['home','teoria','quiz','flashcards','supervivencia','contrarreloj'];
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active',ids[i]===id));
+  if(id==='flashcards') renderCard();
+}
+function selectTopic(el,topic){
+  document.querySelectorAll('.topic-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');selectedTopic=topic;
+}
+function startQuizTopic(topic){
+  showSection('quiz');selectedTopic=topic;
+  document.querySelectorAll('.topic-pill').forEach(p=>p.classList.toggle('active',p.dataset.topic===topic));
+  startQuiz('quiz');
+}
+
+// ─────────────────── RENDER QUESTION ───────────────────
+function renderQ(prefix, q){
+  document.getElementById(prefix+'-question').innerHTML = q.q;
+  const ta = document.getElementById(prefix+'-table-area');
+  if(ta) ta.innerHTML = q.table||'';
+  const hb = document.getElementById(prefix+'-hint-box');
+  hb.innerHTML = q.hint||'<div class="hint-title">💡 Pista</div><div class="hint-text">Revisa la teoría para este tipo de problema.</div>';
+  hb.className='hint-box';
+  document.getElementById(prefix+'-hint-btn').textContent='💡 Mostrar pista';
+  const od = document.getElementById(prefix+'-options');
+  od.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='option-btn';b.textContent=opt;
+    b.onclick=()=>handleAnswer(prefix,i,b,q);
+    od.appendChild(b);
+  });
+  const fb=document.getElementById(prefix+'-feedback');
+  if(fb){fb.className='feedback-box';fb.textContent='';}
+}
+
+function toggleHint(prefix){
+  const hb=document.getElementById(prefix+'-hint-box');
+  const btn=document.getElementById(prefix+'-hint-btn');
+  const show=!hb.classList.contains('show');
+  hb.classList.toggle('show',show);
+  btn.textContent=show?'🙈 Ocultar pista':'💡 Mostrar pista';
+}
+
+// ─────────────────── QUIZ ───────────────────
+function startQuiz(mode){
+  const questions=getQs(selectedTopic).slice(0,10);
+  qState={questions,current:0,correct:0,wrong:0,mode,answered:false};
+  document.getElementById('quiz-setup').classList.add('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-game').classList.remove('hidden');
+  document.getElementById('quiz-next-btn').classList.add('hidden');
+  renderQuizQ();
+}
+function renderQuizQ(){
+  const st=qState;
+  if(st.current>=st.questions.length){endQuiz();return;}
+  st.answered=false;
+  document.getElementById('quiz-q-count').textContent=`Pregunta ${st.current+1} / ${st.questions.length}`;
+  document.getElementById('quiz-score-disp').textContent=`✅ ${st.correct}  ❌ ${st.wrong}`;
+  document.getElementById('quiz-progress').style.width=`${(st.current/st.questions.length)*100}%`;
+  renderQ('quiz',st.questions[st.current]);
+  document.getElementById('quiz-next-btn').classList.add('hidden');
+}
+function handleAnswer(prefix,idx,btn,q){
+  if(qState.answered&&prefix==='quiz') return;
+  if(prefix==='quiz') qState.answered=true;
+  const correct=idx===q.ans;
+  const suffix=prefix==='quiz'?'':prefix==='surv'?'':'';
+  document.querySelectorAll(`#${prefix}-options .option-btn`).forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===idx&&!correct)b.classList.add('wrong');
+  });
+  if(prefix==='quiz'){
+    const fb=document.getElementById('quiz-feedback');
+    fb.textContent=(correct?'✅ ¡Correcto! ':'❌ Incorrecto. ')+q.exp;
+    fb.className=`feedback-box show ${correct?'correct-fb':'wrong-fb'}`;
+    if(correct)qState.correct++;else qState.wrong++;
+    document.getElementById('quiz-score-disp').textContent=`✅ ${qState.correct}  ❌ ${qState.wrong}`;
+    document.getElementById('quiz-next-btn').classList.remove('hidden');
+  } else if(prefix==='surv'){
+    handleSurvResult(correct,q);
+  }
+}
+function nextQuizQ(){qState.current++;renderQuizQ();}
+function endQuiz(){
+  document.getElementById('quiz-game').classList.add('hidden');
+  document.getElementById('quiz-result').classList.remove('hidden');
+  const pct=Math.round((qState.correct/qState.questions.length)*100);
+  document.getElementById('result-score-text').textContent=`${qState.correct} / ${qState.questions.length}`;
+  document.getElementById('result-label-text').textContent=`${pct}% de respuestas correctas`;
+  document.getElementById('result-emoji').textContent=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'📚':'💪';
+}
+function backToSetup(){
+  document.getElementById('quiz-game').classList.add('hidden');
+  document.getElementById('quiz-result').classList.add('hidden');
+  document.getElementById('quiz-setup').classList.remove('hidden');
+}
+
+// ─────────────────── SURVIVAL ───────────────────
+function setLives(n){
+  survLives=n;
+  ['1','3','5'].forEach(x=>document.getElementById(`lives-${x}`).className=`btn ${x==n?'btn-primary':'btn-outline'}`);
+}
+function startSurv(){
+  const questions=shuffle(ALL_QUESTIONS);
+  qState={questions,current:0,lives:survLives,streak:0,score:0,answered:false};
+  document.getElementById('surv-setup').classList.add('hidden');
+  document.getElementById('surv-result').classList.add('hidden');
+  document.getElementById('surv-game').classList.remove('hidden');
+  renderSurvQ();
+}
+function renderSurvQ(){
+  if(qState.current>=qState.questions.length){endSurv(true);return;}
+  qState.answered=false;
+  updateSurvUI();
+  renderQ('surv',qState.questions[qState.current]);
+}
+function handleSurvResult(correct,q){
+  if(qState.answered)return;
+  qState.answered=true;
+  const fb=document.getElementById('surv-feedback');
+  fb.textContent=(correct?'✅ ¡Correcto! ':'❌ Incorrecto. ')+q.exp;
+  fb.className=`feedback-box show ${correct?'correct-fb':'wrong-fb'}`;
+  if(correct){qState.streak++;qState.score+=10+(qState.streak>2?(qState.streak-2)*5:0);}
+  else{qState.lives--;qState.streak=0;}
+  updateSurvUI();
+  if(qState.lives<=0){setTimeout(()=>endSurv(false),1300);return;}
+  qState.current++;
+  setTimeout(renderSurvQ,1300);
+}
+function updateSurvUI(){
+  document.getElementById('surv-lives-disp').textContent='❤️'.repeat(Math.max(0,qState.lives));
+  document.getElementById('surv-streak').textContent=`🔥 ${qState.streak}`;
+  document.getElementById('surv-score').textContent=`${qState.score} pts`;
+}
+function endSurv(win){
+  document.getElementById('surv-game').classList.add('hidden');
+  document.getElementById('surv-result').classList.remove('hidden');
+  document.getElementById('surv-final-score').textContent=`${qState.score} pts`;
+  document.getElementById('surv-final-label').textContent=win?`¡Completaste todas las preguntas con ${qState.lives} vidas restantes!`:`Respondiste ${qState.current} preguntas antes de quedarte sin vidas.`;
+}
+
+// ─────────────────── CONTRARRELOJ ───────────────────
+function startCR(){
+  if(crInterval)clearInterval(crInterval);
+  const questions=shuffle(ALL_QUESTIONS);
+  qState={questions,current:0,score:0,count:0,time:120,answered:false};
+  document.getElementById('cr-setup').classList.add('hidden');
+  document.getElementById('cr-result').classList.add('hidden');
+  document.getElementById('cr-game').classList.remove('hidden');
+  renderCRQ();
+  crInterval=setInterval(()=>{
+    qState.time--;
+    const t=document.getElementById('cr-timer');
+    t.textContent=qState.time;
+    t.className=`timer-ring${qState.time<=10?' urgent':''}`;
+    if(qState.time<=0){clearInterval(crInterval);endCR();}
+  },1000);
+}
+function renderCRQ(){
+  if(qState.current>=qState.questions.length)qState.current=0;
+  qState.answered=false;
+  const q=qState.questions[qState.current];
+  document.getElementById('cr-question').innerHTML=q.q;
+  const od=document.getElementById('cr-options');od.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='option-btn';b.textContent=opt;
+    b.onclick=()=>handleCRAnswer(i,q,b);
+    od.appendChild(b);
+  });
+}
+function handleCRAnswer(idx,q,btn){
+  if(qState.answered)return;
+  qState.answered=true;
+  const correct=idx===q.ans;
+  document.querySelectorAll('#cr-options .option-btn').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===idx&&!correct)b.classList.add('wrong');
+  });
+  qState.count++;
+  if(correct)qState.score+=10;
+  document.getElementById('cr-score').textContent=`🏆 ${qState.score} pts`;
+  document.getElementById('cr-count').textContent=`${qState.count} respondidas`;
+  qState.current++;
+  setTimeout(renderCRQ,500);
+}
+function endCR(){
+  document.getElementById('cr-game').classList.add('hidden');
+  document.getElementById('cr-result').classList.remove('hidden');
+  document.getElementById('cr-final-score').textContent=`${qState.score} pts`;
+  document.getElementById('cr-final-label').textContent=`Respondiste ${qState.count} preguntas. ${qState.score>=100?'¡Excelente!':qState.score>=50?'¡Buen intento!':'¡Sigue practicando!'}`;
+}
+
+// ─────────────────── FLASHCARDS ───────────────────
+let fcCards=[...FLASHCARDS],fcIdx=0,fcFlipped=false;
+function renderCard(){
+  const c=fcCards[fcIdx];
+  document.getElementById('fc-front-label').textContent=c.label;
+  document.getElementById('fc-front-content').textContent=c.front;
+  document.getElementById('fc-formula').textContent=c.formula;
+  const vd=document.getElementById('fc-vars');
+  vd.innerHTML=c.vars.map(v=>`<div class="fc-var-row"><span class="fc-var-name">${v.n}</span><span class="fc-var-desc">${v.d}</span></div>`).join('');
+  document.getElementById('fc-counter').textContent=`Tarjeta ${fcIdx+1} de ${fcCards.length}`;
+  document.getElementById('flashcard').classList.remove('flipped');
+  fcFlipped=false;
+}
+function flipCard(){fcFlipped=!fcFlipped;document.getElementById('flashcard').classList.toggle('flipped',fcFlipped);}
+function nextCard(){fcIdx=(fcIdx+1)%fcCards.length;renderCard();}
+function prevCard(){fcIdx=(fcIdx-1+fcCards.length)%fcCards.length;renderCard();}
+function shuffleCards(){fcCards=shuffle(fcCards);fcIdx=0;renderCard();}
+
+renderCard();
+</script>
+</body>
+</html>
