@@ -1,151 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Probabilidad & Estadistica</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-:root{--bg:#0d0f1a;--s1:#151829;--s2:#1e2235;--bd:#2a2f4a;--ac:#6c63ff;--ac2:#ff6b9d;--ac3:#00d4aa;--ac4:#ffd166;--tx:#e8eaf6;--tx2:#9ba3c9;--ok:#00d4aa;--no:#ff6b6b;--r:12px;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
-nav{position:sticky;top:0;z-index:100;background:rgba(13,15,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);display:flex;align-items:center;height:56px;padding:0 1rem;}
-.nav-logo{font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;color:var(--ac);margin-right:1.2rem;white-space:nowrap;}
-.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;flex:1;}
-.nav-tabs::-webkit-scrollbar{display:none;}
-.ntab{padding:0 .8rem;height:56px;border:none;background:none;color:var(--tx2);font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .18s;display:flex;align-items:center;gap:.3rem;}
-.ntab:hover{color:var(--tx);}
-.ntab.on{color:var(--ac);border-bottom-color:var(--ac);}
-.sec{display:none;padding:1.4rem;max-width:860px;margin:0 auto;}
-.sec.on{display:block;}
-/* HOME */
-#home{max-width:100%;padding:0;}
-.hero{background:linear-gradient(135deg,#0d0f1a,#18103a,#0d1a2a);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 280px at 50% 50%,rgba(108,99,255,.15),transparent 70%);}
-.hero h1{font-family:'Space Mono',monospace;font-size:clamp(1.5rem,5vw,2.6rem);font-weight:700;background:linear-gradient(135deg,#fff,#6c63ff,#00d4aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;position:relative;z-index:1;}
-.hero p{margin-top:.5rem;color:var(--tx2);font-size:.88rem;position:relative;z-index:1;}
-.hstats{display:flex;gap:2rem;margin-top:1.4rem;position:relative;z-index:1;flex-wrap:wrap;justify-content:center;}
-.hstat .n{font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--ac);}
-.hstat .l{font-size:.7rem;color:var(--tx2);}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.8rem;padding:1.4rem;}
-.tc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .18s;text-align:center;}
-.tc:hover{border-color:var(--ac);background:var(--s2);transform:translateY(-2px);}
-.tc .i{font-size:1.7rem;margin-bottom:.35rem;}
-.tc .n{font-weight:600;font-size:.83rem;}
-.tc .c{font-size:.7rem;color:var(--tx2);margin-top:.12rem;}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem;}
-@media(max-width:480px){.mgrid{grid-template-columns:1fr;}}
-.mc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .18s;text-align:center;}
-.mc:hover{border-color:var(--ac);transform:translateY(-2px);}
-.mc .i{font-size:1.7rem;margin-bottom:.3rem;}
-.mc .t{font-weight:600;font-size:.83rem;}
-.mc .d{font-size:.7rem;color:var(--tx2);margin-top:.2rem;}
-/* CARDS */
-.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1.2rem;margin-bottom:.8rem;}
-.ct{font-size:.66rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ac);margin-bottom:.55rem;}
-h2{font-size:1.15rem;margin-bottom:.8rem;}
-/* TABLES */
-.mt{width:100%;border-collapse:collapse;margin:.5rem 0;font-size:.77rem;}
-.mt th{background:rgba(108,99,255,.2);color:var(--ac);padding:.32rem .55rem;text-align:left;border:1px solid var(--bd);}
-.mt td{padding:.28rem .55rem;border:1px solid var(--bd);color:var(--tx2);}
-.mt tr.hl td{background:rgba(255,209,102,.08);color:var(--ac4);font-weight:600;}
-/* FORMULA */
-.fml{background:var(--bg);border-left:3px solid var(--ac);border-radius:0 7px 7px 0;padding:.6rem .85rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--ac3);margin:.6rem 0;white-space:pre-wrap;}
-/* QUIZ */
-.qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
-.qbadge{font-family:'Space Mono',monospace;font-size:.7rem;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.22rem .55rem;color:var(--tx2);}
-.sc{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--ac3);}
-.qbox{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1.15rem;margin-bottom:.8rem;}
-.qtxt{font-size:.9rem;line-height:1.65;margin-bottom:.9rem;}
-.qtxt strong{color:var(--ac4);}
-.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
-@media(max-width:500px){.ogrid{grid-template-columns:1fr;}}
-.obtn{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:.65rem .85rem;color:var(--tx);font-family:'Space Grotesk',sans-serif;font-size:.82rem;cursor:pointer;text-align:left;transition:all .13s;line-height:1.35;}
-.obtn:hover:not(:disabled){border-color:var(--ac);background:rgba(108,99,255,.1);}
-.obtn.ok{border-color:var(--ok);background:rgba(0,212,170,.12);color:var(--ok);}
-.obtn.no{border-color:var(--no);background:rgba(255,107,107,.12);color:var(--no);}
-.obtn:disabled{cursor:default;}
-/* HINT */
-.hbtn{display:inline-flex;align-items:center;gap:.3rem;padding:.38rem .8rem;border-radius:7px;border:1px solid rgba(255,209,102,.4);background:rgba(255,209,102,.05);color:var(--ac4);font-family:'Space Grotesk',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .13s;margin:.6rem 0 .5rem;}
-.hbtn:hover{background:rgba(255,209,102,.12);}
-.hbox{background:rgba(255,209,102,.05);border:1px solid rgba(255,209,102,.25);border-radius:8px;padding:.9rem;margin-bottom:.65rem;display:none;font-size:.82rem;line-height:1.6;}
-.hbox.on{display:block;}
-.hbox .htitle{font-weight:700;color:var(--ac4);margin-bottom:.45rem;font-size:.78rem;}
-.hstep{display:flex;gap:.55rem;margin-bottom:.38rem;align-items:flex-start;}
-.hnum{font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;background:var(--ac4);color:#000;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.htxt{color:var(--tx);font-size:.8rem;line-height:1.5;}
-.hcalc{font-family:'Space Mono',monospace;font-size:.76rem;color:var(--ac3);background:var(--bg);padding:.25rem .55rem;border-radius:4px;margin-top:.22rem;display:block;}
-/* FEEDBACK */
-.fb{border-radius:7px;padding:.85rem;font-size:.83rem;line-height:1.5;margin-top:.55rem;display:none;}
-.fb.on{display:block;}
-.fb.ok{background:rgba(0,212,170,.1);border:1px solid var(--ok);color:var(--ok);}
-.fb.no{background:rgba(255,107,107,.1);border:1px solid var(--no);color:#ff9999;}
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.52rem 1rem;border-radius:7px;border:none;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .13s;}
-.btn-p{background:var(--ac);color:#fff;}
-.btn-p:hover{background:#5a52e0;}
-.btn-o{background:transparent;border:1px solid var(--bd);color:var(--tx2);}
-.btn-o:hover{border-color:var(--ac);color:var(--ac);}
-.brow{display:flex;gap:.45rem;margin-top:.8rem;flex-wrap:wrap;}
-.pbar{height:4px;background:var(--bd);border-radius:2px;margin-bottom:.8rem;}
-.pfill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s;}
-.tsel{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
-.tpill{padding:.28rem .75rem;border-radius:20px;border:1px solid var(--bd);background:var(--s2);color:var(--tx2);font-size:.73rem;font-weight:500;cursor:pointer;transition:all .13s;}
-.tpill.on{background:var(--ac);border-color:var(--ac);color:#fff;}
-/* SURVIVAL */
-.lives{font-size:1.25rem;letter-spacing:.08em;}
-.sbadge{font-family:'Space Mono',monospace;background:rgba(255,209,102,.12);border:1px solid var(--ac4);color:var(--ac4);border-radius:6px;padding:.18rem .5rem;font-size:.7rem;}
-/* TIMER */
-.tring{font-family:'Space Mono',monospace;font-size:1.35rem;font-weight:700;color:var(--ac4);background:var(--s2);border:2px solid var(--bd);border-radius:50%;width:58px;height:58px;display:flex;align-items:center;justify-content:center;}
-.tring.urg{color:var(--no);border-color:var(--no);}
-/* FLASHCARDS */
-.fcwrap{perspective:1000px;margin:.8rem auto;width:100%;max-width:520px;height:290px;}
-.fc{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;}
-.fc.flip{transform:rotateY(180deg);}
-.fcf,.fcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem;text-align:center;overflow:hidden;}
-.fcf{background:var(--s1);border:1px solid var(--ac);}
-.fcb{background:var(--s2);border:1px solid var(--ac3);transform:rotateY(180deg);overflow-y:auto;justify-content:flex-start;padding-top:1rem;}
-.fclbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem;}
-.fcf .fclbl{color:var(--ac);}
-.fcb .fclbl{color:var(--ac3);}
-.fctxt{font-size:.97rem;font-weight:600;line-height:1.4;}
-.fchint{font-size:.66rem;color:var(--tx2);margin-top:.45rem;}
-.fcfml{font-family:'Space Mono',monospace;font-size:.82rem;color:var(--ac3);background:var(--bg);border-radius:6px;padding:.45rem .7rem;margin:.35rem 0;width:100%;text-align:left;}
-.fcvars{width:100%;margin-top:.35rem;}
-.fcvr{display:flex;gap:.45rem;align-items:flex-start;margin-bottom:.32rem;text-align:left;}
-.fcvn{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;color:var(--ac4);min-width:52px;flex-shrink:0;margin-top:1px;}
-.fcvd{font-size:.73rem;color:var(--tx2);line-height:1.4;}
-.fccnt{font-size:.76rem;color:var(--tx2);text-align:center;margin-bottom:.35rem;}
-/* THEORY */
-.tdtl{margin-bottom:.65rem;}
-.tdtl summary{font-weight:600;font-size:.88rem;cursor:pointer;padding:.65rem .85rem;background:var(--s1);border-radius:7px;list-style:none;display:flex;align-items:center;gap:.4rem;border:1px solid var(--bd);transition:border-color .18s;}
-.tdtl summary:hover{border-color:var(--ac);}
-details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;}
-.tbody{background:var(--s1);border:1px solid var(--bd);border-top:none;border-radius:0 0 7px 7px;padding:1rem;font-size:.84rem;line-height:1.7;color:var(--tx2);}
-.tbody p{margin-bottom:.6rem;}
-.tbody ul{padding-left:1rem;}
-.tbody li{margin-bottom:.3rem;}
-.tstep{display:flex;gap:.6rem;margin-bottom:.55rem;align-items:flex-start;}
-.tsn{font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;background:var(--ac);color:#fff;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.tst{font-size:.83rem;color:var(--tx2);line-height:1.5;}
-/* RESULT */
-.rscreen{text-align:center;padding:1.8rem 1rem;}
-.rscore{font-family:'Space Mono',monospace;font-size:2.8rem;font-weight:700;background:linear-gradient(135deg,var(--ac),var(--ac3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.rlbl{font-size:.86rem;color:var(--tx2);margin-top:.22rem;}
-.remoji{font-size:2.6rem;margin:.85rem 0;}
-.hide{display:none!important;}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen Constitucional | Repaso</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+    :root {
+      --bg: #0a0f1c;
+      --s1: #111827;
+      --s2: #1a2236;
+      --bd: #2a354d;
+      --ac: #4f8fff;
+      --ac2: #ff5e7a;
+      --ac3: #2dd4bf;
+      --ac4: #fbbf24;
+      --tx: #e2e8f0;
+      --tx2: #94a3b8;
+      --ok: #2dd4bf;
+      --no: #ff5e7a;
+      --r: 12px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,15,28,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);display:flex;align-items:center;height:56px;padding:0 1rem;}
+    .nav-logo{font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;color:var(--ac);margin-right:1.2rem;white-space:nowrap;}
+    .nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .nav-tabs::-webkit-scrollbar{display:none;}
+    .ntab{padding:0 .8rem;height:56px;border:none;background:none;color:var(--tx2);font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .18s;display:flex;align-items:center;gap:.3rem;}
+    .ntab:hover{color:var(--tx);}
+    .ntab.on{color:var(--ac);border-bottom-color:var(--ac);}
+    .sec{display:none;padding:1.4rem;max-width:860px;margin:0 auto;}
+    .sec.on{display:block;}
+    /* HOME */
+    #home{max-width:100%;padding:0;}
+    .hero{background:linear-gradient(135deg,#0a0f1c,#141a3a,#0a1a2a);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.5rem 1.5rem 2rem;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 600px 280px at 50% 50%,rgba(79,143,255,.15),transparent 70%);}
+    .hero h1{font-family:'Space Mono',monospace;font-size:clamp(1.5rem,5vw,2.6rem);font-weight:700;background:linear-gradient(135deg,#fff,#4f8fff,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;position:relative;z-index:1;}
+    .hero p{margin-top:.5rem;color:var(--tx2);font-size:.88rem;position:relative;z-index:1;}
+    .hstats{display:flex;gap:2rem;margin-top:1.4rem;position:relative;z-index:1;flex-wrap:wrap;justify-content:center;}
+    .hstat .n{font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--ac);}
+    .hstat .l{font-size:.7rem;color:var(--tx2);}
+    .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.8rem;padding:1.4rem;}
+    .tc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .18s;text-align:center;}
+    .tc:hover{border-color:var(--ac);background:var(--s2);transform:translateY(-2px);}
+    .tc .i{font-size:1.7rem;margin-bottom:.35rem;}
+    .tc .n{font-weight:600;font-size:.83rem;}
+    .tc .c{font-size:.7rem;color:var(--tx2);margin-top:.12rem;}
+    .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem;}
+    @media(max-width:480px){.mgrid{grid-template-columns:1fr;}}
+    .mc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .18s;text-align:center;}
+    .mc:hover{border-color:var(--ac);transform:translateY(-2px);}
+    .mc .i{font-size:1.7rem;margin-bottom:.3rem;}
+    .mc .t{font-weight:600;font-size:.83rem;}
+    .mc .d{font-size:.7rem;color:var(--tx2);margin-top:.2rem;}
+    /* CARDS */
+    .card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1.2rem;margin-bottom:.8rem;}
+    .ct{font-size:.66rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ac);margin-bottom:.55rem;}
+    h2{font-size:1.15rem;margin-bottom:.8rem;}
+    /* TABLES */
+    .mt{width:100%;border-collapse:collapse;margin:.5rem 0;font-size:.77rem;}
+    .mt th{background:rgba(79,143,255,.2);color:var(--ac);padding:.32rem .55rem;text-align:left;border:1px solid var(--bd);}
+    .mt td{padding:.28rem .55rem;border:1px solid var(--bd);color:var(--tx2);}
+    .mt tr.hl td{background:rgba(251,191,36,.08);color:var(--ac4);font-weight:600;}
+    /* FORMULA */
+    .fml{background:var(--bg);border-left:3px solid var(--ac);border-radius:0 7px 7px 0;padding:.6rem .85rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--ac3);margin:.6rem 0;white-space:pre-wrap;}
+    /* QUIZ */
+    .qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
+    .qbadge{font-family:'Space Mono',monospace;font-size:.7rem;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.22rem .55rem;color:var(--tx2);}
+    .sc{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--ac3);}
+    .qbox{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:1.15rem;margin-bottom:.8rem;}
+    .qtxt{font-size:.9rem;line-height:1.65;margin-bottom:.9rem;}
+    .qtxt strong{color:var(--ac4);}
+    .ogrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+    @media(max-width:500px){.ogrid{grid-template-columns:1fr;}}
+    .obtn{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:.65rem .85rem;color:var(--tx);font-family:'Space Grotesk',sans-serif;font-size:.82rem;cursor:pointer;text-align:left;transition:all .13s;line-height:1.35;}
+    .obtn:hover:not(:disabled){border-color:var(--ac);background:rgba(79,143,255,.1);}
+    .obtn.ok{border-color:var(--ok);background:rgba(45,212,191,.12);color:var(--ok);}
+    .obtn.no{border-color:var(--no);background:rgba(255,94,122,.12);color:var(--no);}
+    .obtn:disabled{cursor:default;}
+    /* HINT */
+    .hbtn{display:inline-flex;align-items:center;gap:.3rem;padding:.38rem .8rem;border-radius:7px;border:1px solid rgba(251,191,36,.4);background:rgba(251,191,36,.05);color:var(--ac4);font-family:'Space Grotesk',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .13s;margin:.6rem 0 .5rem;}
+    .hbtn:hover{background:rgba(251,191,36,.12);}
+    .hbox{background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:.9rem;margin-bottom:.65rem;display:none;font-size:.82rem;line-height:1.6;}
+    .hbox.on{display:block;}
+    .hbox .htitle{font-weight:700;color:var(--ac4);margin-bottom:.45rem;font-size:.78rem;}
+    .hstep{display:flex;gap:.55rem;margin-bottom:.38rem;align-items:flex-start;}
+    .hnum{font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;background:var(--ac4);color:#000;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+    .htxt{color:var(--tx);font-size:.8rem;line-height:1.5;}
+    .hcalc{font-family:'Space Mono',monospace;font-size:.76rem;color:var(--ac3);background:var(--bg);padding:.25rem .55rem;border-radius:4px;margin-top:.22rem;display:block;}
+    /* FEEDBACK */
+    .fb{border-radius:7px;padding:.85rem;font-size:.83rem;line-height:1.5;margin-top:.55rem;display:none;}
+    .fb.on{display:block;}
+    .fb.ok{background:rgba(45,212,191,.1);border:1px solid var(--ok);color:var(--ok);}
+    .fb.no{background:rgba(255,94,122,.1);border:1px solid var(--no);color:#ff9999;}
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:.3rem;padding:.52rem 1rem;border-radius:7px;border:none;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .13s;}
+    .btn-p{background:var(--ac);color:#fff;}
+    .btn-p:hover{background:#3b6fcf;}
+    .btn-o{background:transparent;border:1px solid var(--bd);color:var(--tx2);}
+    .btn-o:hover{border-color:var(--ac);color:var(--ac);}
+    .brow{display:flex;gap:.45rem;margin-top:.8rem;flex-wrap:wrap;}
+    .pbar{height:4px;background:var(--bd);border-radius:2px;margin-bottom:.8rem;}
+    .pfill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s;}
+    .tsel{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+    .tpill{padding:.28rem .75rem;border-radius:20px;border:1px solid var(--bd);background:var(--s2);color:var(--tx2);font-size:.73rem;font-weight:500;cursor:pointer;transition:all .13s;}
+    .tpill.on{background:var(--ac);border-color:var(--ac);color:#fff;}
+    /* SURVIVAL */
+    .lives{font-size:1.25rem;letter-spacing:.08em;}
+    .sbadge{font-family:'Space Mono',monospace;background:rgba(251,191,36,.12);border:1px solid var(--ac4);color:var(--ac4);border-radius:6px;padding:.18rem .5rem;font-size:.7rem;}
+    /* TIMER */
+    .tring{font-family:'Space Mono',monospace;font-size:1.35rem;font-weight:700;color:var(--ac4);background:var(--s2);border:2px solid var(--bd);border-radius:50%;width:58px;height:58px;display:flex;align-items:center;justify-content:center;}
+    .tring.urg{color:var(--no);border-color:var(--no);}
+    /* FLASHCARDS */
+    .fcwrap{perspective:1000px;margin:.8rem auto;width:100%;max-width:520px;height:290px;}
+    .fc{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;}
+    .fc.flip{transform:rotateY(180deg);}
+    .fcf,.fcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem;text-align:center;overflow:hidden;}
+    .fcf{background:var(--s1);border:1px solid var(--ac);}
+    .fcb{background:var(--s2);border:1px solid var(--ac3);transform:rotateY(180deg);overflow-y:auto;justify-content:flex-start;padding-top:1rem;}
+    .fclbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem;}
+    .fcf .fclbl{color:var(--ac);}
+    .fcb .fclbl{color:var(--ac3);}
+    .fctxt{font-size:.97rem;font-weight:600;line-height:1.4;}
+    .fchint{font-size:.66rem;color:var(--tx2);margin-top:.45rem;}
+    .fcfml{font-family:'Space Mono',monospace;font-size:.82rem;color:var(--ac3);background:var(--bg);border-radius:6px;padding:.45rem .7rem;margin:.35rem 0;width:100%;text-align:left;}
+    .fcvars{width:100%;margin-top:.35rem;}
+    .fcvr{display:flex;gap:.45rem;align-items:flex-start;margin-bottom:.32rem;text-align:left;}
+    .fcvn{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;color:var(--ac4);min-width:52px;flex-shrink:0;margin-top:1px;}
+    .fcvd{font-size:.73rem;color:var(--tx2);line-height:1.4;}
+    .fccnt{font-size:.76rem;color:var(--tx2);text-align:center;margin-bottom:.35rem;}
+    /* THEORY */
+    .tdtl{margin-bottom:.65rem;}
+    .tdtl summary{font-weight:600;font-size:.88rem;cursor:pointer;padding:.65rem .85rem;background:var(--s1);border-radius:7px;list-style:none;display:flex;align-items:center;gap:.4rem;border:1px solid var(--bd);transition:border-color .18s;}
+    .tdtl summary:hover{border-color:var(--ac);}
+    details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;}
+    .tbody{background:var(--s1);border:1px solid var(--bd);border-top:none;border-radius:0 0 7px 7px;padding:1rem;font-size:.84rem;line-height:1.7;color:var(--tx2);}
+    .tbody p{margin-bottom:.6rem;}
+    .tbody ul{padding-left:1rem;}
+    .tbody li{margin-bottom:.3rem;}
+    .tstep{display:flex;gap:.6rem;margin-bottom:.55rem;align-items:flex-start;}
+    .tsn{font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;background:var(--ac);color:#fff;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+    .tst{font-size:.83rem;color:var(--tx2);line-height:1.5;}
+    /* RESULT */
+    .rscreen{text-align:center;padding:1.8rem 1rem;}
+    .rscore{font-family:'Space Mono',monospace;font-size:2.8rem;font-weight:700;background:linear-gradient(135deg,var(--ac),var(--ac3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .rlbl{font-size:.86rem;color:var(--tx2);margin-top:.22rem;}
+    .remoji{font-size:2.6rem;margin:.85rem 0;}
+    .hide{display:none!important;}
+    ::-webkit-scrollbar{width:5px;height:5px;}
+    ::-webkit-scrollbar-track{background:var(--bg);}
+    ::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px;}
+  </style>
 </head>
 <body>
-
 <nav>
-  <span class="nav-logo">P(X) 🎲</span>
+  <span class="nav-logo">Const. 📜</span>
   <div class="nav-tabs">
     <button type="button" class="ntab on" onclick="goTo('home',this)">🏠 Inicio</button>
-    <button type="button" class="ntab" onclick="goTo('teoria',this)">📖 Teoria</button>
+    <button type="button" class="ntab" onclick="goTo('teoria',this)">📖 Teoría</button>
     <button type="button" class="ntab" onclick="goTo('quiz',this)">✏️ Quiz</button>
     <button type="button" class="ntab" onclick="goTo('flash',this)">🃏 Flashcards</button>
     <button type="button" class="ntab" onclick="goTo('surv',this)">❤️ Supervivencia</button>
@@ -156,27 +169,25 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 <!-- HOME -->
 <div id="home" class="sec on">
   <div class="hero">
-    <h1>Probabilidad &<br>Estadistica</h1>
-    <p>Repasa y practica todos los temas del examen</p>
+    <h1>Examen<br>Constitucional</h1>
+    <p>Repasa conceptos clave, derechos, poderes y garantías</p>
     <div class="hstats">
-      <div class="hstat"><div class="n">6</div><div class="l">Temas</div></div>
-      <div class="hstat"><div class="n">40+</div><div class="l">Preguntas</div></div>
+      <div class="hstat"><div class="n">4</div><div class="l">Temas</div></div>
+      <div class="hstat"><div class="n">20</div><div class="l">Preguntas</div></div>
       <div class="hstat"><div class="n">4</div><div class="l">Modos</div></div>
     </div>
   </div>
   <div class="tgrid">
-    <div class="tc" onclick="launchTopic('prob_total')"><div class="i">🔗</div><div class="n">Prob. Total</div><div class="c">10 ejercicios</div></div>
-    <div class="tc" onclick="launchTopic('bayes')"><div class="i">🔄</div><div class="n">Bayes</div><div class="c">10 ejercicios</div></div>
-    <div class="tc" onclick="launchTopic('medidas')"><div class="i">📊</div><div class="n">Moda y Mediana</div><div class="c">8 ejercicios</div></div>
-    <div class="tc" onclick="launchTopic('varianza')"><div class="i">📈</div><div class="n">Varianza</div><div class="c">6 ejercicios</div></div>
-    <div class="tc" onclick="launchTopic('binomial')"><div class="i">🎯</div><div class="n">Binomial</div><div class="c">5 ejercicios</div></div>
-    <div class="tc" onclick="launchTopic('clasica')"><div class="i">🎲</div><div class="n">Prob. Clasica</div><div class="c">8 ejercicios</div></div>
+    <div class="tc" onclick="launchTopic('conceptos')"><div class="i">📋</div><div class="n">Conceptos Clave</div><div class="c">5 ejercicios</div></div>
+    <div class="tc" onclick="launchTopic('derechos')"><div class="i">⚖️</div><div class="n">Derechos</div><div class="c">4 ejercicios</div></div>
+    <div class="tc" onclick="launchTopic('poderes')"><div class="i">🏛️</div><div class="n">Poderes del Estado</div><div class="c">5 ejercicios</div></div>
+    <div class="tc" onclick="launchTopic('valores')"><div class="i">🌐</div><div class="n">Valores y Ciudadanía</div><div class="c">5 ejercicios</div></div>
   </div>
   <div style="padding:0 1.4rem 2rem;max-width:860px;margin:0 auto;">
-    <h2>Modos de practica</h2>
+    <h2>Modos de práctica</h2>
     <div class="mgrid">
       <div class="mc" onclick="goTo('quiz',document.querySelectorAll('.ntab')[2])"><div class="i">✏️</div><div class="t">Quiz con Pistas</div><div class="d">Responde y pide ayuda si te atascas</div></div>
-      <div class="mc" onclick="goTo('flash',document.querySelectorAll('.ntab')[3])"><div class="i">🃏</div><div class="t">Flashcards</div><div class="d">Formulas explicadas variable a variable</div></div>
+      <div class="mc" onclick="goTo('flash',document.querySelectorAll('.ntab')[3])"><div class="i">🃏</div><div class="t">Flashcards</div><div class="d">Definiciones explicadas al detalle</div></div>
       <div class="mc" onclick="goTo('surv',document.querySelectorAll('.ntab')[4])"><div class="i">❤️</div><div class="t">Supervivencia</div><div class="d">Pierde una vida por cada error</div></div>
       <div class="mc" onclick="goTo('cr',document.querySelectorAll('.ntab')[5])"><div class="i">⏱️</div><div class="t">Contrarreloj</div><div class="d">El mayor puntaje en 2 minutos</div></div>
     </div>
@@ -185,151 +196,52 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 
 <!-- TEORIA -->
 <div id="teoria" class="sec">
-  <h2>📖 Teoria</h2>
+  <h2>📖 Teoría</h2>
   <p style="color:var(--tx2);font-size:.83rem;margin-bottom:1rem;">Haz clic en cada tema para expandirlo.</p>
 
   <details class="tdtl">
-    <summary>🔗 Probabilidad Total</summary>
+    <summary>📋 Conceptos Fundamentales</summary>
     <div class="tbody">
-      <p>Usala cuando tienes varias fuentes posibles y quieres saber la probabilidad de que algo ocurra en total.</p>
-      <div class="fml">P(A) = P(fuente1)xP(evento|fuente1) + P(fuente2)xP(evento|fuente2) + ...</div>
-      <div class="tstep"><div class="tsn">1</div><div class="tst">Identifica los grupos: maquinas, proveedores, medios de transporte...</div></div>
-      <div class="tstep"><div class="tsn">2</div><div class="tst">Verifica que las proporciones sumen 1.00 (100%)</div></div>
-      <div class="tstep"><div class="tsn">3</div><div class="tst">Multiplica la proporcion de cada grupo por su probabilidad interna</div></div>
-      <div class="tstep"><div class="tsn">4</div><div class="tst">Suma todos los productos = probabilidad total</div></div>
-      <p><strong style="color:var(--ac4)">Ejemplo:</strong> Red publica 70% (1% bajones) + Solares 30% (4% bajones)</p>
-      <div class="fml">0.70 x 0.01 = 0.007\n0.30 x 0.04 = 0.012\nTotal = 0.007 + 0.012 = 0.019 = 1.9%</div>
+      <p><strong style="color:var(--ac)">Soberanía Nacional:</strong> Principio constitucional supremo que establece que el poder reside exclusivamente en el pueblo.</p>
+      <p><strong style="color:var(--ac)">Moral:</strong> Permite distinguir qué acciones son consideradas buenas o malas según ciertos criterios compartidos por una sociedad.</p>
+      <p><strong style="color:var(--ac)">Derecho:</strong> Conjunto de normas, principios y reglas que regulan la conducta humana en sociedad.</p>
+      <p><strong style="color:var(--ac)">Población:</strong> Conjunto de personas que habitan de manera permanente en un territorio determinado.</p>
+      <p><strong style="color:var(--ac)">Territorio:</strong> Base física o espacio geográfico donde el Estado ejerce toda su soberanía y jurisdicción.</p>
     </div>
   </details>
 
   <details class="tdtl">
-    <summary>🔄 Teorema de Bayes</summary>
+    <summary>⚖️ Derechos Fundamentales (Título II)</summary>
     <div class="tbody">
-      <p>Bayes responde la pregunta al reves: ya se que paso algo malo (el chip es defectuoso), cual fue la causa mas probable?</p>
-      <div class="fml">P(causa | resultado) = [rama de esa causa] / [suma de todas las ramas]</div>
-      <div class="tstep"><div class="tsn">1</div><div class="tst">Calcula la probabilidad total (denominador) con el metodo de arriba</div></div>
-      <div class="tstep"><div class="tsn">2</div><div class="tst">El numerador es solo el producto de la causa que te preguntan</div></div>
-      <div class="tstep"><div class="tsn">3</div><div class="tst">Divide: numerador / total</div></div>
-      <p><strong style="color:var(--ac4)">Ejemplo:</strong> Proveedor X 70% (2% defectos), Proveedor Y 30% (5% defectos). Si el chip es defectuoso, probabilidad de que sea de Y?</p>
-      <div class="fml">Total defectos: 0.70x0.02 + 0.30x0.05 = 0.014 + 0.015 = 0.029\nP(Y | defecto) = 0.015 / 0.029 = 0.517 = 51.7%</div>
-    </div>
-  </details>
-
-  <details class="tdtl">
-    <summary>📊 Moda en datos NO agrupados</summary>
-    <div class="tbody">
-      <p>La moda es el valor que mas veces aparece. Cuenta las repeticiones de cada valor.</p>
-      <p><strong style="color:var(--ac4)">Ejemplo:</strong> 7, 8, 7, 9, 6, 7, 10, 8, 7, 5, 7, 8, 9, 7, 6</p>
+      <p>Los derechos fundamentales son prerrogativas inherentes a las personas reconocidas en el <strong>Título 2 de la Constitución Dominicana</strong>.</p>
       <table class="mt">
-        <tr><th>Valor</th><th>Frecuencia (cuantas veces aparece)</th></tr>
-        <tr><td>5</td><td>1</td></tr>
-        <tr><td>6</td><td>2</td></tr>
-        <tr class="hl"><td>7</td><td>6 &larr; el mas alto = MODA</td></tr>
-        <tr><td>8</td><td>3</td></tr>
-        <tr><td>9</td><td>2</td></tr>
-        <tr><td>10</td><td>1</td></tr>
+        <tr><th>Tipo de Derecho</th><th>Descripción</th></tr>
+        <tr><td><strong>Derechos Civiles</strong></td><td>Derechos individuales clásicos (libertad, propiedad, seguridad).</td></tr>
+        <tr><td><strong>Derechos Políticos</strong></td><td>Garantizan la participación en la vida política (votar, ser elegido).</td></tr>
+        <tr><td><strong>Económicos y Sociales</strong></td><td>Incluyen alimentación, vivienda, educación, salud y seguridad social.</td></tr>
       </table>
     </div>
   </details>
 
   <details class="tdtl">
-    <summary>📊 Moda en datos agrupados (intervalos)</summary>
+    <summary>🏛️ Poderes del Estado y Administración</summary>
     <div class="tbody">
-      <p>Cuando los datos vienen en rangos, usamos la formula de Czuber. Primero identifica la <strong style="color:var(--tx)">clase modal</strong> (el intervalo con mas frecuencia).</p>
-      <div class="fml">Mo = L + [(f - f-1) / ((f - f-1) + (f - f+1))] x A</div>
-      <p><strong style="color:var(--ac4)">Que es cada variable (con tabla de ejemplo):</strong></p>
-      <table class="mt">
-        <tr><th>Variable</th><th>Que es</th><th>Como identificarla en la tabla</th><th>Ejemplo</th></tr>
-        <tr><td><strong>L</strong></td><td>Limite inferior de la clase modal</td><td>El numero de la IZQUIERDA del intervalo con mas frecuencia</td><td>20</td></tr>
-        <tr><td><strong>f</strong></td><td>Frecuencia de la clase modal</td><td>El numero MAS ALTO en la columna frecuencia</td><td>15</td></tr>
-        <tr><td><strong>f-1</strong></td><td>Frecuencia ANTERIOR</td><td>La frecuencia del intervalo justo ARRIBA de la clase modal</td><td>8</td></tr>
-        <tr><td><strong>f+1</strong></td><td>Frecuencia SIGUIENTE</td><td>La frecuencia del intervalo justo ABAJO de la clase modal</td><td>12</td></tr>
-        <tr><td><strong>A</strong></td><td>Amplitud</td><td>Limite superior MENOS limite inferior (25 - 20 = 5)</td><td>5</td></tr>
-      </table>
-      <table class="mt" style="margin-top:.7rem">
-        <tr><th>Intervalo</th><th>Frecuencia (f)</th><th>Rol en la formula</th></tr>
-        <tr><td>15 - 20</td><td>8</td><td>&larr; esta es f-1 (anterior)</td></tr>
-        <tr class="hl"><td>20 - 25</td><td>15</td><td>&larr; CLASE MODAL (f mas alta), L = 20</td></tr>
-        <tr><td>25 - 30</td><td>12</td><td>&larr; esta es f+1 (siguiente)</td></tr>
-        <tr><td>30 - 35</td><td>10</td><td>-</td></tr>
-      </table>
-      <div class="fml">Mo = 20 + [(15-8) / ((15-8)+(15-12))] x 5\n   = 20 + [7 / (7+3)] x 5\n   = 20 + 0.7 x 5 = 23.5</div>
+      <p><strong style="color:var(--ac4)">Los tres poderes del Estado Dominicano:</strong> Ejecutivo, Legislativo y Judicial.</p>
+      <p><strong style="color:var(--ac4)">Gobierno Local (Municipal):</strong> Su función principal es gestionar los asuntos de la comunidad.</p>
+      <p><strong style="color:var(--ac4)">Junta Central Electoral (JCE):</strong> Su función principal es organizar y supervisar las elecciones.</p>
+      <p><strong style="color:var(--ac4)">Administración Pública:</strong> La gestión de los recursos del estado.</p>
+      <p><strong style="color:var(--ac4)">Función Pública:</strong> Formada por los servidores y empleados del estado.</p>
     </div>
   </details>
 
   <details class="tdtl">
-    <summary>📐 Mediana en datos agrupados</summary>
+    <summary>🌐 Valores, Ciudadanía y Otros Derechos</summary>
     <div class="tbody">
-      <p>La mediana divide los datos en dos mitades iguales. Para datos agrupados:</p>
-      <div class="fml">Me = L + [(n/2 - F-1) / fi] x A</div>
-      <table class="mt">
-        <tr><th>Variable</th><th>Que es</th><th>Como encontrarla</th></tr>
-        <tr><td><strong>n/2</strong></td><td>La mitad del total de datos</td><td>Total de datos dividido entre 2. Ej: 80/2 = 40</td></tr>
-        <tr><td><strong>L</strong></td><td>Limite inferior de la clase mediana</td><td>El numero izquierdo del intervalo donde cae n/2</td></tr>
-        <tr><td><strong>F-1</strong></td><td>Frecuencia acumulada ANTERIOR</td><td>La suma de frecuencias de todos los intervalos ANTES de la clase mediana</td></tr>
-        <tr><td><strong>fi</strong></td><td>Frecuencia del intervalo mediana</td><td>Solo la frecuencia propia de ese intervalo (no acumulada)</td></tr>
-        <tr><td><strong>A</strong></td><td>Amplitud</td><td>Limite superior menos limite inferior</td></tr>
-      </table>
-      <p style="margin-top:.6rem"><strong style="color:var(--ac4)">Como encontrar la clase mediana:</strong> Calcula n/2, luego mira la columna Fi (acumulada) y busca el primer intervalo donde Fi sea mayor o igual a n/2.</p>
-      <table class="mt" style="margin-top:.6rem">
-        <tr><th>Intervalo (kg)</th><th>fi</th><th>Fi (acumulada)</th><th>Nota</th></tr>
-        <tr><td>[0, 2)</td><td>10</td><td>10</td><td>-</td></tr>
-        <tr><td>[2, 4)</td><td>25</td><td>35</td><td>F-1 = 35</td></tr>
-        <tr class="hl"><td>[4, 6)</td><td>30</td><td>65</td><td>&larr; aqui Fi supera 40 = clase mediana</td></tr>
-        <tr><td>[6, 8)</td><td>15</td><td>80</td><td>-</td></tr>
-      </table>
-      <div class="fml">n/2 = 80/2 = 40  &rarr; clase mediana: [4, 6)\nMe = 4 + [(40 - 35) / 30] x 2 = 4 + 0.333 = 4.33 kg</div>
-    </div>
-  </details>
-
-  <details class="tdtl">
-    <summary>📈 Varianza y Desviacion Estandar</summary>
-    <div class="tbody">
-      <p>La varianza mide que tan separados estan los datos de su promedio. Datos muy juntos = varianza pequena. Datos muy dispersos = varianza grande.</p>
-      <div class="fml">Media (x) = suma de todos los valores / n\nVarianza (o2) = suma de (xi - x)^2 / N\nDesv. Estandar (o) = raiz cuadrada de o2\nCV = (o / x) x 100%</div>
-      <p><strong style="color:var(--ac4)">Ejemplo paso a paso:</strong> datos 12, 15, 10, 18, 14</p>
-      <table class="mt">
-        <tr><th>xi</th><th>xi - media</th><th>(xi - media)^2</th></tr>
-        <tr><td>12</td><td>12-14 = -2</td><td>4</td></tr>
-        <tr><td>15</td><td>15-14 = 1</td><td>1</td></tr>
-        <tr><td>10</td><td>10-14 = -4</td><td>16</td></tr>
-        <tr><td>18</td><td>18-14 = 4</td><td>16</td></tr>
-        <tr><td>14</td><td>14-14 = 0</td><td>0</td></tr>
-        <tr class="hl"><td>Suma=69, media=14</td><td>-</td><td>Suma=37</td></tr>
-      </table>
-      <div class="fml">o2 = 37/5 = 7.4    o = raiz(7.4) = 2.72    CV = (2.72/14)x100 = 19.4%</div>
-      <p><strong style="color:var(--tx)">CV bajo (menos de 10%) = datos muy homogeneos. CV alto (mas de 30%) = mucha dispersion.</strong></p>
-    </div>
-  </details>
-
-  <details class="tdtl">
-    <summary>🎯 Distribucion Binomial</summary>
-    <div class="tbody">
-      <p>Usala cuando: tienes n intentos, cada intento tiene solo exito o fracaso, y la probabilidad p es igual en cada intento.</p>
-      <div class="fml">P(X = k) = C(n,k) x p^k x (1-p)^(n-k)</div>
-      <table class="mt">
-        <tr><th>Simbolo</th><th>Nombre</th><th>Como identificarlo en el problema</th></tr>
-        <tr><td><strong>n</strong></td><td>Numero de intentos</td><td>"Se hacen 10 envios" = n=10</td></tr>
-        <tr><td><strong>k</strong></td><td>Exitos que nos piden</td><td>"exactamente 9 exitosos" = k=9</td></tr>
-        <tr><td><strong>p</strong></td><td>Probabilidad de exito</td><td>"92% son exitosos" = p=0.92</td></tr>
-        <tr><td><strong>1-p</strong></td><td>Probabilidad de fracaso</td><td>1 - 0.92 = 0.08</td></tr>
-        <tr><td><strong>C(n,k)</strong></td><td>Combinaciones</td><td>n! / (k! x (n-k)!)</td></tr>
-      </table>
-      <div class="fml">Media esperada: mu = n x p</div>
-    </div>
-  </details>
-
-  <details class="tdtl">
-    <summary>🎲 Probabilidad Clasica</summary>
-    <div class="tbody">
-      <div class="fml">P(A) = casos favorables / total de casos posibles</div>
-      <table class="mt">
-        <tr><th>Formula</th><th>Cuando usarla</th><th>Ejemplo</th></tr>
-        <tr><td>P(A') = 1 - P(A)</td><td>Probabilidad de que NO ocurra A</td><td>P(no cuaderno) = 1 - 35/120</td></tr>
-        <tr><td>P(AuB) = P(A)+P(B)-P(AyB)</td><td>A O B cuando hay personas que tienen ambos</td><td>Piscina O gimnasio, con algunos usando ambas</td></tr>
-        <tr><td>P(AuB) = P(A)+P(B)</td><td>A O B cuando son excluyentes (no pueden pasar juntos)</td><td>Natacion O tenis</td></tr>
-        <tr><td>E = n x P(A)</td><td>Cuantos se esperan en n intentos</td><td>240 estudiantes x P(resaltador)</td></tr>
-      </table>
+      <p><strong style="color:var(--ac4)">Valores y Símbolos Patrios:</strong> Principios morales, históricos y culturales que fundamentan la identidad de la nación.</p>
+      <p><strong style="color:var(--ac4)">Ciudadanía Integral:</strong> Enfoque que garantiza el acceso armonioso a todos los derechos humanos (políticos, civiles, económicos, sociales y culturales).</p>
+      <p><strong style="color:var(--ac4)">Derechos Culturales y Deportivos:</strong> Derechos humanos fundamentales orientados al desarrollo integral de la persona.</p>
+      <p><strong style="color:var(--ac4)">Derechos Colectivos y del Medio Ambiente:</strong> Garantías legales que pertenecen a toda la comunidad y buscan proteger el entorno natural.</p>
+      <p><strong style="color:var(--ac4)">Garantías de los Derechos Fundamentales:</strong> Mecanismos jurídicos para asegurar la protección, respeto y efectividad de los derechos humanos.</p>
     </div>
   </details>
 </div>
@@ -338,15 +250,13 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 <div id="quiz" class="sec">
   <div id="qsetup">
     <h2>✏️ Quiz</h2>
-    <p style="color:var(--tx2);font-size:.83rem;margin-bottom:1rem;">Selecciona el tema. Cada pregunta tiene un boton de pista si lo necesitas.</p>
+    <p style="color:var(--tx2);font-size:.83rem;margin-bottom:1rem;">Selecciona el tema. Cada pregunta tiene un botón de pista si lo necesitas.</p>
     <div class="tsel">
-      <button type="button" class="tpill on" data-t="all" onclick="selTopic(this)">🎲 Todos</button>
-      <button type="button" class="tpill" data-t="prob_total" onclick="selTopic(this)">🔗 Prob. Total</button>
-      <button type="button" class="tpill" data-t="bayes" onclick="selTopic(this)">🔄 Bayes</button>
-      <button type="button" class="tpill" data-t="medidas" onclick="selTopic(this)">📊 Moda/Mediana</button>
-      <button type="button" class="tpill" data-t="varianza" onclick="selTopic(this)">📈 Varianza</button>
-      <button type="button" class="tpill" data-t="binomial" onclick="selTopic(this)">🎯 Binomial</button>
-      <button type="button" class="tpill" data-t="clasica" onclick="selTopic(this)">🎲 Clasica</button>
+      <button type="button" class="tpill on" data-t="all" onclick="selTopic(this)">📋 Todos</button>
+      <button type="button" class="tpill" data-t="conceptos" onclick="selTopic(this)">📋 Conceptos</button>
+      <button type="button" class="tpill" data-t="derechos" onclick="selTopic(this)">⚖️ Derechos</button>
+      <button type="button" class="tpill" data-t="poderes" onclick="selTopic(this)">🏛️ Poderes</button>
+      <button type="button" class="tpill" data-t="valores" onclick="selTopic(this)">🌐 Valores</button>
     </div>
     <button type="button" class="btn btn-p" onclick="startQuiz()">▶ Iniciar Quiz</button>
   </div>
@@ -384,17 +294,17 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 <!-- FLASHCARDS -->
 <div id="flash" class="sec">
   <h2>🃏 Flashcards</h2>
-  <p style="color:var(--tx2);font-size:.83rem;margin-bottom:.8rem;">Toca la tarjeta para ver la formula con cada variable explicada en detalle.</p>
-  <div class="fccnt" id="fccnt">Tarjeta 1 de 9</div>
+  <p style="color:var(--tx2);font-size:.83rem;margin-bottom:.8rem;">Toca la tarjeta para ver la definición detallada.</p>
+  <div class="fccnt" id="fccnt">Tarjeta 1 de 11</div>
   <div class="fcwrap">
     <div class="fc" id="fccard" onclick="flipFC()">
       <div class="fcf">
         <div class="fclbl" id="fclbl">Tema</div>
         <div class="fctxt" id="fctxt"></div>
-        <div class="fchint">👆 toca para ver la explicacion</div>
+        <div class="fchint">👆 toca para ver la explicación</div>
       </div>
       <div class="fcb">
-        <div class="fclbl">Formula y Variables</div>
+        <div class="fclbl">Definición y Detalles</div>
         <div class="fcfml" id="fcfml"></div>
         <div class="fcvars" id="fcvars"></div>
       </div>
@@ -411,7 +321,7 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 <div id="surv" class="sec">
   <div id="ssetup">
     <h2>❤️ Modo Supervivencia</h2>
-    <p style="color:var(--tx2);font-size:.83rem;margin-bottom:1rem;">Cada error te cuesta una vida. Hasta donde llegas?</p>
+    <p style="color:var(--tx2);font-size:.83rem;margin-bottom:1rem;">Cada error te cuesta una vida. ¿Hasta dónde llegas?</p>
     <div class="card">
       <div class="ct">Vidas iniciales</div>
       <div style="display:flex;gap:.45rem;flex-wrap:wrap">
@@ -480,607 +390,342 @@ details[open] summary{border-radius:7px 7px 0 0;border-bottom-color:transparent;
 </div>
 
 <script>
-// ===================== DATA =====================
-var QS = [
-// PROBABILIDAD TOTAL
-{t:'prob_total',
- q:'Planta con 3 maquinas. Maq.1 produce <strong>50%</strong> (2% defectos), Maq.2 <strong>30%</strong> (3% defectos), Maq.3 <strong>20%</strong> (5% defectos). Probabilidad de pieza defectuosa?',
- tbl:'<table class="mt"><tr><th>Maquina</th><th>Proporcion</th><th>% Defectos</th></tr><tr><td>Maquina 1</td><td>0.50</td><td>0.02</td></tr><tr><td>Maquina 2</td><td>0.30</td><td>0.03</td></tr><tr><td>Maquina 3</td><td>0.20</td><td>0.05</td></tr></table>',
- hint:'<div class="htitle">Como resolver - Probabilidad Total</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Multiplica cada proporcion por su porcentaje de defectos:<span class="hcalc">Maq.1: 0.50 x 0.02 = 0.010</span><span class="hcalc">Maq.2: 0.30 x 0.03 = 0.009</span><span class="hcalc">Maq.3: 0.20 x 0.05 = 0.010</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma los tres resultados:<span class="hcalc">0.010 + 0.009 + 0.010 = 0.029 = 2.9%</span></div></div>',
- opts:['2.5%','2.9%','3.1%','1.8%'],a:1,exp:'P = 0.50x0.02 + 0.30x0.03 + 0.20x0.05 = 0.029 = 2.9%'},
+  // ===================== DATA =====================
+  var QS = [
+    // CONCEPTOS
+    {t:'conceptos', q:'¿Cuál es el principio constitucional supremo que establece que el poder reside exclusivamente en el pueblo?', opts:['Soberanía','Moral','Derecho','Territorio'], a:0, hint:'<div class="htitle">Artículo 2 de la Constitución</div><div class="hstep"><div class="hnum">1</div><div class="htxt">"La soberanía nacional reside exclusivamente en el pueblo, de quien emanan todos los poderes..."</div></div>', exp:'La soberanía nacional reside exclusivamente en el pueblo.'},
+    {t:'conceptos', q:'¿Qué concepto permite distinguir acciones buenas o malas según criterios compartidos por una sociedad?', opts:['Derecho','Población','Moral','Soberanía'], a:2, hint:'<div class="htitle">Normas sociales</div><div class="hstep"><div class="hnum">1</div><div class="htxt">No es impuesta por el Estado, sino por la sociedad. No tiene sanción legal sino social.</div></div>', exp:'La moral son los criterios compartidos que permiten distinguir lo bueno de lo malo.'},
+    {t:'conceptos', q:'Conjunto de normas, principios y reglas que regulan la conducta humana en sociedad:', opts:['Soberanía','Moral','Derecho','Población'], a:2, hint:'<div class="htitle">Sistema normativo</div><div class="hstep"><div class="hnum">1</div><div class="htxt">A diferencia de la moral, es coercitivo y obligatorio para todos los ciudadanos.</div></div>', exp:'El derecho es el conjunto de normas que regulan la conducta humana.'},
+    {t:'conceptos', q:'Conjunto de personas que habitan de manera permanente en un territorio determinado:', opts:['Población','Territorio','Estado','Gobierno'], a:0, hint:'<div class="htitle">Elemento humano del Estado</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Sin este elemento, no existe nación. Es el conjunto de habitantes.</div></div>', exp:'La población es el conjunto de personas que habitan permanentemente un territorio.'},
+    {t:'conceptos', q:'Base física o espacio geográfico donde el Estado ejerce su soberanía y jurisdicción:', opts:['Población','Territorio','Soberanía','Nación'], a:1, hint:'<div class="htitle">Elemento físico</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Incluye suelo, subsuelo, espacio aéreo y mar territorial.</div></div>', exp:'El territorio es la base física donde el Estado ejerce su soberanía.'},
+    
+    // DERECHOS
+    {t:'derechos', q:'Los derechos fundamentales son prerrogativas inherentes a las personas reconocidas en el Título 2 de la Constitución Dominicana.', opts:['Verdadero','Falso'], a:0, hint:'<div class="htitle">Título II</div><div class="hstep"><div class="hnum">1</div><div class="htxt">El Título II se llama "De los Derechos, Garantías y Deberes Fundamentales".</div></div>', exp:'Verdadero. Están reconocidos en el Título II de la Constitución.'},
+    {t:'derechos', q:'Los derechos políticos son derechos relacionados con el arte y la cultura.', opts:['Verdadero','Falso'], a:1, hint:'<div class="htitle">Participación</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Los derechos políticos te permiten votar, ser votado y participar en la vida política.</div></div>', exp:'Falso. Los derechos políticos garantizan la participación en la vida política.'},
+    {t:'derechos', q:'Los derechos civiles garantizan la participación de los ciudadanos en la vida política y su desarrollo socio-económico.', opts:['Verdadero','Falso'], a:1, hint:'<div class="htitle">Derechos individuales</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Los derechos civiles protegen la libertad individual, la propiedad y la seguridad.</div></div>', exp:'Falso. Los derechos civiles son derechos individuales clásicos.'},
+    {t:'derechos', q:'Los derechos económicos y sociales incluyen alimentación, vivienda, educación, salud y seguridad social.', opts:['Verdadero','Falso'], a:0, hint:'<div class="htitle">Derechos prestacionales</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Requieren una acción activa del Estado para garantizarlos.</div></div>', exp:'Verdadero. Son derechos prestacionales que requieren acción del Estado.'},
 
-{t:'prob_total',
- q:'Red publica suministra <strong>70%</strong> de energia (1% de bajones), generadores solares el <strong>30%</strong> (4% bajones). Probabilidad de bajon?',
- tbl:'<table class="mt"><tr><th>Fuente</th><th>Proporcion</th><th>P(bajon)</th></tr><tr><td>Red publica</td><td>0.70</td><td>0.01</td></tr><tr><td>Solares</td><td>0.30</td><td>0.04</td></tr></table>',
- hint:'<div class="htitle">Como resolver - Probabilidad Total</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Multiplica cada fuente por su probabilidad de bajon:<span class="hcalc">Red publica: 0.70 x 0.01 = 0.007</span><span class="hcalc">Solares: 0.30 x 0.04 = 0.012</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma los dos resultados:<span class="hcalc">0.007 + 0.012 = 0.019 = 1.9%</span></div></div>',
- opts:['1.9%','2.5%','3.2%','1.5%'],a:0,exp:'P = 0.70x0.01 + 0.30x0.04 = 0.019 = 1.9%'},
+    // PODERES
+    {t:'poderes', q:'¿Cuáles son los tres poderes del Estado Dominicano?', opts:['Ejecutivo, Legislativo, Judicial','Municipal, Electoral, Judicial','Legislativo, Electoral, Ejecutivo','Judicial, Municipal, Legislativo'], a:0, hint:'<div class="htitle">Separación de poderes</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Propuesta por Montesquieu: Ejecutivo (Presidente), Legislativo (Congreso), Judicial (Cortes).</div></div>', exp:'Los tres poderes del Estado son el Ejecutivo, Legislativo y Judicial.'},
+    {t:'poderes', q:'¿Cuál es la principal función del gobierno local o municipal?', opts:['Gestionar los asuntos de la comunidad','Organizar las elecciones nacionales','Crear leyes nacionales','Administrar la justicia'], a:0, hint:'<div class="htitle">Ley 176-07</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Los municipios gestionan los servicios básicos y el desarrollo de la comunidad.</div></div>', exp:'Su función principal es gestionar los asuntos de la comunidad.'},
+    {t:'poderes', q:'¿Cuál es la función principal de la Junta Central Electoral Dominicana?', opts:['Organizar y supervisar las elecciones','Gestionar los asuntos municipales','Aprobar el presupuesto nacional','Juzgar a los funcionarios'], a:0, hint:'<div class="htitle">Árbitro electoral</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Es el organismo encargado de los procesos electorales y el registro civil.</div></div>', exp:'La JCE organiza y supervisa las elecciones.'},
+    {t:'poderes', q:'¿Qué se entiende por administración pública?', opts:['La gestión de los recursos del estado','La creación de leyes','La elección de funcionarios','La impartición de justicia'], a:0, hint:'<div class="htitle">Gestión estatal</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Es el conjunto de órganos que administran los recursos y servicios del Estado.</div></div>', exp:'Es la gestión de los recursos del estado.'},
+    {t:'poderes', q:'¿Quiénes forman parte de la función pública?', opts:['Los servidores y empleados del estado','Los políticos y legisladores','Los empresarios y comerciantes','Los jueces y fiscales'], a:0, hint:'<div class="htitle">Servidores</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Son las personas que trabajan para la administración del Estado.</div></div>', exp:'Los servidores y empleados del estado forman parte de la función pública.'},
 
-{t:'prob_total',
- q:'Sucursales: A <strong>40%</strong> (1% error), B <strong>35%</strong> (2% error), C <strong>25%</strong> (5% error). Probabilidad total de error?',
- tbl:'<table class="mt"><tr><th>Sucursal</th><th>Proporcion</th><th>P(error)</th></tr><tr><td>A</td><td>0.40</td><td>0.01</td></tr><tr><td>B</td><td>0.35</td><td>0.02</td></tr><tr><td>C</td><td>0.25</td><td>0.05</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Multiplica y suma cada sucursal:<span class="hcalc">A: 0.40 x 0.01 = 0.004</span><span class="hcalc">B: 0.35 x 0.02 = 0.007</span><span class="hcalc">C: 0.25 x 0.05 = 0.013</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.004 + 0.007 + 0.013 = <strong>0.024 = 2.4%</strong></div></div>',
- opts:['2.0%','2.4%','3.0%','1.7%'],a:1,exp:'P = 0.40x0.01 + 0.35x0.02 + 0.25x0.05 = 0.024 = 2.4%'},
+    // VALORES Y CIUDADANIA
+    {t:'valores', q:'Principios morales, históricos y culturales que fundamentan la identidad de la nación:', opts:['Valores y símbolos patrios','Ciudadanía integral','Derechos culturales','Garantías fundamentales'], a:0, hint:'<div class="htitle">Identidad nacional</div><div class="hstep"><div class="hnum">1</div><div class="htxt">La Bandera, el Escudo y el Himno son ejemplos de esto.</div></div>', exp:'Son los valores y símbolos patrios.'},
+    {t:'valores', q:'Enfoque que garantiza el acceso armonioso a todos los derechos humanos (Políticos, civiles, económicos, sociales y culturales):', opts:['Ciudadanía integral','Valores patrios','Derechos colectivos','Medio ambiente'], a:0, hint:'<div class="htitle">Acceso armonioso</div><div class="hstep"><div class="hnum">1</div><div class="htxt">No solo implica derechos políticos, sino también sociales y culturales.</div></div>', exp:'La ciudadanía integral garantiza el acceso a todos los derechos humanos.'},
+    {t:'valores', q:'Derechos humanos fundamentales orientados al desarrollo integral de la persona:', opts:['Derechos culturales y deportivos','Derechos civiles','Derechos políticos','Derechos colectivos'], a:0, hint:'<div class="htitle">Artículo 64</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Buscan el desarrollo pleno de la persona en la sociedad.</div></div>', exp:'Son los derechos culturales y deportivos.'},
+    {t:'valores', q:'Garantías legales que pertenecen a toda la comunidad y buscan proteger el entorno natural:', opts:['Derechos colectivos y del medio ambiente','Derechos individuales','Derechos políticos','Función pública'], a:0, hint:'<div class="htitle">Comunidad y ambiente</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Protegen el entorno natural y los intereses de la comunidad.</div></div>', exp:'Son los derechos colectivos y del medio ambiente.'},
+    {t:'valores', q:'Mecanismos jurídicos para asegurar la protección, el respeto y la efectividad de los derechos humanos:', opts:['Garantías de los derechos fundamentales','Administración pública','Función pública','Valores patrios'], a:0, hint:'<div class="htitle">Protección jurídica</div><div class="hstep"><div class="hnum">1</div><div class="htxt">El habeas corpus y el amparo son ejemplos de estos mecanismos.</div></div>', exp:'Son las garantías de los derechos fundamentales.'}
+  ];
 
-{t:'prob_total',
- q:'Prestamos: bajo riesgo <strong>40%</strong> (impago 1%), riesgo medio <strong>40%</strong> (impago 5%), alto riesgo <strong>20%</strong> (impago 15%). Probabilidad de impago?',
- tbl:'<table class="mt"><tr><th>Riesgo</th><th>Proporcion</th><th>P(impago)</th></tr><tr><td>Bajo</td><td>0.40</td><td>0.01</td></tr><tr><td>Medio</td><td>0.40</td><td>0.05</td></tr><tr><td>Alto</td><td>0.20</td><td>0.15</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">Bajo: 0.40 x 0.01 = 0.004</span><span class="hcalc">Medio: 0.40 x 0.05 = 0.020</span><span class="hcalc">Alto: 0.20 x 0.15 = 0.030</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.004 + 0.020 + 0.030 = <strong>0.054 = 5.4%</strong></div></div>',
- opts:['5.4%','4.8%','6.2%','3.9%'],a:0,exp:'P = 0.40x0.01 + 0.40x0.05 + 0.20x0.15 = 0.054 = 5.4%'},
+  // ===================== FLASHCARD DATA =====================
+  var FCS = [
+    {lbl:'Soberanía', front:'Soberanía Nacional - Principio Constitucional Supremo',
+     fml:'El poder reside exclusivamente en el pueblo.',
+     vars:[{n:'Artículo 2',d:'"La soberanía nacional reside exclusivamente en el pueblo, de quien emanan todos los poderes".'}]},
+    {lbl:'Moral', front:'Moral - Distinción social de acciones',
+     fml:'Permite distinguir qué acciones son consideradas buenas o malas según criterios compartidos por una sociedad.',
+     vars:[{n:'Característica',d:'No es impuesta por el Estado ni tiene sanción legal, sino social.'}]},
+    {lbl:'Derecho', front:'Derecho - Conjunto de normas',
+     fml:'Conjunto de normas, principios y reglas que regulan la conducta humana en sociedad.',
+     vars:[{n:'Característica',d:'Es coercitivo y de cumplimiento obligatorio, impuesto por el Estado.'}]},
+    {lbl:'Población', front:'Población - Elemento humano del Estado',
+     fml:'Conjunto de personas que habitan de manera permanente en un territorio determinado.',
+     vars:[{n:'Importancia',d:'Sin población no existe nación. Es el sustrato humano del Estado.'}]},
+    {lbl:'Territorio', front:'Territorio - Base física del Estado',
+     fml:'Base física o espacio geográfico donde el Estado ejerce toda su soberanía y jurisdicción.',
+     vars:[{n:'Componentes',d:'Suelo, subsuelo, espacio aéreo y mar territorial.'}]},
+    {lbl:'Derechos Fundamentales', front:'Derechos Fundamentales - Título II de la Constitución',
+     fml:'Prerrogativas inherentes a las personas reconocidas en el Título 2 de la Constitución Dominicana.',
+     vars:[{n:'Civiles',d:'Derechos individuales (libertad, propiedad, seguridad).'},
+           {n:'Políticos',d:'Participación en la vida política (votar y ser votado).'},
+           {n:'Económicos y Sociales',d:'Derechos prestacionales (alimentación, vivienda, educación, salud).'}]},
+    {lbl:'Poderes del Estado', front:'Los Tres Poderes del Estado Dominicano',
+     fml:'Ejecutivo, Legislativo y Judicial.',
+     vars:[{n:'Ejecutivo',d:'Presidente de la República. Encargado de administrar el Estado.'},
+           {n:'Legislativo',d:'Congreso Nacional (Senado y Cámara de Diputados). Crea las leyes.'},
+           {n:'Judicial',d:'Suprema Corte de Justicia y demás tribunales. Administra justicia.'}]},
+    {lbl:'Valores y Símbolos Patrios', front:'Valores y Símbolos Patrios - Identidad Nacional',
+     fml:'Principios morales, históricos y culturales que fundamentan la identidad de la nación.',
+     vars:[{n:'Ejemplos',d:'La Bandera Nacional, el Escudo, el Himno Nacional.'}]},
+    {lbl:'Ciudadanía Integral', front:'Ciudadanía Integral - Acceso armonioso a derechos',
+     fml:'Enfoque que garantiza el acceso armonioso a todos los derechos humanos: políticos, civiles, económicos, sociales y culturales.',
+     vars:[{n:'Objetivo',d:'Lograr que el ciudadano disfrute plenamente de todos sus derechos, no solo los políticos.'}]},
+    {lbl:'Derechos Culturales y Deportivos', front:'Derechos Culturales y Deportivos - Desarrollo integral',
+     fml:'Derechos humanos fundamentales orientados al desarrollo integral de la persona.',
+     vars:[{n:'Constitución',d:'Reconocidos en el Artículo 64 de la Constitución.'}]},
+    {lbl:'Derechos Colectivos', front:'Derechos Colectivos y del Medio Ambiente',
+     fml:'Garantías legales que pertenecen a toda la comunidad o grupos determinados, y buscan proteger el entorno natural.',
+     vars:[{n:'Base Constitucional',d:'Artículos 66 y 67 de la Constitución.'}]},
+    {lbl:'Garantías de los Derechos', front:'Garantías de los Derechos Fundamentales',
+     fml:'Mecanismos jurídicos judiciales e institucionales establecidos por el Estado para asegurar la protección, el respeto y efectividad de los derechos humanos.',
+     vars:[{n:'Ejemplos',d:'El Habeas Corpus, la Acción de Amparo.'}]}
+  ];
 
-{t:'prob_total',
- q:'El <strong>5%</strong> de la poblacion esta enfermo. Prueba positivo en 98% de enfermos, y 3% de falsos positivos en sanos. Probabilidad de resultado positivo?',
- tbl:'<table class="mt"><tr><th>Grupo</th><th>Proporcion</th><th>P(positivo)</th></tr><tr><td>Enfermos</td><td>0.05</td><td>0.98</td></tr><tr><td>Sanos</td><td>0.95 (= 1 - 0.05)</td><td>0.03 (falso positivo)</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Los sanos son el complemento: 1 - 0.05 = 0.95<span class="hcalc">Enfermos: 0.05 x 0.98 = 0.049</span><span class="hcalc">Sanos (falso +): 0.95 x 0.03 = 0.028</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.049 + 0.028 = <strong>0.077 = 7.7%</strong></div></div>',
- opts:['5.3%','7.7%','9.1%','6.5%'],a:1,exp:'P = 0.05x0.98 + 0.95x0.03 = 0.077 = 7.7%'},
-
-{t:'prob_total',
- q:'Estudiante va a clases: carro <strong>20%</strong> (5% tarde), transporte publico <strong>60%</strong> (15% tarde), caminando <strong>20%</strong> (2% tarde). Probabilidad de llegar tarde?',
- tbl:'<table class="mt"><tr><th>Medio</th><th>Proporcion</th><th>P(tarde)</th></tr><tr><td>Carro</td><td>0.20</td><td>0.05</td></tr><tr><td>Transporte publico</td><td>0.60</td><td>0.15</td></tr><tr><td>Caminando</td><td>0.20</td><td>0.02</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">Carro: 0.20 x 0.05 = 0.010</span><span class="hcalc">Publico: 0.60 x 0.15 = 0.090</span><span class="hcalc">Caminando: 0.20 x 0.02 = 0.004</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.010 + 0.090 + 0.004 = <strong>0.104 = 10.4%</strong></div></div>',
- opts:['8.5%','10.4%','12%','9.2%'],a:1,exp:'P = 0.20x0.05 + 0.60x0.15 + 0.20x0.02 = 0.104 = 10.4%'},
-
-{t:'prob_total',
- q:'P(lluvia) = 0.30. Si llueve: P(cancelar) = 0.90. Si no llueve: P(cancelar) = 0.10. Probabilidad de cancelacion?',
- tbl:'<table class="mt"><tr><th>Situacion</th><th>Probabilidad</th><th>P(cancelar)</th></tr><tr><td>Llueve</td><td>0.30</td><td>0.90</td></tr><tr><td>No llueve</td><td>0.70 (= 1 - 0.30)</td><td>0.10</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt">P(no llueve) = 1 - 0.30 = 0.70<span class="hcalc">Con lluvia: 0.30 x 0.90 = 0.270</span><span class="hcalc">Sin lluvia: 0.70 x 0.10 = 0.070</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.270 + 0.070 = <strong>0.340 = 34%</strong></div></div>',
- opts:['27%','34%','40%','28%'],a:1,exp:'P = 0.30x0.90 + 0.70x0.10 = 0.340 = 34%'},
-
-{t:'prob_total',
- q:'El <strong>60%</strong> estudio con simuladores (90% aprueba) y el <strong>40%</strong> no (45% aprueba). Probabilidad de aprobar?',
- tbl:'<table class="mt"><tr><th>Grupo</th><th>Proporcion</th><th>P(aprobar)</th></tr><tr><td>Con simuladores</td><td>0.60</td><td>0.90</td></tr><tr><td>Sin simuladores</td><td>0.40</td><td>0.45</td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">Con simul: 0.60 x 0.90 = 0.540</span><span class="hcalc">Sin simul: 0.40 x 0.45 = 0.180</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Suma: 0.540 + 0.180 = <strong>0.720 = 72%</strong></div></div>',
- opts:['70%','72%','75%','68%'],a:1,exp:'P = 0.60x0.90 + 0.40x0.45 = 0.72 = 72%'},
-
-// BAYES
-{t:'bayes',
- q:'Proveedor X: 70% chips (2% defectuosos). Proveedor Y: 30% (5% defectuosos). Si el chip es <strong>defectuoso</strong>, probabilidad de que sea del Proveedor Y?',
- tbl:'<table class="mt"><tr><th>Proveedor</th><th>Proporcion</th><th>P(defecto)</th><th>Producto</th></tr><tr><td>X</td><td>0.70</td><td>0.02</td><td>0.014</td></tr><tr class="hl"><td>Y</td><td>0.30</td><td>0.05</td><td>0.015 &larr; numerador</td></tr><tr><td colspan="3"><strong>Total P(defecto)</strong></td><td><strong>0.029</strong></td></tr></table>',
- hint:'<div class="htitle">Bayes: dado el resultado, quien fue?</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Calcula el total (denominador) con Prob. Total:<span class="hcalc">X: 0.70 x 0.02 = 0.014</span><span class="hcalc">Y: 0.30 x 0.05 = 0.015</span><span class="hcalc">Total = 0.029</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">El numerador es solo la rama de Y (lo que nos preguntan):<span class="hcalc">P(Y|defecto) = 0.015 / 0.029 = 0.517 = 51.7%</span></div></div>',
- opts:['41%','51%','38%','60%'],a:1,exp:'P(Y|defecto) = 0.015 / 0.029 = 51.7%'},
-
-{t:'bayes',
- q:'60% son ingenieros (80% supera la prueba tecnica), 40% licenciados (40% supera). Si el candidato <strong>aprobo</strong>, probabilidad de que sea ingeniero?',
- tbl:'<table class="mt"><tr><th>Perfil</th><th>Proporcion</th><th>P(aprueba)</th><th>Producto</th></tr><tr class="hl"><td>Ingeniero</td><td>0.60</td><td>0.80</td><td>0.48 &larr; numerador</td></tr><tr><td>Licenciado</td><td>0.40</td><td>0.40</td><td>0.16</td></tr><tr><td colspan="3"><strong>Total</strong></td><td><strong>0.64</strong></td></tr></table>',
- hint:'<div class="htitle">Como resolver con Bayes</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Total (denominador):<span class="hcalc">0.60 x 0.80 = 0.48</span><span class="hcalc">0.40 x 0.40 = 0.16</span><span class="hcalc">Total = 0.64</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Numerador = solo la rama de ingenieros:<span class="hcalc">P(Ing|aprobo) = 0.48 / 0.64 = 0.75 = 75%</span></div></div>',
- opts:['65%','75%','80%','85%'],a:1,exp:'P(Ingeniero|aprobo) = 0.48 / 0.64 = 75%'},
-
-{t:'bayes',
- q:'Mensajeria A: 80% pedidos (5% retraso). Mensajeria B: 20% (15% retraso). Si el paquete llego <strong>tarde</strong>, probabilidad de que sea de la Mensajeria B?',
- tbl:'<table class="mt"><tr><th>Empresa</th><th>Proporcion</th><th>P(tarde)</th><th>Producto</th></tr><tr><td>A</td><td>0.80</td><td>0.05</td><td>0.040</td></tr><tr class="hl"><td>B</td><td>0.20</td><td>0.15</td><td>0.030 &larr; numerador</td></tr><tr><td colspan="3"><strong>Total</strong></td><td><strong>0.070</strong></td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">A: 0.80 x 0.05 = 0.040</span><span class="hcalc">B: 0.20 x 0.15 = 0.030</span><span class="hcalc">Total = 0.070</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">P(B|tarde) = 0.030 / 0.070 = <strong>0.429 = 42.9%</strong></div></div>',
- opts:['30%','42.9%','50%','60%'],a:1,exp:'P(B|tarde) = 0.030/0.070 = 42.9%'},
-
-{t:'bayes',
- q:'Llueve 30% de dias. Pronostico acierta 80% cuando llueve, falla 10% cuando no llueve. Si el pronostico dice "llovera", probabilidad real de lluvia?',
- tbl:'<table class="mt"><tr><th>Situacion</th><th>Prob.</th><th>P(pronostica lluvia)</th><th>Producto</th></tr><tr class="hl"><td>Si llueve</td><td>0.30</td><td>0.80</td><td>0.240 &larr; numerador</td></tr><tr><td>No llueve</td><td>0.70</td><td>0.10</td><td>0.070</td></tr><tr><td colspan="3"><strong>Total</strong></td><td><strong>0.310</strong></td></tr></table>',
- hint:'<div class="htitle">Como resolver</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">Llueve: 0.30 x 0.80 = 0.240</span><span class="hcalc">No llueve: 0.70 x 0.10 = 0.070</span><span class="hcalc">Total = 0.310</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">P(lluvia|pronostico) = 0.240 / 0.310 = <strong>77.4%</strong></div></div>',
- opts:['70%','77.4%','85%','60%'],a:1,exp:'P(lluvia|pronostica) = 0.24/0.31 = 77.4%'},
-
-// MODA Y MEDIANA
-{t:'medidas',
- q:'Calificaciones: 7,8,7,9,6,7,10,8,7,5,7,8,9,7,6. Cual es la moda?',
- tbl:'<table class="mt"><tr><th>Valor</th><th>Frecuencia (veces que aparece)</th></tr><tr><td>5</td><td>1</td></tr><tr><td>6</td><td>2</td></tr><tr class="hl"><td>7</td><td>6 &larr; el mas frecuente = MODA</td></tr><tr><td>8</td><td>3</td></tr><tr><td>9</td><td>2</td></tr><tr><td>10</td><td>1</td></tr></table>',
- hint:'<div class="htitle">Como encontrar la moda</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Cuenta cuantas veces aparece cada numero en la lista.</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">El que mas veces aparece es la moda. El 7 aparece 6 veces, mas que cualquier otro.</div></div>',
- opts:['6','7','8','9'],a:1,exp:'El 7 aparece 6 veces. Es el valor mas frecuente = Moda'},
-
-{t:'medidas',
- q:'Clase modal: intervalo 20-25, f=15, f-1=8 (anterior), f+1=12 (siguiente), L=20, A=5. Cual es el valor de la moda?',
- tbl:'<table class="mt"><tr><th>Intervalo</th><th>Frecuencia (f)</th><th>Rol en la formula</th></tr><tr><td>15 - 20</td><td>8</td><td>f-1: clase ANTERIOR a la modal</td></tr><tr class="hl"><td>20 - 25</td><td>15</td><td>CLASE MODAL (f mas alta), L = 20, A = 5</td></tr><tr><td>25 - 30</td><td>12</td><td>f+1: clase SIGUIENTE a la modal</td></tr></table>',
- hint:'<div class="htitle">Formula: Mo = L + [(f-f-1) / ((f-f-1)+(f-f+1))] x A</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Calcula las diferencias:<span class="hcalc">f - f-1 = 15 - 8 = 7</span><span class="hcalc">f - f+1 = 15 - 12 = 3</span><span class="hcalc">Denominador = 7 + 3 = 10</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Aplica la formula:<span class="hcalc">Mo = 20 + (7/10) x 5 = 20 + 3.5 = 23.5</span></div></div>',
- opts:['22.5','23.5','24.0','21.5'],a:1,exp:'Mo = 20 + [7/(7+3)] x 5 = 20 + 3.5 = 23.5'},
-
-{t:'medidas',
- q:'Salarios: clase modal 40-50, f=15, f-1=10, f+1=7, L=40, A=10. Cual es la moda?',
- tbl:'<table class="mt"><tr><th>Intervalo</th><th>Frecuencia</th><th>Rol</th></tr><tr><td>30 - 40</td><td>10</td><td>f-1 (anterior a la modal)</td></tr><tr class="hl"><td>40 - 50</td><td>15</td><td>CLASE MODAL, L = 40, A = 10</td></tr><tr><td>50 - 60</td><td>7</td><td>f+1 (siguiente a la modal)</td></tr></table>',
- hint:'<div class="htitle">Mo = L + [(f-f-1)/((f-f-1)+(f-f+1))] x A</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">f - f-1 = 15 - 10 = 5</span><span class="hcalc">f - f+1 = 15 - 7 = 8</span><span class="hcalc">Denominador = 5 + 8 = 13</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt"><span class="hcalc">Mo = 40 + (5/13) x 10 = 40 + 3.8 = 43.8</span></div></div>',
- opts:['42.5','43.8','41.5','45.0'],a:1,exp:'Mo = 40 + [5/13] x 10 = 40 + 3.8 = 43.8'},
-
-{t:'medidas',
- q:'80 paquetes. Clase mediana [4,6): L=4, F-1=35 (acumulada antes), fi=30, A=2. Cual es la mediana?',
- tbl:'<table class="mt"><tr><th>Intervalo (kg)</th><th>fi</th><th>Fi (acumulada)</th><th>Rol</th></tr><tr><td>[0, 2)</td><td>10</td><td>10</td><td>-</td></tr><tr><td>[2, 4)</td><td>25</td><td>35</td><td>F-1 = 35 (suma acumulada antes de la clase mediana)</td></tr><tr class="hl"><td>[4, 6)</td><td>30</td><td>65</td><td>CLASE MEDIANA (Fi supera 40), L=4, fi=30, A=2</td></tr><tr><td>[6, 8)</td><td>15</td><td>80</td><td>-</td></tr></table>',
- hint:'<div class="htitle">Me = L + [(n/2 - F-1) / fi] x A</div><div class="hstep"><div class="hnum">1</div><div class="htxt">n/2 = 80/2 = 40. La clase mediana es [4,6) porque su Fi (65) es la primera en superar 40.</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt"><span class="hcalc">Me = 4 + [(40 - 35) / 30] x 2</span><span class="hcalc">   = 4 + [5/30] x 2</span><span class="hcalc">   = 4 + 0.333 = 4.33 kg</span></div></div>',
- opts:['3.8 kg','4.33 kg','4.0 kg','4.5 kg'],a:1,exp:'Me = 4 + [(40-35)/30] x 2 = 4.33 kg'},
-
-{t:'medidas',
- q:'50 personas en taller. Frecuencias acumuladas (Fi): [0-10)=5, [10-20)=13, [20-30)=25, [30-40)=40. Cual es la clase mediana?',
- tbl:'<table class="mt"><tr><th>Intervalo</th><th>fi</th><th>Fi (acumulada)</th><th>Nota</th></tr><tr><td>[0, 10)</td><td>5</td><td>5</td><td>-</td></tr><tr><td>[10, 20)</td><td>8</td><td>13</td><td>-</td></tr><tr class="hl"><td>[20, 30)</td><td>12</td><td>25</td><td>&larr; aqui Fi llega a 25 = n/2</td></tr><tr><td>[30, 40)</td><td>15</td><td>40</td><td>-</td></tr><tr><td>[40, 50)</td><td>10</td><td>50</td><td>-</td></tr></table>',
- hint:'<div class="htitle">Como encontrar la clase mediana</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Calcula n/2:<span class="hcalc">n/2 = 50/2 = 25</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Busca el primer intervalo donde Fi sea mayor o igual a 25. Ese es [20,30) con Fi=25.</div></div>',
- opts:['[10,20)','[20,30)','[30,40)','[40,50)'],a:1,exp:'n/2=25. El primer intervalo donde Fi >= 25 es [20,30).'},
-
-// VARIANZA
-{t:'varianza',
- q:'Horas de estudio: 12,15,10,18,14,16,11,13,17,14. La suma de cuadrados es 60. Media=14. Cual es la varianza poblacional?',
- tbl:'<table class="mt"><tr><th>xi</th><th>xi - media</th><th>(xi - media)^2</th></tr><tr><td>12</td><td>-2</td><td>4</td></tr><tr><td>15</td><td>1</td><td>1</td></tr><tr><td>10</td><td>-4</td><td>16</td></tr><tr><td>18</td><td>4</td><td>16</td></tr><tr><td>14</td><td>0</td><td>0</td></tr><tr><td>16</td><td>2</td><td>4</td></tr><tr><td>11</td><td>-3</td><td>9</td></tr><tr><td>13</td><td>-1</td><td>1</td></tr><tr><td>17</td><td>3</td><td>9</td></tr><tr><td>14</td><td>0</td><td>0</td></tr><tr class="hl"><td>Suma=140, Media=14</td><td>-</td><td>Suma de cuadrados = 60</td></tr></table>',
- hint:'<div class="htitle">Varianza = suma de cuadrados / N</div><div class="hstep"><div class="hnum">1</div><div class="htxt">La media se calcula: 140 / 10 = 14</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Para cada dato: resta la media y eleva al cuadrado. Ya esta hecho en la tabla, la suma es 60.</div></div><div class="hstep"><div class="hnum">3</div><div class="htxt">Divide entre N (total de datos):<span class="hcalc">o2 = 60 / 10 = 6</span></div></div>',
- opts:['5','6','7','8'],a:1,exp:'o2 = 60/10 = 6'},
-
-{t:'varianza',
- q:'Si la varianza es o2 = 6, cual es la desviacion estandar?',
- hint:'<div class="htitle">Desviacion estandar = raiz cuadrada de la varianza</div><div class="hstep"><div class="hnum">1</div><div class="htxt">La desviacion estandar es simplemente la raiz cuadrada de la varianza:<span class="hcalc">o = raiz(6) = 2.449 ~ 2.44</span></div></div>',
- opts:['2.0','2.44','3.0','1.8'],a:1,exp:'o = raiz(6) = 2.44'},
-
-{t:'varianza',
- q:'Desviacion estandar o=2.44, media=14. Cual es el Coeficiente de Variacion (CV)?',
- hint:'<div class="htitle">CV = (o / media) x 100%</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Divide la desviacion estandar entre la media:<span class="hcalc">2.44 / 14 = 0.1743</span></div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Multiplica por 100 para obtener porcentaje:<span class="hcalc">0.1743 x 100 = 17.4%</span></div></div>',
- opts:['10%','17.4%','20%','12%'],a:1,exp:'CV = (2.44/14) x 100 = 17.4%'},
-
-{t:'varianza',
- q:'Edades: 23,25,22,24,26,22. Media=23.67. Suma de cuadrados=13.33. Cual es la varianza?',
- tbl:'<table class="mt"><tr><th>xi</th><th>xi - 23.67</th><th>(xi-23.67)^2</th></tr><tr><td>23</td><td>-0.67</td><td>0.45</td></tr><tr><td>25</td><td>1.33</td><td>1.77</td></tr><tr><td>22</td><td>-1.67</td><td>2.79</td></tr><tr><td>24</td><td>0.33</td><td>0.11</td></tr><tr><td>26</td><td>2.33</td><td>5.43</td></tr><tr><td>22</td><td>-1.67</td><td>2.79</td></tr><tr class="hl"><td>Suma=142, Media=23.67</td><td>-</td><td>Suma=13.33</td></tr></table>',
- hint:'<div class="htitle">Como calcular la varianza</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Media = 142 / 6 = 23.67</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Divide la suma de cuadrados entre N:<span class="hcalc">o2 = 13.33 / 6 = 2.22</span></div></div>',
- opts:['1.8','2.22','3.1','2.5'],a:1,exp:'o2 = 13.33/6 = 2.22'},
-
-{t:'varianza',
- q:'Un conjunto de datos tiene CV = 3%. Que indica esto?',
- hint:'<div class="htitle">Interpretacion del CV</div><div class="hstep"><div class="hnum">1</div><div class="htxt">El CV mide que tan grande es la dispersion comparada con la media.</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">CV menor a 10% significa que los datos estan muy cerca entre si (homogeneos). CV mayor a 30% indica mucha dispersion.</div></div>',
- opts:['Alta dispersion','Datos muy homogeneos','Error de calculo','Sin variacion'],a:1,exp:'CV=3% es muy bajo, los datos estan muy concentrados alrededor de la media.'},
-
-// BINOMIAL
-{t:'binomial',
- q:'P(exito)=0.92, n=10 envios. Cual es la formula correcta para P(exactamente 9 exitosos)?',
- hint:'<div class="htitle">P(X=k) = C(n,k) x p^k x (1-p)^(n-k)</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Identifica: n=10, k=9, p=0.92, q=1-0.92=0.08</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">C(10,9) = 10 (hay 10 formas de elegir 9 de 10)<span class="hcalc">P(X=9) = C(10,9) x 0.92^9 x 0.08^1</span><span class="hcalc">       = 10 x 0.4722 x 0.08 = 37.8%</span></div></div>',
- opts:['C(9,10)x0.92^9x0.08','C(10,9)x0.92^9x0.08','C(10,9)x0.92^10','C(9,10)x0.08^9'],a:1,exp:'P(X=9) = C(10,9) x 0.92^9 x 0.08^1'},
-
-{t:'binomial',
- q:'P(defecto)=0.02, maquina produce n=20 piezas. Cuantas piezas defectuosas se esperan EN PROMEDIO?',
- hint:'<div class="htitle">Media de la binomial = n x p</div><div class="hstep"><div class="hnum">1</div><div class="htxt">El valor esperado (promedio) de una distribucion binomial es simplemente n multiplicado por p:<span class="hcalc">Media = 20 x 0.02 = 0.4 piezas defectuosas</span></div></div>',
- opts:['0.4','0.5','1.0','0.2'],a:0,exp:'Media = n x p = 20 x 0.02 = 0.4'},
-
-{t:'binomial',
- q:'P(compra)=0.15, n=7 visitantes. Para calcular P(a lo sumo 1 compra) necesitas:',
- hint:'<div class="htitle">A lo sumo 1 significa X = 0 o X = 1</div><div class="hstep"><div class="hnum">1</div><div class="htxt">"A lo sumo 1" significa que puede ser 0 o 1, pero no mas. Por eso sumas ambas probabilidades.</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt"><span class="hcalc">P(X=0) = C(7,0) x 0.15^0 x 0.85^7 = 0.321</span><span class="hcalc">P(X=1) = C(7,1) x 0.15^1 x 0.85^6 = 0.396</span><span class="hcalc">P(X menor o igual a 1) = 0.321 + 0.396 = 71.7%</span></div></div>',
- opts:['Solo P(X=0)','P(X=0) + P(X=1)','P(X=1) + P(X=2)','P(X=0) x P(X=1)'],a:1,exp:'P(X<=1) = P(X=0) + P(X=1)'},
-
-{t:'binomial',
- q:'30% apoya una ley. n=15 adultos seleccionados. Cuantos se espera que esten a favor (media)?',
- hint:'<div class="htitle">Media = n x p</div><div class="hstep"><div class="hnum">1</div><div class="htxt">n=15 adultos, p=0.30 (probabilidad de estar a favor).<span class="hcalc">Media = 15 x 0.30 = 4.5 adultos</span></div></div>',
- opts:['3.0','4.5','5.0','6.0'],a:1,exp:'Media = 15 x 0.30 = 4.5'},
-
-// CLASICA
-{t:'clasica',
- q:'Papeleria: 120 articulos (40 boligrafos, 35 cuadernos, 28 resaltadores, 17 reglas). P(tomar un boligrafo)?',
- hint:'<div class="htitle">P(A) = casos favorables / total</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Casos favorables = 40 boligrafos. Total = 120 articulos.<span class="hcalc">P = 40/120 = 0.333 = 33%</span></div></div>',
- opts:['25%','33%','40%','28%'],a:1,exp:'P = 40/120 = 33%'},
-
-{t:'clasica',
- q:'Misma papeleria (35 cuadernos de 120). P(NO tomar un cuaderno)?',
- hint:'<div class="htitle">P(no A) = (total - favorables) / total</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Articulos que NO son cuadernos = 120 - 35 = 85<span class="hcalc">P = 85/120 = 0.708 = 70.8%</span></div></div>',
- opts:['70.8%','75%','65%','80%'],a:0,exp:'P = 85/120 = 70.8%'},
-
-{t:'clasica',
- q:'Club deportivo: 35% natacion, 45% futbol, 20% tenis. P(natacion O tenis)?',
- hint:'<div class="htitle">Eventos mutuamente excluyentes: P(AuB) = P(A)+P(B)</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Natacion y tenis son actividades separadas (nadie las hace a la vez), por eso se suman directamente:<span class="hcalc">P = 35% + 20% = 55%</span></div></div>',
- opts:['35%','55%','60%','70%'],a:1,exp:'P(natacion u tenis) = 35% + 20% = 55%'},
-
-{t:'clasica',
- q:'Clinica: 65% pide consulta, 50% laboratorio, 30% pide ambos. P(consulta O laboratorio)?',
- hint:'<div class="htitle">P(AuB) = P(A) + P(B) - P(AyB)</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Hay personas que piden ambos (overlap), por eso se resta para no contarlos dos veces.<span class="hcalc">P = 65% + 50% - 30% = 85%</span></div></div>',
- opts:['80%','85%','90%','75%'],a:1,exp:'P = 65%+50%-30% = 85%'},
-
-{t:'clasica',
- q:'Supermercado: 72% compra frutas, 58% lacteos, 40% compra ambos. P(frutas O lacteos)?',
- hint:'<div class="htitle">P(AuB) = P(A) + P(B) - P(AyB)</div><div class="hstep"><div class="hnum">1</div><div class="htxt">Hay clientes que compran ambas cosas, restamos el overlap:<span class="hcalc">P = 72% + 58% - 40% = 90%</span></div></div>',
- opts:['80%','90%','95%','85%'],a:1,exp:'P = 72%+58%-40% = 90%'},
-
-{t:'clasica',
- q:'Graduacion: 200 egresados, 75 Ingenieria, 60 Admin, 40 Derecho, 25 Medicina. P(primer llamado sea de Administracion)?',
- hint:'<div class="htitle">P(A) = casos favorables / total</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">P = 60 / 200 = 0.30 = 30%</span></div></div>',
- opts:['25%','30%','35%','40%'],a:1,exp:'P = 60/200 = 30%'},
-
-{t:'clasica',
- q:'Hotel: 68% usa piscina, 45% usa gimnasio, 25% usa ambas. Con 400 huespedes, cuantos usan SOLO la piscina?',
- hint:'<div class="htitle">Solo piscina = piscina - ambas</div><div class="hstep"><div class="hnum">1</div><div class="htxt">P(solo piscina) = 68% - 25% = 43%</div></div><div class="hstep"><div class="hnum">2</div><div class="htxt">Frecuencia esperada = n x P:<span class="hcalc">400 x 0.43 = 172 huespedes</span></div></div>',
- opts:['150','172','200','160'],a:1,exp:'P(solo piscina)=68%-25%=43%. 400x0.43=172'},
-
-{t:'clasica',
- q:'Veterinaria: 90 mascotas (36 perros, 28 gatos, 15 aves, 11 reptiles). P(proxima mascota sea un gato)?',
- hint:'<div class="htitle">P = casos favorables / total</div><div class="hstep"><div class="hnum">1</div><div class="htxt"><span class="hcalc">P = 28 / 90 = 0.311 = 31.1%</span></div></div>',
- opts:['25%','31.1%','35%','28%'],a:1,exp:'P = 28/90 = 31.1%'}
-];
-
-// ===================== FLASHCARD DATA =====================
-var FCS = [
-  {lbl:'Prob. Total', front:'Probabilidad Total - cuando hay varias fuentes posibles',
-   fml:'P(A) = P(fuente1) x P(evento|fuente1)\n      + P(fuente2) x P(evento|fuente2) + ...',
-   vars:[{n:'P(fuente)',d:'La proporcion de cada grupo. Ej: Maquina 1 produce 50% de las piezas = 0.50'},
-         {n:'P(evento|fuente)',d:'La probabilidad del evento DENTRO de ese grupo. Ej: esa maquina tiene 2% de defectos = 0.02'},
-         {n:'Resultado',d:'Multiplica cada par y suma todo. Las proporciones siempre deben sumar 1.00 (100%)'}]},
-  {lbl:'Bayes', front:'Teorema de Bayes - dado el resultado, quien fue la causa?',
-   fml:'P(causa|resultado) = [rama de esa causa] / [total]',
-   vars:[{n:'Denominador',d:'El total P(resultado) calculado con Probabilidad Total. Es la suma de todas las ramas.'},
-         {n:'Numerador',d:'Solo el producto de la causa que te preguntan. Ej: solo la rama del Proveedor Y.'},
-         {n:'Clave',d:'El denominador es siempre igual. El numerador cambia segun que causa te pregunten.'}]},
-  {lbl:'Moda (no agrupados)', front:'Moda en datos no agrupados - el valor que mas se repite',
-   fml:'Moda = valor con la frecuencia mas alta',
-   vars:[{n:'Paso 1',d:'Haz una tabla contando cuantas veces aparece cada valor'},
-         {n:'Paso 2',d:'El valor con el numero mas alto en la columna frecuencia ES la moda'},
-         {n:'Bimodal',d:'Si dos valores tienen la misma frecuencia maxima, hay DOS modas (distribucion bimodal)'}]},
-  {lbl:'Moda (agrupados)', front:'Moda en datos agrupados - formula de Czuber',
-   fml:'Mo = L + [(f - f-1) / ((f-f-1) + (f-f+1))] x A',
-   vars:[{n:'L',d:'Limite inferior de la clase modal. Es el numero de la IZQUIERDA del intervalo con mas frecuencia. Ej: en [20-25] es L=20'},
-         {n:'f',d:'Frecuencia de la clase modal. Es el numero MAS ALTO en la columna de frecuencias de la tabla.'},
-         {n:'f-1',d:'Frecuencia ANTERIOR. La frecuencia del intervalo que esta justo ARRIBA de la clase modal en la tabla.'},
-         {n:'f+1',d:'Frecuencia SIGUIENTE. La frecuencia del intervalo que esta justo ABAJO de la clase modal en la tabla.'},
-         {n:'A',d:'Amplitud del intervalo. Es limite superior MENOS limite inferior. Ej: [20-25] -> A = 25-20 = 5'}]},
-  {lbl:'Mediana', front:'Mediana en datos agrupados - el valor del centro',
-   fml:'Me = L + [(n/2 - F-1) / fi] x A',
-   vars:[{n:'n/2',d:'La mitad del total de datos. Con 80 datos: n/2 = 40. Esto te dice en que posicion esta la mediana.'},
-         {n:'L',d:'Limite inferior de la clase mediana. El numero izquierdo del intervalo donde cae n/2.'},
-         {n:'F-1',d:'Frecuencia acumulada ANTERIOR. Es la suma de frecuencias de TODOS los intervalos antes de la clase mediana. No es fi, es la columna Fi acumulada.'},
-         {n:'fi',d:'Frecuencia del intervalo mediana. Solo la frecuencia propia de ese intervalo (sin acumular).'},
-         {n:'A',d:'Amplitud. Limite superior menos limite inferior del intervalo mediana.'},
-         {n:'Como hallar clase mediana',d:'Calcula n/2. Busca en la columna Fi (acumulada) el PRIMER intervalo donde Fi sea mayor o igual a n/2.'}]},
-  {lbl:'Varianza', front:'Varianza y Desviacion Estandar - cuanta dispersion hay',
-   fml:'Media = suma de todos los xi / n\nVarianza (o2) = suma de (xi-media)^2 / N\nDesv. Est. (o) = raiz cuadrada de o2\nCV = (o / media) x 100%',
-   vars:[{n:'Media',d:'Primero siempre calculas la media: suma todos los datos y divide entre cuantos hay.'},
-         {n:'(xi-media)^2',d:'Para cada dato: resta la media y eleva al cuadrado. Esto siempre da positivo. Asi evitas que los negativos cancelen los positivos.'},
-         {n:'N vs n-1',d:'Usa N (total datos) para varianza POBLACIONAL. Usa n-1 para varianza MUESTRAL (cuando los datos son una muestra).'},
-         {n:'CV bajo',d:'CV menor a 10% significa datos muy homogeneos (muy parecidos entre si).'},
-         {n:'CV alto',d:'CV mayor a 30% significa mucha dispersion (datos muy distintos entre si).'}]},
-  {lbl:'Binomial', front:'Distribucion Binomial - n intentos, exactamente k exitos',
-   fml:'P(X=k) = C(n,k) x p^k x (1-p)^(n-k)\nMedia = n x p',
-   vars:[{n:'n',d:'Numero total de intentos o ensayos. Ej: "se hacen 10 envios" -> n=10'},
-         {n:'k',d:'Los exitos que te preguntan. Ej: "exactamente 9 exitosos" -> k=9'},
-         {n:'p',d:'Probabilidad de exito en cada intento. Ej: "92% son exitosos" -> p=0.92'},
-         {n:'1-p',d:'Probabilidad de fracaso (tambien llamada q). Ej: 1 - 0.92 = 0.08'},
-         {n:'C(n,k)',d:'Combinaciones: cuantas maneras hay de elegir k de n. Se calcula como n! / (k! x (n-k)!)'},
-         {n:'Media',d:'El promedio de exitos esperados es simplemente n x p. No necesitas la formula completa.'}]},
-  {lbl:'Prob. Clasica', front:'Probabilidad Clasica y Regla de Adicion',
-   fml:'P(A) = favorables / total\nP(AuB) = P(A) + P(B) - P(AyB)',
-   vars:[{n:'P(A)',d:'Divide los casos que te interesan entre todos los posibles. Ej: 40 boligrafos de 120 = 40/120'},
-         {n:"P(no A)",d:'Probabilidad de que NO ocurra A. Es 1 - P(A). Ej: P(no cuaderno) = 1 - 35/120'},
-         {n:'P(AuB)',d:'"A O B". Si hay personas que tienen ambos (overlap), resta P(AyB) para no contarlos dos veces.'},
-         {n:'Excl. mutuos',d:'Si A y B no pueden ocurrir juntos (ej: natacion vs tenis), solo suma: P(A)+P(B) sin restar nada.'},
-         {n:'n x P(A)',d:'Frecuencia esperada: cuantos casos esperas en n intentos. Ej: 500 clientes x 0.18 = 90 clientes'}]}
-];
-
-// ===================== NAVIGATION =====================
-function goTo(id, btn) {
-  document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('on'); });
-  document.querySelectorAll('.ntab').forEach(function(t){ t.classList.remove('on'); });
-  var target = document.getElementById(id);
-  if (target) target.classList.add('on');
-  if(btn) btn.classList.add('on');
-}
-
-// ===================== TOPIC SELECTOR =====================
-var curTopic = 'all';
-function selTopic(btn) {
-  document.querySelectorAll('.tpill').forEach(function(p){ p.classList.remove('on'); });
-  btn.classList.add('on');
-  curTopic = btn.getAttribute('data-t');
-}
-function launchTopic(t) {
-  curTopic = t;
-  // Buscar el botón de la pestaña "✏️ Quiz" por su texto
-  var navBtn = Array.from(document.querySelectorAll('.ntab')).find(function(b){ return b.textContent.includes('Quiz'); });
-  goTo('quiz', navBtn || document.querySelectorAll('.ntab')[2]);
-  document.querySelectorAll('.tpill').forEach(function(p){
-    p.classList.toggle('on', p.getAttribute('data-t') === t);
-  });
-  startQuiz();
-}
-
-// ===================== GAME STATE =====================
-var G = {};
-
-function getQs() {
-  var pool = curTopic === 'all' ? QS : QS.filter(function(q){ return q.t === curTopic; });
-  var arr = pool.slice();
-  for(var i = arr.length-1; i > 0; i--) {
-    var j = Math.floor(Math.random()*(i+1));
-    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  // ===================== NAVIGATION =====================
+  function goTo(id, btn) {
+    document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+    document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
+    document.getElementById(id).classList.add('on');
+    if(btn) btn.classList.add('on');
   }
-  return arr;
-}
 
-// ===================== QUIZ =====================
-function startQuiz() {
-  var qs = getQs().slice(0,10);
-  if (qs.length === 0) { alert('No hay preguntas para el tema "'+curTopic+'".'); return; }
-  G = { qs: qs, cur: 0, ok: 0, no: 0, locked: false };
-  var qsetup = document.getElementById('qsetup');
-  var qgame = document.getElementById('qgame');
-  var qresult = document.getElementById('qresult');
-  if (qsetup) qsetup.classList.add('hide');
-  if (qresult) qresult.classList.add('hide');
-  if (qgame) qgame.classList.remove('hide');
-  renderQuizQ();
-}
-function renderQuizQ() {
-  if(G.cur >= G.qs.length){ endQuiz(); return; }
-  G.locked = false;
-  var q = G.qs[G.cur];
-  var qcount = document.getElementById('qcount');
-  var qsc = document.getElementById('qsc');
-  var qprog = document.getElementById('qprog');
-  var qqtxt = document.getElementById('qqtxt');
-  var qtbl = document.getElementById('qtbl');
-  var qhbox = document.getElementById('qhbox');
-  var qhbtn = document.getElementById('qhbtn');
-  var qfb = document.getElementById('qfb');
-  var qnext = document.getElementById('qnext');
-  var qopts = document.getElementById('qopts');
-  if (qcount) qcount.textContent = 'Pregunta '+(G.cur+1)+'/'+G.qs.length;
-  if (qsc) qsc.innerHTML = '&#9989; '+G.ok+'&nbsp;&nbsp;&#10060; '+G.no;
-  if (qprog) qprog.style.width = (G.cur/G.qs.length*100)+'%';
-  if (qqtxt) qqtxt.innerHTML = q.q;
-  if (qtbl) qtbl.innerHTML = q.tbl || '';
-  if (qhbox) { qhbox.innerHTML = q.hint || ''; qhbox.className = 'hbox'; }
-  if (qhbtn) qhbtn.textContent = '💡 Mostrar pista';
-  if (qfb) { qfb.className = 'fb'; qfb.textContent = ''; }
-  if (qnext) qnext.classList.add('hide');
-  if (qopts) {
-    qopts.innerHTML = '';
-    q.opts.forEach(function(opt, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'obtn';
-      b.textContent = opt;
-      b.onclick = function(){ if (!G.locked) answerQuiz(i, q, qopts); };
-      qopts.appendChild(b);
-    });
+  // ===================== TOPIC SELECTOR =====================
+  var curTopic = 'all';
+  function selTopic(btn) {
+    document.querySelectorAll('.tpill').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    curTopic = btn.getAttribute('data-t');
   }
-}
-function answerQuiz(idx, q, od) {
-  G.locked = true;
-  var btns = od.querySelectorAll('.obtn');
-  btns.forEach(function(b){ b.disabled = true; });
-  btns[q.a].classList.add('ok');
-  if(idx !== q.a) btns[idx].classList.add('no');
-  var correct = idx === q.a;
-  if(correct) G.ok++; else G.no++;
-  var qfb = document.getElementById('qfb');
-  if (qfb) {
-    qfb.textContent = (correct ? '✅ Correcto! ' : '❌ Incorrecto. ') + q.exp;
-    qfb.className = 'fb on ' + (correct ? 'ok' : 'no');
+  function launchTopic(t) {
+    curTopic = t;
+    var navBtn = Array.from(document.querySelectorAll('.ntab')).find(b => b.textContent.includes('Quiz'));
+    goTo('quiz', navBtn || document.querySelectorAll('.ntab')[2]);
+    document.querySelectorAll('.tpill').forEach(p => p.classList.toggle('on', p.getAttribute('data-t') === t));
+    startQuiz();
   }
-  var qsc = document.getElementById('qsc');
-  if (qsc) qsc.innerHTML = '&#9989; '+G.ok+'&nbsp;&nbsp;&#10060; '+G.no;
-  var qnext = document.getElementById('qnext');
-  if (qnext) qnext.classList.remove('hide');
-}
-function nextQ() { G.cur++; renderQuizQ(); }
-function endQuiz() {
-  var qgame = document.getElementById('qgame');
-  var qresult = document.getElementById('qresult');
-  if (qgame) qgame.classList.add('hide');
-  if (qresult) qresult.classList.remove('hide');
-  var pct = G.qs.length > 0 ? Math.round(G.ok/G.qs.length*100) : 0;
-  var rscore = document.getElementById('rscore');
-  var rlbl = document.getElementById('rlbl');
-  var remoji = document.getElementById('remoji');
-  if (rscore) rscore.textContent = G.ok+' / '+G.qs.length;
-  if (rlbl) rlbl.textContent = pct+'% de respuestas correctas';
-  if (remoji) remoji.textContent = pct>=90?'🏆':pct>=70?'🎉':pct>=50?'📚':'💪';
-}
-function backSetup() {
-  var qgame = document.getElementById('qgame');
-  var qresult = document.getElementById('qresult');
-  var qsetup = document.getElementById('qsetup');
-  if (qgame) qgame.classList.add('hide');
-  if (qresult) qresult.classList.add('hide');
-  if (qsetup) qsetup.classList.remove('hide');
-}
 
-// ===================== HINT TOGGLE =====================
-function toggleHint(prefix) {
-  var hbox = document.getElementById(prefix+'hbox');
-  var hbtn = document.getElementById(prefix+'hbtn');
-  if (!hbox || !hbtn) return;
-  var isOn = hbox.classList.contains('on');
-  if (isOn) {
-    hbox.classList.remove('on');
-    hbtn.textContent = '💡 Mostrar pista';
-  } else {
-    hbox.classList.add('on');
-    hbtn.textContent = '🙈 Ocultar pista';
-  }
-}
+  // ===================== GAME STATE =====================
+  var G = {};
 
-// ===================== SURVIVAL =====================
-var survLives = 3;
-function setLives(n) {
-  survLives = n;
-  var lv1 = document.getElementById('lv1');
-  var lv3 = document.getElementById('lv3');
-  var lv5 = document.getElementById('lv5');
-  if (lv1) lv1.className = 'btn '+(n===1?'btn-p':'btn-o');
-  if (lv3) lv3.className = 'btn '+(n===3?'btn-p':'btn-o');
-  if (lv5) lv5.className = 'btn '+(n===5?'btn-p':'btn-o');
-}
-function startSurv() {
-  var qs = getQs();
-  if (qs.length === 0) { alert('No hay preguntas para el tema "'+curTopic+'".'); return; }
-  G = { qs: qs, cur: 0, lives: survLives, streak: 0, score: 0, locked: false };
-  var ssetup = document.getElementById('ssetup');
-  var sgame = document.getElementById('sgame');
-  var sresult = document.getElementById('sresult');
-  if (ssetup) ssetup.classList.add('hide');
-  if (sresult) sresult.classList.add('hide');
-  if (sgame) sgame.classList.remove('hide');
-  renderSurvQ();
-}
-function renderSurvQ() {
-  if(G.cur >= G.qs.length){ endSurv(true); return; }
-  G.locked = false;
-  var q = G.qs[G.cur];
-  updateSurvUI();
-  var sqtxt = document.getElementById('sqtxt');
-  var stbl = document.getElementById('stbl');
-  var shbox = document.getElementById('shbox');
-  var shbtn = document.getElementById('shbtn');
-  var sfb = document.getElementById('sfb');
-  var sopts = document.getElementById('sopts');
-  if (sqtxt) sqtxt.innerHTML = q.q;
-  if (stbl) stbl.innerHTML = q.tbl || '';
-  if (shbox) { shbox.innerHTML = q.hint || ''; shbox.className = 'hbox'; }
-  if (shbtn) shbtn.textContent = '💡 Mostrar pista';
-  if (sfb) { sfb.className = 'fb'; sfb.textContent = ''; }
-  if (sopts) {
-    sopts.innerHTML = '';
-    q.opts.forEach(function(opt, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'obtn';
-      b.textContent = opt;
-      b.onclick = function(){ if (!G.locked) answerSurv(i, q, sopts); };
-      sopts.appendChild(b);
-    });
-  }
-}
-function answerSurv(idx, q, od) {
-  G.locked = true;
-  var btns = od.querySelectorAll('.obtn');
-  btns.forEach(function(b){ b.disabled = true; });
-  btns[q.a].classList.add('ok');
-  if(idx !== q.a) btns[idx].classList.add('no');
-  var correct = idx === q.a;
-  var sfb = document.getElementById('sfb');
-  if (sfb) {
-    sfb.textContent = (correct ? '✅ Correcto! ' : '❌ Incorrecto. ') + q.exp;
-    sfb.className = 'fb on ' + (correct ? 'ok' : 'no');
-  }
-  if(correct){ G.streak++; G.score += 10 + (G.streak>2 ? (G.streak-2)*5 : 0); }
-  else { G.lives--; G.streak = 0; }
-  updateSurvUI();
-  if(G.lives <= 0){ setTimeout(function(){ endSurv(false); }, 1300); return; }
-  G.cur++;
-  setTimeout(renderSurvQ, 1300);
-}
-function updateSurvUI() {
-  var slives = document.getElementById('slives');
-  var sstreak = document.getElementById('sstreak');
-  var ssc = document.getElementById('ssc');
-  if (slives) {
-    var h = '';
-    for(var i=0;i<G.lives;i++) h += '❤️';
-    slives.textContent = h || '💀';
-  }
-  if (sstreak) sstreak.textContent = '🔥 '+G.streak;
-  if (ssc) ssc.textContent = G.score+' pts';
-}
-function endSurv(win) {
-  var sgame = document.getElementById('sgame');
-  var sresult = document.getElementById('sresult');
-  if (sgame) sgame.classList.add('hide');
-  if (sresult) sresult.classList.remove('hide');
-  var srscore = document.getElementById('srscore');
-  var srjbl = document.getElementById('srjbl');
-  if (srscore) srscore.textContent = G.score+' pts';
-  if (srjbl) srjbl.textContent = win
-    ? 'Completaste todas las preguntas! Eres un crack.'
-    : 'Respondiste '+G.cur+' preguntas antes de quedarte sin vidas.';
-}
-
-// ===================== CONTRARRELOJ =====================
-var crTimer = null;
-function startCR() {
-  if(crTimer) clearInterval(crTimer);
-  var pool = curTopic === 'all' ? QS.slice() : QS.filter(function(q){ return q.t === curTopic; });
-  if (pool.length === 0) { alert('No hay preguntas para el tema "'+curTopic+'".'); return; }
-  // Barajar
-  for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i];pool[i]=pool[j];pool[j]=t; }
-  G = { qs: pool, cur: 0, score: 0, count: 0, time: 120, locked: false };
-  var crsetup = document.getElementById('crsetup');
-  var crgame = document.getElementById('crgame');
-  var crresult = document.getElementById('crresult');
-  if (crsetup) crsetup.classList.add('hide');
-  if (crresult) crresult.classList.add('hide');
-  if (crgame) crgame.classList.remove('hide');
-  renderCRQ();
-  crTimer = setInterval(function(){
-    G.time--;
-    var crtimer = document.getElementById('crtimer');
-    if (crtimer) {
-      crtimer.textContent = G.time;
-      crtimer.className = 'tring' + (G.time<=10?' urg':'');
+  function getQs() {
+    var pool = curTopic === 'all' ? QS : QS.filter(q => q.t === curTopic);
+    var arr = pool.slice();
+    for(var i = arr.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
     }
-    if(G.time<=0){ clearInterval(crTimer); endCR(); }
-  }, 1000);
-}
-function renderCRQ() {
-  if(G.cur >= G.qs.length) G.cur = 0;
-  G.locked = false;
-  var q = G.qs[G.cur];
-  var crqtxt = document.getElementById('crqtxt');
-  var cropts = document.getElementById('cropts');
-  if (crqtxt) crqtxt.innerHTML = q.q;
-  if (cropts) {
-    cropts.innerHTML = '';
-    q.opts.forEach(function(opt, i){
+    return arr;
+  }
+
+  // ===================== QUIZ =====================
+  function startQuiz() {
+    var qs = getQs().slice(0, 10);
+    if (qs.length === 0) { alert('No hay preguntas para el tema seleccionado.'); return; }
+    G = { qs: qs, cur: 0, ok: 0, no: 0, locked: false };
+    document.getElementById('qsetup').classList.add('hide');
+    document.getElementById('qresult').classList.add('hide');
+    document.getElementById('qgame').classList.remove('hide');
+    renderQuizQ();
+  }
+  function renderQuizQ() {
+    if(G.cur >= G.qs.length){ endQuiz(); return; }
+    G.locked = false;
+    var q = G.qs[G.cur];
+    document.getElementById('qcount').textContent = 'Pregunta '+(G.cur+1)+'/'+G.qs.length;
+    document.getElementById('qsc').innerHTML = '&#9989; '+G.ok+'&nbsp;&nbsp;&#10060; '+G.no;
+    document.getElementById('qprog').style.width = (G.cur/G.qs.length*100)+'%';
+    document.getElementById('qqtxt').innerHTML = q.q;
+    document.getElementById('qtbl').innerHTML = q.tbl || '';
+    document.getElementById('qhbox').innerHTML = q.hint || '';
+    document.getElementById('qhbox').className = 'hbox';
+    document.getElementById('qhbtn').textContent = '💡 Mostrar pista';
+    document.getElementById('qfb').className = 'fb';
+    document.getElementById('qfb').textContent = '';
+    document.getElementById('qnext').classList.add('hide');
+    var od = document.getElementById('qopts');
+    od.innerHTML = '';
+    q.opts.forEach((opt, i) => {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'obtn';
       b.textContent = opt;
-      b.onclick = function(){ if (!G.locked) answerCR(i, q, cropts); };
-      cropts.appendChild(b);
+      b.onclick = () => { if (!G.locked) answerQuiz(i, q, od); };
+      od.appendChild(b);
     });
   }
-}
-function answerCR(idx, q, od) {
-  if(G.locked) return;
-  G.locked = true;
-  var btns = od.querySelectorAll('.obtn');
-  btns.forEach(function(b){ b.disabled=true; });
-  btns[q.a].classList.add('ok');
-  if(idx !== q.a) btns[idx].classList.add('no');
-  G.count++;
-  if(idx === q.a) G.score += 10;
-  var crsc = document.getElementById('crsc');
-  var crcnt = document.getElementById('crcnt');
-  if (crsc) crsc.textContent = '🏆 '+G.score+' pts';
-  if (crcnt) crcnt.textContent = G.count+' resp.';
-  G.cur++;
-  setTimeout(renderCRQ, 500);
-}
-function endCR() {
-  var crgame = document.getElementById('crgame');
-  var crresult = document.getElementById('crresult');
-  if (crgame) crgame.classList.add('hide');
-  if (crresult) crresult.classList.remove('hide');
-  var crfsc = document.getElementById('crfsc');
-  var crflbl = document.getElementById('crflbl');
-  if (crfsc) crfsc.textContent = G.score+' pts';
-  if (crflbl) crflbl.textContent = 'Respondiste '+G.count+' preguntas. '+(G.score>=100?'Excelente!':G.score>=50?'Buen intento!':'Sigue practicando!');
-}
-
-// ===================== FLASHCARDS =====================
-var fcList = FCS.slice(), fcIdx = 0, fcFlip = false;
-function renderFC() {
-  var c = fcList[fcIdx];
-  var fclbl = document.getElementById('fclbl');
-  var fctxt = document.getElementById('fctxt');
-  var fcfml = document.getElementById('fcfml');
-  var fcvars = document.getElementById('fcvars');
-  var fccnt = document.getElementById('fccnt');
-  var fccard = document.getElementById('fccard');
-  if (fclbl) fclbl.textContent = c.lbl;
-  if (fctxt) fctxt.textContent = c.front;
-  if (fcfml) fcfml.textContent = c.fml;
-  if (fcvars) {
-    fcvars.innerHTML = c.vars.map(function(v){
-      return '<div class="fcvr"><span class="fcvn">'+v.n+'</span><span class="fcvd">'+v.d+'</span></div>';
-    }).join('');
+  function answerQuiz(idx, q, od) {
+    G.locked = true;
+    var btns = od.querySelectorAll('.obtn');
+    btns.forEach(b => b.disabled = true);
+    btns[q.a].classList.add('ok');
+    if(idx !== q.a) btns[idx].classList.add('no');
+    var correct = idx === q.a;
+    if(correct) G.ok++; else G.no++;
+    var fb = document.getElementById('qfb');
+    fb.textContent = (correct ? '✅ Correcto! ' : '❌ Incorrecto. ') + q.exp;
+    fb.className = 'fb on ' + (correct ? 'ok' : 'no');
+    document.getElementById('qsc').innerHTML = '&#9989; '+G.ok+'&nbsp;&nbsp;&#10060; '+G.no;
+    document.getElementById('qnext').classList.remove('hide');
   }
-  if (fccnt) fccnt.textContent = 'Tarjeta '+(fcIdx+1)+' de '+fcList.length;
-  if (fccard) fccard.classList.remove('flip');
-  fcFlip = false;
-}
-function flipFC() {
-  fcFlip = !fcFlip;
-  var fccard = document.getElementById('fccard');
-  if (fccard) fccard.classList.toggle('flip', fcFlip);
-}
-function nextFC() { fcIdx = (fcIdx+1) % fcList.length; renderFC(); }
-function prevFC() { fcIdx = (fcIdx-1+fcList.length) % fcList.length; renderFC(); }
-function shuffleFC() {
-  for(var i=fcList.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=fcList[i];fcList[i]=fcList[j];fcList[j]=t; }
-  fcIdx=0; renderFC();
-}
+  function nextQ() { G.cur++; renderQuizQ(); }
+  function endQuiz() {
+    document.getElementById('qgame').classList.add('hide');
+    document.getElementById('qresult').classList.remove('hide');
+    var pct = G.qs.length ? Math.round(G.ok/G.qs.length*100) : 0;
+    document.getElementById('rscore').textContent = G.ok+' / '+G.qs.length;
+    document.getElementById('rlbl').textContent = pct+'% de respuestas correctas';
+    document.getElementById('remoji').textContent = pct>=90?'🏆':pct>=70?'🎉':pct>=50?'📚':'💪';
+  }
+  function backSetup() { 
+    document.getElementById('qgame').classList.add('hide');
+    document.getElementById('qresult').classList.add('hide');
+    document.getElementById('qsetup').classList.remove('hide');
+  }
 
-// ===================== INIT =====================
-renderFC();
+  // ===================== HINT TOGGLE =====================
+  function toggleHint(prefix) {
+    var hbox = document.getElementById(prefix+'hbox');
+    var hbtn = document.getElementById(prefix+'hbtn');
+    var isOn = hbox.classList.contains('on');
+    if (isOn) { hbox.classList.remove('on'); hbtn.textContent = '💡 Mostrar pista'; }
+    else { hbox.classList.add('on'); hbtn.textContent = '🙈 Ocultar pista'; }
+  }
+
+  // ===================== SURVIVAL =====================
+  var survLives = 3;
+  function setLives(n) {
+    survLives = n;
+    document.getElementById('lv1').className = 'btn '+(n===1?'btn-p':'btn-o');
+    document.getElementById('lv3').className = 'btn '+(n===3?'btn-p':'btn-o');
+    document.getElementById('lv5').className = 'btn '+(n===5?'btn-p':'btn-o');
+  }
+  function startSurv() {
+    var qs = getQs();
+    if (qs.length === 0) { alert('No hay preguntas para el tema seleccionado.'); return; }
+    G = { qs: qs, cur: 0, lives: survLives, streak: 0, score: 0, locked: false };
+    document.getElementById('ssetup').classList.add('hide');
+    document.getElementById('sresult').classList.add('hide');
+    document.getElementById('sgame').classList.remove('hide');
+    renderSurvQ();
+  }
+  function renderSurvQ() {
+    if(G.cur >= G.qs.length){ endSurv(true); return; }
+    G.locked = false;
+    var q = G.qs[G.cur];
+    updateSurvUI();
+    document.getElementById('sqtxt').innerHTML = q.q;
+    document.getElementById('stbl').innerHTML = q.tbl || '';
+    document.getElementById('shbox').innerHTML = q.hint || '';
+    document.getElementById('shbox').className = 'hbox';
+    document.getElementById('shbtn').textContent = '💡 Mostrar pista';
+    document.getElementById('sfb').className = 'fb';
+    document.getElementById('sfb').textContent = '';
+    var od = document.getElementById('sopts');
+    od.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'obtn';
+      b.textContent = opt;
+      b.onclick = () => { if (!G.locked) answerSurv(i, q, od); };
+      od.appendChild(b);
+    });
+  }
+  function answerSurv(idx, q, od) {
+    G.locked = true;
+    var btns = od.querySelectorAll('.obtn');
+    btns.forEach(b => b.disabled = true);
+    btns[q.a].classList.add('ok');
+    if(idx !== q.a) btns[idx].classList.add('no');
+    var correct = idx === q.a;
+    var fb = document.getElementById('sfb');
+    fb.textContent = (correct ? '✅ Correcto! ' : '❌ Incorrecto. ') + q.exp;
+    fb.className = 'fb on ' + (correct ? 'ok' : 'no');
+    if(correct){ G.streak++; G.score += 10 + (G.streak>2 ? (G.streak-2)*5 : 0); }
+    else { G.lives--; G.streak = 0; }
+    updateSurvUI();
+    if(G.lives <= 0){ setTimeout(() => endSurv(false), 1300); return; }
+    G.cur++;
+    setTimeout(renderSurvQ, 1300);
+  }
+  function updateSurvUI() {
+    document.getElementById('slives').textContent = '❤️'.repeat(G.lives) || '💀';
+    document.getElementById('sstreak').textContent = '🔥 '+G.streak;
+    document.getElementById('ssc').textContent = G.score+' pts';
+  }
+  function endSurv(win) {
+    document.getElementById('sgame').classList.add('hide');
+    document.getElementById('sresult').classList.remove('hide');
+    document.getElementById('srscore').textContent = G.score+' pts';
+    document.getElementById('srjbl').textContent = win ? '¡Completaste todas las preguntas! Eres un crack.' : 'Respondiste '+G.cur+' preguntas antes de quedarte sin vidas.';
+  }
+
+  // ===================== CONTRARRELOJ =====================
+  var crTimer = null;
+  function startCR() {
+    if(crTimer) clearInterval(crTimer);
+    var pool = curTopic === 'all' ? QS.slice() : QS.filter(q => q.t === curTopic);
+    if (pool.length === 0) { alert('No hay preguntas para el tema seleccionado.'); return; }
+    for(var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i];pool[i]=pool[j];pool[j]=t; }
+    G = { qs: pool, cur: 0, score: 0, count: 0, time: 120, locked: false };
+    document.getElementById('crsetup').classList.add('hide');
+    document.getElementById('crresult').classList.add('hide');
+    document.getElementById('crgame').classList.remove('hide');
+    renderCRQ();
+    crTimer = setInterval(() => {
+      G.time--;
+      var el = document.getElementById('crtimer');
+      el.textContent = G.time;
+      el.className = 'tring' + (G.time<=10?' urg':'');
+      if(G.time<=0){ clearInterval(crTimer); endCR(); }
+    }, 1000);
+  }
+  function renderCRQ() {
+    if(G.cur >= G.qs.length) G.cur = 0;
+    G.locked = false;
+    var q = G.qs[G.cur];
+    document.getElementById('crqtxt').innerHTML = q.q;
+    var od = document.getElementById('cropts');
+    od.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'obtn';
+      b.textContent = opt;
+      b.onclick = () => { if (!G.locked) answerCR(i, q, od); };
+      od.appendChild(b);
+    });
+  }
+  function answerCR(idx, q, od) {
+    if(G.locked) return;
+    G.locked = true;
+    var btns = od.querySelectorAll('.obtn');
+    btns.forEach(b => b.disabled=true);
+    btns[q.a].classList.add('ok');
+    if(idx !== q.a) btns[idx].classList.add('no');
+    G.count++;
+    if(idx === q.a) G.score += 10;
+    document.getElementById('crsc').textContent = '🏆 '+G.score+' pts';
+    document.getElementById('crcnt').textContent = G.count+' resp.';
+    G.cur++;
+    setTimeout(renderCRQ, 500);
+  }
+  function endCR() {
+    document.getElementById('crgame').classList.add('hide');
+    document.getElementById('crresult').classList.remove('hide');
+    document.getElementById('crfsc').textContent = G.score+' pts';
+    document.getElementById('crflbl').textContent = 'Respondiste '+G.count+' preguntas. '+(G.score>=100?'¡Excelente!':G.score>=50?'¡Buen intento!':'¡Sigue practicando!');
+  }
+
+  // ===================== FLASHCARDS =====================
+  var fcList = FCS.slice(), fcIdx = 0, fcFlip = false;
+  function renderFC() {
+    var c = fcList[fcIdx];
+    document.getElementById('fclbl').textContent = c.lbl;
+    document.getElementById('fctxt').textContent = c.front;
+    document.getElementById('fcfml').textContent = c.fml;
+    var vd = document.getElementById('fcvars');
+    vd.innerHTML = c.vars.map(v => `<div class="fcvr"><span class="fcvn">${v.n}</span><span class="fcvd">${v.d}</span></div>`).join('');
+    document.getElementById('fccnt').textContent = 'Tarjeta '+(fcIdx+1)+' de '+fcList.length;
+    document.getElementById('fccard').classList.remove('flip');
+    fcFlip = false;
+  }
+  function flipFC() {
+    fcFlip = !fcFlip;
+    document.getElementById('fccard').classList.toggle('flip', fcFlip);
+  }
+  function nextFC() { fcIdx = (fcIdx+1) % fcList.length; renderFC(); }
+  function prevFC() { fcIdx = (fcIdx-1+fcList.length) % fcList.length; renderFC(); }
+  function shuffleFC() {
+    for(var i=fcList.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=fcList[i];fcList[i]=fcList[j];fcList[j]=t; }
+    fcIdx=0; renderFC();
+  }
+
+  // ===================== INIT =====================
+  renderFC();
 </script>
 </body>
 </html>
